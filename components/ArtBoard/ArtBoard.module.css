@@ -1,0 +1,30 @@
+.keyAction {
+  min-width: 100px;
+}
+
+.detail {
+  text-align: center;
+  color: gray;
+}
+
+.artboard {
+  max-width: 500px;
+  max-height: 500px;
+
+  color: gray;
+  background-color: white;
+  text-align: center;
+  margin: auto;
+}
+
+.artboardImage {
+  width: 100%;
+  height: 100%;
+}
+
+@media screen and (max-width: 500px) {
+  .artboard {
+    max-width: 300px;
+    max-height: 300px;
+  }
+}
