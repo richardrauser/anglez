@@ -1,4 +1,6 @@
 import '@mantine/core/styles.css';
+import 'styles/global.css';
+
 import React from 'react';
 import { MantineProvider, ColorSchemeScript } from '@mantine/core';
 import { theme } from '../theme';
@@ -6,8 +8,8 @@ import { PlanesNavBar } from '@/components/PlanesNavBar/PlanesNavBar';
 // import { PlanesAppShell } from '../components/PlanesAppShell/PlanesAppShell';
 
 export const metadata = {
-  title: 'Mantine Next.js template',
-  description: 'I am using Mantine with Next.js!',
+  title: 'Planes generative NFT art',
+  description: 'Planes on-chain, generative NFT art by volstrate.',
 };
 
 export default function RootLayout({ children }: { children: any }) {

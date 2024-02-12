@@ -1,94 +1,101 @@
+import { ethers, AbiCoder, BigInt, BigNumber, toBigInt } from 'ethers';
+
 // -------------- EXTERNAL ------------------
 
-export function buildRandomPlanes() {
-  const randomSeed = Math.trunc(Math.random() * 5_000_000);
-  return buildPlanes(randomSeed);
-}
+// export function buildRandomPlanes() {
+//   const randomSeed = Math.trunc(Math.random() * 5_000_000);
+//   return buildPlanes(randomSeed);
+// }
 
-export function buildPlanes(randomSeed) {
-  console.log(`Generating artboard for alien world with seed: ${randomSeed}`);
-  const randomZoom = randomIntFromInterval(randomSeed, 90, 100);
-  const svgString = encodeURIComponent(
-    generateArt(randomSeed, randomZoom, null, 0, 180, 25, 250, 25, 250)
-  );
+// export function buildPlanes(randomSeed) {
+//   console.log(`Generating artboard for alien world with seed: ${randomSeed}`);
+//   const randomZoom = randomIntFromInterval(randomSeed, 90, 100);
+//   const svgString = encodeURIComponent(
+//     generateArt(randomSeed, randomZoom, null, 0, 180, 25, 250, 25, 250)
+//   );
 
-  return svgString;
-}
+//   return svgString;
+// }
 
 // ---------------
 
 // Generate random int, inclusive of min/max
-function randomIntFromInterval(randomSeed, min, max) {
+
+// Generate random int, inclusive of min/max
+export function randomIntFromInterval(randomSeed, min, max) {
   if (max <= min) {
     return min;
   }
+  console.log('Random seed: ' + randomSeed);
+  const abiCodedSeed = AbiCoder.defaultAbiCoder().encode(['uint'], [randomSeed]);
+  const hash = ethers.keccak256(abiCodedSeed);
+  const seed = toBigInt(hash);
+  console.log('max: ' + max);
+  console.log('min: ' + min);
 
-  // regen random seed here to simulate behaviour of using hashing to generated new seed
-  randomSeed = Math.trunc(Math.random() * 5_000_000);
+  // TODO: work out correct way to do this.
+  // const random = (seed % toBigInt(max - min)) + toBigInt(min);
+  const random = (seed % toBigInt(max - min)) + toBigInt(min) + toBigInt(1);
+  // var i = Math.floor(Math.random() * (max - min + 1) + min);
 
-  const value = (randomSeed % (max - min + 1)) + min;
-  //   var value =  Math.floor(Math.random() * (max - min + 1) + min);
-  // console.log("Random int: " + value);
-  return value;
+  console.log('Random int: ' + random);
+  const randomNumber = Number(random);
+  console.log('Random number: ' + randomNumber);
+  return randomNumber;
 }
 
-export function generateRandomArtDataUri() {
+// export function randomIntFromInterval(randomSeed, min, max) {
+//   if (max <= min) {
+//     return min;
+//   }
+
+//   // regen random seed here to simulate behaviour of using hashing to generated new seed
+//   randomSeed = Math.trunc(Math.random() * 5_000_000);
+
+//   const value = (randomSeed % (max - min + 1)) + min;
+//   //   var value =  Math.floor(Math.random() * (max - min + 1) + min);
+//   // console.log("Random int: " + value);
+//   return value;
+// }
+
+export function generateRandomPlanesDataUri() {
   const randomSeed = Math.trunc(Math.random() * 5_000_000);
   const randomZoom = randomIntFromInterval(randomSeed, 90, 100);
-
-  const svgString = encodeURIComponent(
-    generateArt(randomSeed, randomZoom, null, 0, 180, 25, 250, 25, 250)
-  );
-  return `data:image/svg+xml,${svgString}`;
-}
-
-function generateArt(
-  randomSeed,
-  zoom,
-  tintColour,
-  rotationDegrees,
-  rotationVariation,
-  widthMin,
-  widthMax,
-  speedMin,
-  speedMax
-) {
-  console.log(
-    'Generating art: ' +
-      randomSeed +
-      ' ' +
-      zoom +
-      ' ' +
-      rotationDegrees +
-      ' ' +
-      rotationVariation +
-      ' ' +
-      widthMin +
-      ' ' +
-      widthMax +
-      ' ' +
-      speedMin +
-      ' ' +
-      speedMax
-  );
 
   const red = randomIntFromInterval(randomSeed, 0, 255);
   const green = randomIntFromInterval(randomSeed, 0, 255);
   const blue = randomIntFromInterval(randomSeed, 0, 255);
   const alpha = randomIntFromInterval(randomSeed, 10, 90) / 100;
+  const randomTintColour = { r: red, g: green, b: blue, a: alpha };
 
-  if (tintColour === null) {
-    tintColour = { r: red, g: green, b: blue, a: alpha };
-  }
+  const polyRepeatChance = randomIntFromInterval(randomSeed + 400, 0, 100);
+  const randomStyle = polyRepeatChance > 80 ? 'cycle' : 'linear';
+
+  const svgString = encodeURIComponent(
+    generatePlanes(randomSeed, randomZoom, randomTintColour, randomStyle)
+  );
+  return `data:image/svg+xml,${svgString}`;
+}
+
+export function generatePlanes(randomSeed, zoom, tintColour, style) {
+  console.log('Generating planes: ' + randomSeed + ' ' + zoom + ' ' + tintColour);
 
   const viewBoxClipRect = getViewBoxClipRect(zoom);
   const viewBox = viewBoxClipRect[0];
   const clipRect = viewBoxClipRect[1];
-  const rendering = rotationVariation === 0 ? 'crispEdges' : 'auto';
+  const rendering = 'auto'; // rotationVariation === 0 ? 'crispEdges' : 'auto';
 
   const defs = "<defs><clipPath id='masterClip'><rect " + clipRect + '/></clipPath></defs>';
 
-  const shapes = getShapes(randomSeed, tintColour);
+  var maxPolyRepeat;
+
+  if (style == 'cycle') {
+    maxPolyRepeat = randomIntFromInterval(randomSeed + 300, 2, 8);
+  } else {
+    maxPolyRepeat = 1;
+  }
+
+  const shapes = getShapes(randomSeed, tintColour, maxPolyRepeat);
 
   return (
     "<svg xmlns='http://www.w3.org/2000/svg' viewBox='" +
@@ -146,16 +153,14 @@ function getViewBoxClipRect(zoom) {
   return [viewBox, clipRect];
 }
 
-function getShapes(randomSeed, tintColour) {
+function getShapes(randomSeed, tintColour, maxPolyRepeat) {
   var xPos = 0;
   var shapes = '';
   // TODO: consider best max ( 5 15?)
-  const shapeCount = randomIntFromInterval(randomSeed + i, 5, 8);
+  console.log('_------- RANDOM SEED: ' + randomSeed);
+  const shapeCount = randomIntFromInterval(randomSeed, 5, 8);
   var minX = 1000;
   var maxX = 0;
-
-  const polyRepeatChance = randomIntFromInterval(randomSeed + 400, 0, 100);
-  const maxPolyRepeat = polyRepeatChance > 80 ? randomIntFromInterval(randomSeed + 300, 2, 8) : 1;
 
   // polygon loop
   for (var i = 0; i < shapeCount; i++) {
@@ -170,8 +175,8 @@ function getShapes(randomSeed, tintColour) {
 
     // points loop
     for (var j = 0; j < pointCount; j++) {
-      const x1 = randomIntFromInterval(randomSeed + i + j, 0, 1000);
-      const y1 = randomIntFromInterval(randomSeed + i + j, 0, 1000);
+      const x1 = randomIntFromInterval(randomSeed + i + j + 40, 0, 1000);
+      const y1 = randomIntFromInterval(randomSeed + i + j + 50, 0, 1000);
       points += `${x1},${y1} `;
       if (x1 > maxX) {
         maxX = x1;
@@ -181,11 +186,11 @@ function getShapes(randomSeed, tintColour) {
       }
     }
 
-    const fillColour = getColour(randomSeed + 13, tintColour);
+    const fillColour = getColour(randomSeed + i + 13, tintColour);
 
-    var gradientColour1 = getColour(randomSeed + 13 + i, tintColour);
-    var gradientColour2 = getColour(randomSeed + 14 + i, tintColour);
-    var gradientColour3 = getColour(randomSeed + 15 + i, tintColour);
+    var gradientColour1 = getColour(randomSeed + i + 13, tintColour);
+    var gradientColour2 = getColour(randomSeed + i + 14, tintColour);
+    var gradientColour3 = getColour(randomSeed + i + 15, tintColour);
 
     console.log(`gradientColour1: ${gradientColour1}`);
     console.log(`gradientColour2: ${gradientColour2}`);
@@ -323,7 +328,7 @@ function getColour(randomSeed, tintColour) {
 
 function updateArtBoard() {
   console.log('Generating artboard.. ');
-  const svgDataUri = generateRandomArtDataUri();
+  const svgDataUri = generateRandomPlanesDataUri();
   console.log(svgDataUri);
   // document.body.style.backgroundImage = svgDataUri;
   document.getElementById('artboardImage').src = svgDataUri;
