@@ -1,3 +1,31 @@
 body {
   background-color: var(--mantine-color-gray-3) !important;
 }
+
+button.mantine-Button-root {
+  margin: 16px;
+}
+
+.mantine-Radio-body {
+  margin: 8px;
+}
+
+.panel {
+  background: #ccc;
+  border-radius: 6px;
+  padding: 8px;
+  margin: 8px;
+  text-align: center;
+}
+
+.mantine-ColorPicker-wrapper {
+  margin: 8px auto;
+}
+.mantine-NumberInput-root {
+  margin: 8px;
+}
+
+.mantine-Slider-root {
+  margin: 8px 16px 24px;
+  display: block;
+}

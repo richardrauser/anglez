@@ -14,7 +14,7 @@
   color: gray;
   background-color: white;
   text-align: center;
-  margin: auto;
+  margin: 24px auto;
 }
 
 .artboardImage {
@@ -27,4 +27,9 @@
     max-width: 300px;
     max-height: 300px;
   }
+}
+
+.artboardControls {
+  max-width: 600px;
+  margin: auto;
 }

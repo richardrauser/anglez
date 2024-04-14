@@ -26,21 +26,21 @@ export function randomIntFromInterval(randomSeed, min, max) {
   if (max <= min) {
     return min;
   }
-  console.log('Random seed: ' + randomSeed);
+  // console.log('Random seed: ' + randomSeed);
   const abiCodedSeed = AbiCoder.defaultAbiCoder().encode(['uint'], [randomSeed]);
   const hash = ethers.keccak256(abiCodedSeed);
   const seed = toBigInt(hash);
-  console.log('max: ' + max);
-  console.log('min: ' + min);
+  // console.log('max: ' + max);
+  // console.log('min: ' + min);
 
   // TODO: work out correct way to do this.
   // const random = (seed % toBigInt(max - min)) + toBigInt(min);
-  const random = (seed % toBigInt(max - min)) + toBigInt(min) + toBigInt(1);
+  const random = (seed % toBigInt(max - min + 1)) + toBigInt(min);
   // var i = Math.floor(Math.random() * (max - min + 1) + min);
 
-  console.log('Random int: ' + random);
+  // console.log('Random int: ' + random);
   const randomNumber = Number(random);
-  console.log('Random number: ' + randomNumber);
+  // console.log('Random number: ' + randomNumber);
   return randomNumber;
 }
 
@@ -60,48 +60,44 @@ export function randomIntFromInterval(randomSeed, min, max) {
 
 export function generateRandomPlanesDataUri() {
   const randomSeed = Math.trunc(Math.random() * 5_000_000);
-  const randomZoom = randomIntFromInterval(randomSeed, 90, 100);
+  const zoom = randomIntFromInterval(randomSeed, 90, 100);
 
-  const red = randomIntFromInterval(randomSeed, 0, 255);
-  const green = randomIntFromInterval(randomSeed, 0, 255);
-  const blue = randomIntFromInterval(randomSeed, 0, 255);
+  const red = randomIntFromInterval(randomSeed, 100, 255);
+  const green = randomIntFromInterval(randomSeed, 101, 255);
+  const blue = randomIntFromInterval(randomSeed, 102, 255);
   const alpha = randomIntFromInterval(randomSeed, 10, 90) / 100;
-  const randomTintColour = { r: red, g: green, b: blue, a: alpha };
+  const tintColour = { r: red, g: green, b: blue, a: alpha };
 
   const polyRepeatChance = randomIntFromInterval(randomSeed + 400, 0, 100);
-  const randomStyle = polyRepeatChance > 80 ? 'cycle' : 'linear';
+  const style = polyRepeatChance > 80 ? 'cycle' : 'linear';
+
+  const randomShapeCount = randomIntFromInterval(randomSeed, 5, 8);
 
   const svgString = encodeURIComponent(
-    generatePlanes(randomSeed, randomZoom, randomTintColour, randomStyle)
+    build(randomSeed, zoom, tintColour, style, randomShapeCount)
   );
   return `data:image/svg+xml,${svgString}`;
 }
 
-export function generatePlanes(randomSeed, zoom, tintColour, style) {
+export function build(randomSeed, zoom, tintColour, style, shapeCount) {
   console.log('Generating planes: ' + randomSeed + ' ' + zoom + ' ' + tintColour);
 
-  const viewBoxClipRect = getViewBoxClipRect(zoom);
-  const viewBox = viewBoxClipRect[0];
-  const clipRect = viewBoxClipRect[1];
-  const rendering = 'auto'; // rotationVariation === 0 ? 'crispEdges' : 'auto';
-
+  const [viewBox, clipRect] = getViewBoxClipRect(zoom);
   const defs = "<defs><clipPath id='masterClip'><rect " + clipRect + '/></clipPath></defs>';
 
   var maxPolyRepeat;
 
-  if (style == 'cycle') {
+  if (style === 'cycle') {
     maxPolyRepeat = randomIntFromInterval(randomSeed + 300, 2, 8);
   } else {
     maxPolyRepeat = 1;
   }
 
-  const shapes = getShapes(randomSeed, tintColour, maxPolyRepeat);
+  const shapes = getShapes(randomSeed, tintColour, shapeCount, maxPolyRepeat);
 
   return (
     "<svg xmlns='http://www.w3.org/2000/svg' viewBox='" +
     viewBox +
-    "' shape-rendering='" +
-    rendering +
     "'>" +
     defs +
     ` 
@@ -153,12 +149,10 @@ function getViewBoxClipRect(zoom) {
   return [viewBox, clipRect];
 }
 
-function getShapes(randomSeed, tintColour, maxPolyRepeat) {
-  var xPos = 0;
+function getShapes(randomSeed, tintColour, shapeCount, maxPolyRepeat) {
   var shapes = '';
   // TODO: consider best max ( 5 15?)
-  console.log('_------- RANDOM SEED: ' + randomSeed);
-  const shapeCount = randomIntFromInterval(randomSeed, 5, 8);
+  // console.log('_------- RANDOM SEED: ' + randomSeed);
   var minX = 1000;
   var maxX = 0;
 
@@ -166,8 +160,8 @@ function getShapes(randomSeed, tintColour, maxPolyRepeat) {
   for (var i = 0; i < shapeCount; i++) {
     const pointCount = randomIntFromInterval(randomSeed + i, 3, 5);
 
-    console.log('polygon: ' + i);
-    console.log('pointCount: ' + pointCount);
+    // console.log('polygon: ' + i);
+    // console.log('pointCount: ' + pointCount);
 
     var points = '';
 
@@ -186,15 +180,15 @@ function getShapes(randomSeed, tintColour, maxPolyRepeat) {
       }
     }
 
-    const fillColour = getColour(randomSeed + i + 13, tintColour);
+    // const fillColour = getColour(randomSeed + i + 13, tintColour);
 
     var gradientColour1 = getColour(randomSeed + i + 13, tintColour);
     var gradientColour2 = getColour(randomSeed + i + 14, tintColour);
     var gradientColour3 = getColour(randomSeed + i + 15, tintColour);
 
-    console.log(`gradientColour1: ${gradientColour1}`);
-    console.log(`gradientColour2: ${gradientColour2}`);
-    console.log(`gradientColour3: ${gradientColour3}`);
+    // console.log(`gradientColour1: ${gradientColour1}`);
+    // console.log(`gradientColour2: ${gradientColour2}`);
+    // console.log(`gradientColour3: ${gradientColour3}`);
 
     let polygonOpacity;
     let midStopOpacity;
@@ -209,7 +203,7 @@ function getShapes(randomSeed, tintColour, maxPolyRepeat) {
 
     const gradientRotation = randomIntFromInterval(randomSeed + i + 15, 0, 360);
 
-    console.log('gradientRotation: ' + gradientRotation);
+    // console.log('gradientRotation: ' + gradientRotation);
 
     const polygonCount = randomIntFromInterval(randomSeed + 17, 1, maxPolyRepeat);
     var polygons = '';
@@ -239,50 +233,6 @@ function getShapes(randomSeed, tintColour, maxPolyRepeat) {
 
     randomSeed += 100;
   }
-
-  //   while (1000 - xPos > 0) {
-  //     var stripeWidth = randomIntFromInterval(randomSeed, widthMin, widthMax) * 2;
-
-  //     if (stripeWidth > 1000 - xPos) {
-  //       stripeWidth = 1000 - xPos;
-  //     } else if (1000 - xPos - stripeWidth < widthMin) {
-  //       stripeWidth += 1000 - xPos - stripeWidth;
-  //     }
-
-  //     const rotation = getRotation(
-  //       randomSeed + 1,
-  //       rotationDegrees,
-  //       rotationRange
-  //     );
-  //     const speed =
-  //       randomIntFromInterval(randomSeed + 2, speedMin, speedMax) * 20;
-  //     const firstColour = getColour(randomSeed + 3, tintColour);
-  //     const secondColour = getColour(randomSeed + 13, tintColour);
-  //     const colours = firstColour + ";" + secondColour + ";" + firstColour;
-
-  //     var currentRect =
-  //       "<rect x='" +
-  //       xPos +
-  //       "' y='0' width='" +
-  //       stripeWidth +
-  //       "' height='1000' fill='" +
-  //       firstColour +
-  //       "' opacity='0.8' transform='rotate(" +
-  //       rotation +
-  //       " 500 500)'>";
-  //     currentRect +=
-  //       "<animate begin= '0s' dur='" +
-  //       speed +
-  //       "ms' attributeName='fill' values='" +
-  //       colours +
-  //       "' fill='freeze' repeatCount='indefinite'/>";
-  //     currentRect += "</rect>";
-
-  //     shapes += currentRect + "\r\n";
-
-  //     xPos += stripeWidth;
-  //     randomSeed += 100;
-  //   }
 
   return shapes;
 }

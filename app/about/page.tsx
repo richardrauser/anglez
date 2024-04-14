@@ -1,3 +1,4 @@
-export default function CreatePage() {
+
+export default function AboutPage() {
   return <>About</>;
 }

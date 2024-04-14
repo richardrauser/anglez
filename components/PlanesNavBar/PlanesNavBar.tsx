@@ -8,6 +8,7 @@ import classes from './PlanesNavBar.module.css';
 const links = [
   { link: '/', label: 'Home' },
   { link: '/create', label: 'Create' },
+  { link: '/gallery', label: 'Gallery' },
   { link: '/about', label: 'About' },
 ];
 
