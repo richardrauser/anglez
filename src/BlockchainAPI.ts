@@ -319,7 +319,7 @@ export async function fetchTokenDetails(tokenId) {
     metadataJson = buffer.toString('utf-8');
   }
 
-  // console.log("METADATA: " + metadataJson);
+  console.log('METADATA: ' + metadataJson);
 
   const metadataObject = JSON.parse(metadataJson);
 
@@ -331,31 +331,31 @@ export async function fetchTokenDetails(tokenId) {
 
   let seed = metadataObject.attributes.filter((attribute) => attribute.trait_type == 'seed')[0]
     .value;
-  let planetCount = metadataObject.attributes.filter(
-    (attribute) => attribute.trait_type == 'planets'
-  )[0].value;
-  let starDensity = metadataObject.attributes.filter(
-    (attribute) => attribute.trait_type == 'stars'
-  )[0].value;
-  let mountainRoughness = metadataObject.attributes.filter(
-    (attribute) => attribute.trait_type == 'mountains'
-  )[0].value;
-  let waterChoppiness = metadataObject.attributes.filter(
-    (attribute) => attribute.trait_type == 'water'
-  )[0].value;
-  let cloudType = metadataObject.attributes.filter(
-    (attribute) => attribute.trait_type == 'clouds'
-  )[0].value;
+  // let planetCount = metadataObject.attributes.filter(
+  //   (attribute) => attribute.trait_type == 'planets'
+  // )[0].value;
+  // let starDensity = metadataObject.attributes.filter(
+  //   (attribute) => attribute.trait_type == 'stars'
+  // )[0].value;
+  // let mountainRoughness = metadataObject.attributes.filter(
+  //   (attribute) => attribute.trait_type == 'mountains'
+  // )[0].value;
+  // let waterChoppiness = metadataObject.attributes.filter(
+  //   (attribute) => attribute.trait_type == 'water'
+  // )[0].value;
+  // let cloudType = metadataObject.attributes.filter(
+  //   (attribute) => attribute.trait_type == 'clouds'
+  // )[0].value;
 
   return {
     svg,
     svgDataUri,
     seed,
-    planetCount,
-    starDensity,
-    mountainRoughness,
-    waterChoppiness,
-    cloudType,
+    // planetCount,
+    // starDensity,
+    // mountainRoughness,
+    // waterChoppiness,
+    // cloudType,
   };
 }
 

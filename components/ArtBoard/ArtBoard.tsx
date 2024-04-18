@@ -5,6 +5,8 @@ import { Text, Radio, RadioGroup, Stack, Slider, SimpleGrid } from '@mantine/cor
 import { build, randomIntFromInterval } from '../../src/planes';
 import { Button, NumberInput, ColorPicker } from '@mantine/core';
 import { getReadWriteContract } from '../../src/BlockchainAPI';
+import { showErrorMessage } from '@/src/UIUtils';
+import { handleError } from '@/src/ErrorHandler';
 
 export function ArtBoard() {
   const [svg, setSvg] = useState('');
@@ -13,6 +15,7 @@ export function ArtBoard() {
   const [zoom, setZoom] = useState(75);
   const [style, setStyle] = useState('linear');
   const [shapeCount, setShapeCount] = useState(5);
+  // stored as rgb()
   const [tintColour, setTintColour] = useState('');
 
   const generatePlanesDataUri = () => {
@@ -66,15 +69,35 @@ export function ArtBoard() {
 
       const mintTx = await contract.mintRandom(randomSeed);
       console.log('Mint tx: ' + mintTx.hash);
-    } catch (e) {
-      console.error(e);
+    } catch (error: any) {
+      console.error('Minting error! ', error);
+      handleError(error);
     }
   };
 
   const mintCustom = async () => {
     console.log('Minting custom...');
 
-    const contract = await getReadWriteContract();
+    try {
+      const contract = await getReadWriteContract();
+      //     function mintCustom(uint24 seed, uint8 shapeCount, uint8 zoom, uint8 tintRed, uint8 tintGreen, uint8 tintBlue, uint8 tintAlpha, bool isCyclic) public payable {
+
+      const rgbObj = rgbToObj(tintColour);
+      const mintTx = await contract.mintCustom(
+        randomSeed,
+        shapeCount,
+        zoom,
+        rgbObj.r,
+        rgbObj.g,
+        rgbObj.b,
+        rgbObj.a,
+        style === 'cycle'
+      );
+      console.log('Mint tx: ' + mintTx.hash);
+    } catch (error: any) {
+      console.error('Minting error! ', error);
+      handleError(error);
+    }
   };
 
   const rgbToObj = (rgb) => {

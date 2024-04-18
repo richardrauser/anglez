@@ -6,6 +6,8 @@ import { MantineProvider, ColorSchemeScript } from '@mantine/core';
 import { theme } from '../theme';
 import { PlanesNavBar } from '@/components/PlanesNavBar/PlanesNavBar';
 // import { PlanesAppShell } from '../components/PlanesAppShell/PlanesAppShell';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 export const metadata = {
   title: 'Planes generative NFT art',
@@ -27,6 +29,8 @@ export default function RootLayout({ children }: { children: any }) {
         <MantineProvider theme={theme}>
           {/* <PlanesAppShell>{children}</PlanesAppShell> */}
           <PlanesNavBar />
+          <ToastContainer />
+
           {children}
         </MantineProvider>
       </body>
