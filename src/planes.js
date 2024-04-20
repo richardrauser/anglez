@@ -178,7 +178,7 @@ function getShapes(randomSeed, tintColour, shapeCount, maxPolyRepeat) {
 
   // polygon loop
 
-  for (var i = 1; i <= shapeCount; i++) {
+  for (var i = 0; i < shapeCount; i++) {
     console.log('BEGINNING LOOP randomSeed: ');
     console.log(randomSeed);
     const pointCount = randomIntFromInterval(randomSeed + i, 3, 5);
@@ -191,7 +191,7 @@ function getShapes(randomSeed, tintColour, shapeCount, maxPolyRepeat) {
     // TODO: folded shapes by repeating points?
 
     // points loop
-    for (var j = 1; j <= pointCount; j++) {
+    for (var j = 0; j < pointCount; j++) {
       const x = randomIntFromInterval(randomSeed + i + j + 40, 0, 1000);
       const y = randomIntFromInterval(randomSeed + i + j + 50, 0, 1000);
       points += `${x},${y} `;
