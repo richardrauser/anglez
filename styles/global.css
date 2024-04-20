@@ -10,12 +10,32 @@ button.mantine-Button-root {
   margin: 8px;
 }
 
+.mainContent {
+  max-width: 600px;
+  margin: auto;
+}
+
 .panel {
   background: #ccc;
   border-radius: 6px;
   padding: 8px;
   margin: 8px;
   text-align: center;
+}
+
+.artboard {
+  max-width: 500px;
+  max-height: 500px;
+
+  color: gray;
+  background-color: white;
+  text-align: center;
+  margin: 24px auto;
+}
+
+.artboardImage {
+  width: 100%;
+  height: 100%;
 }
 
 .mantine-ColorPicker-wrapper {

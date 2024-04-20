@@ -331,15 +331,14 @@ export async function fetchTokenDetails(tokenId) {
 
   let seed = metadataObject.attributes.filter((attribute) => attribute.trait_type == 'seed')[0]
     .value;
-  // let planetCount = metadataObject.attributes.filter(
-  //   (attribute) => attribute.trait_type == 'planets'
-  // )[0].value;
-  // let starDensity = metadataObject.attributes.filter(
-  //   (attribute) => attribute.trait_type == 'stars'
-  // )[0].value;
-  // let mountainRoughness = metadataObject.attributes.filter(
-  //   (attribute) => attribute.trait_type == 'mountains'
-  // )[0].value;
+
+  let shapeCount = metadataObject.attributes.filter(
+    (attribute) => attribute.trait_type == 'shapes'
+  )[0].value;
+  let zoom = metadataObject.attributes.filter((attribute) => attribute.trait_type == 'zoom')[0]
+    .value;
+  let cyclic = metadataObject.attributes.filter((attribute) => attribute.trait_type == 'cyclic')[0]
+    .value;
   // let waterChoppiness = metadataObject.attributes.filter(
   //   (attribute) => attribute.trait_type == 'water'
   // )[0].value;
@@ -351,9 +350,9 @@ export async function fetchTokenDetails(tokenId) {
     svg,
     svgDataUri,
     seed,
-    // planetCount,
-    // starDensity,
-    // mountainRoughness,
+    shapeCount,
+    zoom,
+    cyclic,
     // waterChoppiness,
     // cloudType,
   };

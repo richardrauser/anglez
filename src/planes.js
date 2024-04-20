@@ -16,7 +16,6 @@ import { ethers, AbiCoder, BigInt, BigNumber, toBigInt } from 'ethers';
 
 //   return svgString;
 // }
-
 // ---------------
 
 // Generate random int, inclusive of min/max
@@ -41,7 +40,7 @@ export function randomIntFromInterval(randomSeed, min, max) {
   // console.log('Random int: ' + random);
   const randomNumber = Number(random);
   // console.log('Random number: ' + randomNumber);
-  return randomNumber;
+  return Math.round(randomNumber);
 }
 
 // export function randomIntFromInterval(randomSeed, min, max) {
@@ -57,6 +56,26 @@ export function randomIntFromInterval(randomSeed, min, max) {
 //   // console.log("Random int: " + value);
 //   return value;
 // }
+
+function getColour(randomSeed, tintColour) {
+  const redRandom = randomIntFromInterval(randomSeed, 0, 255);
+  const greenRandom = randomIntFromInterval(randomSeed + 2, 0, 255);
+  const blueRandom = randomIntFromInterval(randomSeed + 1, 0, 255);
+
+  const redTint = tintColour.r;
+  const greenTint = tintColour.g;
+  const blueTint = tintColour.b;
+  const alpha = tintColour.a;
+
+  // alpha blending
+  const red = redRandom + (redTint - redRandom) * alpha;
+  const green = greenRandom + (greenTint - greenRandom) * alpha;
+  const blue = blueRandom + (blueTint - blueRandom) * alpha;
+
+  const finalColour = 'rgb(' + red + ', ' + green + ', ' + blue + ')';
+
+  return finalColour;
+}
 
 export function generateRandomPlanesDataUri() {
   const randomSeed = Math.trunc(Math.random() * 5_000_000);
@@ -82,7 +101,7 @@ export function generateRandomPlanesDataUri() {
 export function build(randomSeed, zoom, tintColour, style, shapeCount) {
   console.log('Generating planes: ' + randomSeed + ' ' + zoom + ' ' + tintColour);
 
-  const [viewBox, clipRect] = getViewBoxClipRect(zoom);
+  const [viewBox, clipRect] = getViewBoxClipRect(150 - zoom);
   const defs = "<defs><clipPath id='masterClip'><rect " + clipRect + '/></clipPath></defs>';
 
   var maxPolyRepeat;
@@ -112,6 +131,7 @@ export function build(randomSeed, zoom, tintColour, style, shapeCount) {
 }
 
 function getViewBoxClipRect(zoom) {
+  console.log('Zoom: ' + zoom);
   zoom = zoom * 10;
   const widthHeight = 500 + zoom;
   var viewBox = '';
@@ -157,7 +177,10 @@ function getShapes(randomSeed, tintColour, shapeCount, maxPolyRepeat) {
   var maxX = 0;
 
   // polygon loop
-  for (var i = 0; i < shapeCount; i++) {
+
+  for (var i = 1; i <= shapeCount; i++) {
+    console.log('BEGINNING LOOP randomSeed: ');
+    console.log(randomSeed);
     const pointCount = randomIntFromInterval(randomSeed + i, 3, 5);
 
     // console.log('polygon: ' + i);
@@ -168,40 +191,32 @@ function getShapes(randomSeed, tintColour, shapeCount, maxPolyRepeat) {
     // TODO: folded shapes by repeating points?
 
     // points loop
-    for (var j = 0; j < pointCount; j++) {
-      const x1 = randomIntFromInterval(randomSeed + i + j + 40, 0, 1000);
-      const y1 = randomIntFromInterval(randomSeed + i + j + 50, 0, 1000);
-      points += `${x1},${y1} `;
-      if (x1 > maxX) {
-        maxX = x1;
+    for (var j = 1; j <= pointCount; j++) {
+      const x = randomIntFromInterval(randomSeed + i + j + 40, 0, 1000);
+      const y = randomIntFromInterval(randomSeed + i + j + 50, 0, 1000);
+      points += `${x},${y} `;
+      if (x > maxX) {
+        maxX = x;
       }
-      if (x1 < minX) {
-        minX = x1;
+      if (x < minX) {
+        minX = x;
       }
     }
 
-    // const fillColour = getColour(randomSeed + i + 13, tintColour);
-
-    var gradientColour1 = getColour(randomSeed + i + 13, tintColour);
-    var gradientColour2 = getColour(randomSeed + i + 14, tintColour);
-    var gradientColour3 = getColour(randomSeed + i + 15, tintColour);
-
-    // console.log(`gradientColour1: ${gradientColour1}`);
-    // console.log(`gradientColour2: ${gradientColour2}`);
-    // console.log(`gradientColour3: ${gradientColour3}`);
+    console.log('points');
+    console.log(i);
+    console.log(points);
 
     let polygonOpacity;
     let midStopOpacity;
 
     if (maxPolyRepeat < 4) {
-      polygonOpacity = randomIntFromInterval(randomSeed + i + 16, 80, 100) / 100;
-      midStopOpacity = randomIntFromInterval(randomSeed + i + 20, 40, 90) / 100;
+      polygonOpacity = randomIntFromInterval(randomSeed + i + 16, 80, 100);
+      midStopOpacity = randomIntFromInterval(randomSeed + i + 20, 40, 90);
     } else {
-      polygonOpacity = randomIntFromInterval(randomSeed + i + 16, 50, 80) / 100;
-      midStopOpacity = randomIntFromInterval(randomSeed + i + 20, 30, 90) / 100;
+      polygonOpacity = randomIntFromInterval(randomSeed + i + 16, 50, 80);
+      midStopOpacity = randomIntFromInterval(randomSeed + i + 20, 30, 90);
     }
-
-    const gradientRotation = randomIntFromInterval(randomSeed + i + 15, 0, 360);
 
     // console.log('gradientRotation: ' + gradientRotation);
 
@@ -211,14 +226,24 @@ function getShapes(randomSeed, tintColour, shapeCount, maxPolyRepeat) {
     var polyRotationDelta = 360 / polygonCount; //randomIntFromInterval(randomSeed + 18, 10, 180);
 
     for (var k = 0; k < polygonCount; k++) {
-      polygons += `<polygon points="${points}" transform="rotate(${polyRotation}, 500, 500)" fill="url(#gradient${i})" opacity="${polygonOpacity}" />`;
+      polygons += `<polygon points="${points}" transform="rotate(${polyRotation}, 500, 500)" fill="url(#gradient${i})" opacity="${polygonOpacity}%" />`;
       polyRotation += polyRotationDelta;
     }
+
+    var gradientColour1 = getColour(randomSeed + i + 13, tintColour);
+    var gradientColour2 = getColour(randomSeed + i + 14, tintColour);
+    var gradientColour3 = getColour(randomSeed + i + 15, tintColour);
+
+    // console.log(`gradientColour1: ${gradientColour1}`);
+    // console.log(`gradientColour2: ${gradientColour2}`);
+    // console.log(`gradientColour3: ${gradientColour3}`);
+
+    const gradientRotation = randomIntFromInterval(randomSeed + i + 15, 0, 360);
 
     shapes += `
     <linearGradient id="gradient${i}" gradientTransform="rotate(${gradientRotation})">
       <stop offset="0%" stop-color="${gradientColour1}" />
-      <stop offset="50%" stop-color="${gradientColour2}" stop-opacity="${midStopOpacity}" />
+      <stop offset="50%" stop-color="${gradientColour2}" stop-opacity="${midStopOpacity}%" />
       <stop offset="100%" stop-color="${gradientColour3}" />
     </linearGradient>
     ${polygons}
@@ -231,7 +256,11 @@ function getShapes(randomSeed, tintColour, shapeCount, maxPolyRepeat) {
 
     //    <polygon points="${points}" fill="url(#gradient${i})" opacity="${polygonOpacity}" />    `;
 
+    console.log('randomSeed before incrementing: ');
+    console.log(randomSeed);
     randomSeed += 100;
+    console.log('randomSeed before incrementing: ');
+    console.log(randomSeed);
   }
 
   return shapes;
@@ -254,26 +283,6 @@ function getRotation(randomSeed, rotationDegrees, rotationRange) {
   }
 
   return rotation;
-}
-
-function getColour(randomSeed, tintColour) {
-  const redRandom = randomIntFromInterval(randomSeed, 0, 255);
-  const greenRandom = randomIntFromInterval(randomSeed + 2, 0, 255);
-  const blueRandom = randomIntFromInterval(randomSeed + 1, 0, 255);
-
-  const redTint = tintColour.r;
-  const greenTint = tintColour.g;
-  const blueTint = tintColour.b;
-  const alpha = tintColour.a;
-
-  // alpha blending
-  const red = redRandom + (redTint - redRandom) * alpha;
-  const green = greenRandom + (greenTint - greenRandom) * alpha;
-  const blue = blueRandom + (blueTint - blueRandom) * alpha;
-
-  const finalColour = 'rgb(' + red + ', ' + green + ', ' + blue + ')';
-
-  return finalColour;
 }
 
 function updateArtBoard() {

@@ -7,6 +7,8 @@ import { Button, NumberInput, ColorPicker } from '@mantine/core';
 import { getReadWriteContract } from '../../src/BlockchainAPI';
 import { showErrorMessage } from '@/src/UIUtils';
 import { handleError } from '@/src/ErrorHandler';
+import { Type } from 'react-toastify/dist/utils';
+import { toast } from 'react-toastify';
 
 export function ArtBoard() {
   const [svg, setSvg] = useState('');
@@ -20,7 +22,7 @@ export function ArtBoard() {
 
   const generatePlanesDataUri = () => {
     console.log('Generating planes...');
-    const svgString = build(randomSeed, 150 - zoom, rgbToObj(tintColour), style, shapeCount);
+    const svgString = build(randomSeed, zoom, rgbToObj(tintColour), style, shapeCount);
     // console.log('SVG STRING: ' + svgString);
     const encodedSvgString = encodeURIComponent(svgString);
     return `data:image/svg+xml,${encodedSvgString}`;
@@ -82,7 +84,19 @@ export function ArtBoard() {
       const contract = await getReadWriteContract();
       //     function mintCustom(uint24 seed, uint8 shapeCount, uint8 zoom, uint8 tintRed, uint8 tintGreen, uint8 tintBlue, uint8 tintAlpha, bool isCyclic) public payable {
 
+      const mintPrice = await contract.getCustomMintPrice();
+      console.log('Mint price: ' + mintPrice.toString());
+
       const rgbObj = rgbToObj(tintColour);
+      const alpha = Math.round(rgbObj.a * 255);
+      console.log('Alpha: ' + alpha);
+
+      const overrides = {
+        // gasLimit: 140000,
+        value: mintPrice,
+      };
+
+      //     function mintCustom(uint24 seed, uint8 shapeCount, uint8 zoom, uint8 tintRed, uint8 tintGreen, uint8 tintBlue, uint8 tintAlpha, bool isCyclic) public payable {
       const mintTx = await contract.mintCustom(
         randomSeed,
         shapeCount,
@@ -90,36 +104,48 @@ export function ArtBoard() {
         rgbObj.r,
         rgbObj.g,
         rgbObj.b,
-        rgbObj.a,
-        style === 'cycle'
+        alpha,
+        style === 'cycle',
+        overrides
       );
       console.log('Mint tx: ' + mintTx.hash);
+      toast.success('Your NFT has been minted!');
     } catch (error: any) {
       console.error('Minting error! ', error);
       handleError(error);
     }
   };
 
-  const rgbToObj = (rgb) => {
-    console.log('RGB: ' + rgb);
+  type RGBAColor = {
+    r: number;
+    g: number;
+    b: number;
+    a: number;
+  };
+
+  const rgbToObj = (rgbString: string) => {
+    console.log('RGB: ' + rgbString);
     let colors = ['r', 'g', 'b', 'a'];
 
-    let colorArr = rgb.slice(rgb.indexOf('(') + 1, rgb.indexOf(')')).split(', ');
+    let colorArray = rgbString
+      .slice(rgbString.indexOf('(') + 1, rgbString.indexOf(')'))
+      .split(', ');
 
-    let obj = new Object();
+    let color: RGBAColor = {
+      r: Number(colorArray[0]),
+      g: Number(colorArray[1]),
+      b: Number(colorArray[2]),
+      a: Number(colorArray[3]),
+    };
 
-    colorArr.forEach((k, i) => {
-      obj[colors[i]] = k;
-    });
-
-    console.log('RGB obj: ' + JSON.stringify(obj));
-    return obj;
+    console.log('RGB obj: ' + JSON.stringify(color));
+    return color;
   };
 
   return (
     <div>
-      <div className={styles.artboard}>
-        <img className={styles.artboardImage} src={svg}></img>
+      <div className="artboard">
+        <img className="artboardImage" src={svg}></img>
       </div>
 
       <div className={styles.artboardControls}>
@@ -180,6 +206,7 @@ export function ArtBoard() {
                 { value: 100, label: '100%' },
               ]}
             />
+            zoom: {zoom}%
           </div>
         </Stack>
       </div>

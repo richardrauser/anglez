@@ -30,8 +30,7 @@ export default function RootLayout({ children }: { children: any }) {
           {/* <PlanesAppShell>{children}</PlanesAppShell> */}
           <PlanesNavBar />
           <ToastContainer />
-
-          {children}
+          <div className="mainContent">{children}</div>
         </MantineProvider>
       </body>
     </html>
