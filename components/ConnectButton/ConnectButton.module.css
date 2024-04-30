@@ -1,0 +1,26 @@
+.navDropdownIcon {
+  display: block;
+  height: 20px;
+  margin-right: 8px;
+}
+.item {
+  padding: 6px;
+  height: 32px;
+}
+
+.navDropdownIcon img {
+  height: 100%;
+  margin: auto;
+  max-height: 16px;
+}
+
+.navDropdownIcon svg {
+  height: 100%;
+  margin: auto;
+  max-height: 16px;
+}
+
+.spinnerContainer {
+  width: 100%;
+  text-align: center;
+}

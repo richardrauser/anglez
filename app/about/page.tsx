@@ -1,4 +1,8 @@
-
 export default function AboutPage() {
-  return <>About</>;
+  return (
+    <>
+      <h1>About</h1>
+      <div className="panel">This is the about page.</div>
+    </>
+  );
 }

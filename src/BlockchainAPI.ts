@@ -12,6 +12,31 @@ import {
 import { showInfoMessage } from './UIUtils';
 import { formatEther } from 'ethers';
 
+export interface TokenParams {
+  seed: number;
+  shapeCount: number;
+  zoom: number;
+  tintRed: number;
+  tintGreen: number;
+  tintBlue: number;
+  tintAlpha: number;
+  isCyclic: boolean;
+}
+
+export interface TokenDetails {
+  tokenId: number;
+  svg: string;
+  svgDataUri: string;
+  attributes: {
+    seed: number;
+    shapeCount: number;
+    zoom: number;
+    tintColor: string;
+    tintTransparency: string;
+    isCyclic: boolean;
+  };
+}
+
 const AccountDetailsKey = 'DS_ACCOUNT_DETAILS_KEY';
 
 async function getProvider() {
@@ -116,16 +141,6 @@ export async function getReadWriteContract() {
   const provider = await getProvider();
   const signer = await provider.getSigner();
   return new ethers.Contract(CosmicWorldsContractAddress, Planes.abi, signer);
-}
-
-export async function mintRandom(seed) {
-  console.log('Minting Cosmic World with random seed..');
-  const contract = await getReadWriteContract();
-  const overrides = {
-    gasLimit: 140000,
-  };
-  const transaction = await contract.mintRandom(seed, overrides);
-  console.log('Tx hash: ' + transaction.hash);
 }
 
 export async function isAccountConnected() {
@@ -261,43 +276,36 @@ class AccountDetails {
 //   return (ethAddress === ownerAddress);
 // }
 
-export async function mintTenCosmicWorlds() {
-  console.log('Minting 10 Cosmic Worlds..');
+export async function mintCustomAnglez(tokenParams: TokenParams) {
+  console.log('Minting custom Anglez with params  ' + tokenParams);
 
   const contract = await getReadWriteContract();
+  //     function mintCustom(uint24 seed, uint8 shapeCount, uint8 zoom, uint8 tintRed, uint8 tintGreen, uint8 tintBlue, uint8 tintAlpha, bool isCyclic) public payable {
+
+  const mintPrice = await contract.getCustomMintPrice();
+  console.log('Mint price: ' + mintPrice.toString());
 
   const overrides = {
-    gasLimit: 580000,
+    // gasLimit: 140000,
+    value: mintPrice,
   };
 
-  var seeds = [];
+  const mintTx = await contract.mintCustom(
+    tokenParams.seed,
+    tokenParams.shapeCount,
+    tokenParams.zoom,
+    tokenParams.tintRed,
+    tokenParams.tintGreen,
+    tokenParams.tintBlue,
+    tokenParams.tintAlpha,
+    tokenParams.isCyclic,
+    overrides
+  );
 
-  for (let i = 0; i < 10; i++) {
-    console.log(`Generating seed ${i}...`);
-    const seed = Math.trunc(Math.random() * 5_000_000);
-    seeds.push(seed);
-  }
-
-  const transaction = await contract.mintMany(seeds, overrides);
-  console.log('Tx hash: ' + transaction.hash);
+  console.log('Mint tx: ' + mintTx.hash);
 }
 
-export async function mintCosmicWorld(randomSeed) {
-  console.log('Minting Cosmic World with seed: ' + randomSeed);
-
-  const contract = await getReadWriteContract();
-
-  const overrides = {
-    gasLimit: 140000,
-  };
-
-  console.log('!!!!!');
-
-  const transaction = await contract.mint(randomSeed, overrides);
-  console.log('Tx hash: ' + transaction.hash);
-}
-
-export async function fetchTokenDetails(tokenId) {
+export async function fetchTokenDetails(tokenId: number) {
   console.log('Getting metadata for token ID: ' + tokenId);
 
   if (tokenId === undefined || tokenId === null) {
@@ -337,8 +345,21 @@ export async function fetchTokenDetails(tokenId) {
   )[0].value;
   let zoom = metadataObject.attributes.filter((attribute) => attribute.trait_type == 'zoom')[0]
     .value;
-  let cyclic = metadataObject.attributes.filter((attribute) => attribute.trait_type == 'cyclic')[0]
-    .value;
+  let tintColor = metadataObject.attributes.filter(
+    (attribute) => attribute.trait_type == 'tint color'
+  )[0].value;
+  // let tintBlue = metadataObject.attributes.filter(
+  //   (attribute) => attribute.trait_type == 'tintBlue'
+  // )[0].value;
+  // let tintGreen = metadataObject.attributes.filter(
+  //   (attribute) => attribute.trait_type == 'tintGreen'
+  // )[0].value;
+  let tintTransparency = metadataObject.attributes.filter(
+    (attribute) => attribute.trait_type == 'tint transparency'
+  )[0].value;
+  let isCyclic = metadataObject.attributes.filter(
+    (attribute) => attribute.trait_type == 'cyclic'
+  )[0].value;
   // let waterChoppiness = metadataObject.attributes.filter(
   //   (attribute) => attribute.trait_type == 'water'
   // )[0].value;
@@ -346,16 +367,21 @@ export async function fetchTokenDetails(tokenId) {
   //   (attribute) => attribute.trait_type == 'clouds'
   // )[0].value;
 
-  return {
+  const tokenDetails: TokenDetails = {
+    tokenId,
     svg,
     svgDataUri,
-    seed,
-    shapeCount,
-    zoom,
-    cyclic,
-    // waterChoppiness,
-    // cloudType,
+    attributes: {
+      seed,
+      shapeCount,
+      zoom,
+      tintColor,
+      tintTransparency,
+      isCyclic,
+    },
   };
+
+  return tokenDetails;
 }
 
 export async function fetchTotalSupply() {
@@ -378,7 +404,7 @@ export async function fetchRecentTokenIds() {
 
   const maxToDisplay = 12;
 
-  var tokens = [];
+  var tokens: number[] = [];
 
   // because tokenCount is a BigInt
   const tokenCountInt = Number(tokenCount);

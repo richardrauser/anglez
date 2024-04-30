@@ -4,12 +4,13 @@ import { Container, Group, Burger } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 // import { MantineLogo } from '@mantinex/mantine-logo';
 import classes from './PlanesNavBar.module.css';
+import ConnectButton from '../ConnectButton/ConnectButton';
 
 const links = [
-  { link: '/', label: 'Home' },
-  { link: '/create', label: 'Create' },
-  { link: '/gallery', label: 'Gallery' },
-  { link: '/about', label: 'About' },
+  { link: '/', label: 'anglez.xyz' },
+  { link: '/create', label: 'create' },
+  { link: '/gallery', label: 'gallery' },
+  { link: '/about', label: 'about' },
 ];
 
 export function PlanesNavBar() {
@@ -31,6 +32,7 @@ export function PlanesNavBar() {
     </a>
   ));
 
+  // TODO: Burger for mobile
   return (
     <header className={classes.header}>
       <Container size="md" className={classes.inner}>
@@ -40,6 +42,7 @@ export function PlanesNavBar() {
         </Group>
 
         <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm" />
+        <ConnectButton />
       </Container>
     </header>
   );

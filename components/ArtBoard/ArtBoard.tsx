@@ -4,11 +4,11 @@ import styles from './ArtBoard.module.css';
 import { Text, Radio, RadioGroup, Stack, Slider, SimpleGrid } from '@mantine/core';
 import { build, randomIntFromInterval } from '../../src/planes';
 import { Button, NumberInput, ColorPicker } from '@mantine/core';
-import { getReadWriteContract } from '../../src/BlockchainAPI';
+import { getReadWriteContract, mintCustomAnglez } from '../../src/BlockchainAPI';
 import { showErrorMessage } from '@/src/UIUtils';
 import { handleError } from '@/src/ErrorHandler';
-import { Type } from 'react-toastify/dist/utils';
 import { toast } from 'react-toastify';
+import { TokenParams } from '../../src/BlockchainAPI';
 
 export function ArtBoard() {
   const [svg, setSvg] = useState('');
@@ -80,35 +80,24 @@ export function ArtBoard() {
   const mintCustom = async () => {
     console.log('Minting custom...');
 
+    const rgbObj = rgbToObj(tintColour);
+    const alpha = Math.round(rgbObj.a * 255);
+    console.log('Alpha: ' + alpha);
+
+    const tokenParams: TokenParams = {
+      seed: randomSeed,
+      shapeCount: shapeCount,
+      zoom: zoom,
+      tintRed: rgbObj.r,
+      tintGreen: rgbObj.g,
+      tintBlue: rgbObj.b,
+      tintAlpha: alpha,
+      isCyclic: style === 'cycle',
+    };
+
     try {
-      const contract = await getReadWriteContract();
       //     function mintCustom(uint24 seed, uint8 shapeCount, uint8 zoom, uint8 tintRed, uint8 tintGreen, uint8 tintBlue, uint8 tintAlpha, bool isCyclic) public payable {
-
-      const mintPrice = await contract.getCustomMintPrice();
-      console.log('Mint price: ' + mintPrice.toString());
-
-      const rgbObj = rgbToObj(tintColour);
-      const alpha = Math.round(rgbObj.a * 255);
-      console.log('Alpha: ' + alpha);
-
-      const overrides = {
-        // gasLimit: 140000,
-        value: mintPrice,
-      };
-
-      //     function mintCustom(uint24 seed, uint8 shapeCount, uint8 zoom, uint8 tintRed, uint8 tintGreen, uint8 tintBlue, uint8 tintAlpha, bool isCyclic) public payable {
-      const mintTx = await contract.mintCustom(
-        randomSeed,
-        shapeCount,
-        zoom,
-        rgbObj.r,
-        rgbObj.g,
-        rgbObj.b,
-        alpha,
-        style === 'cycle',
-        overrides
-      );
-      console.log('Mint tx: ' + mintTx.hash);
+      await mintCustomAnglez(tokenParams);
       toast.success('Your NFT has been minted!');
     } catch (error: any) {
       console.error('Minting error! ', error);
@@ -157,7 +146,7 @@ export function ArtBoard() {
         <div className="panel">
           <div>Mint!</div>
           <Button onClick={mintRandom}>Mint random</Button>
-          <Button onClick={mintCustom}>Mint cutom</Button>
+          <Button onClick={mintCustom}>Mint custom</Button>
         </div>
         <SimpleGrid cols={{ base: 1, xs: 2 }}>
           <Stack>
@@ -182,7 +171,7 @@ export function ArtBoard() {
           <Stack>
             <div className="panel">
               <Text ta="left" size="m">
-                Color
+                Tint
               </Text>
               <ColorPicker format="rgba" value={tintColour} onChange={setTintColour} />
             </div>
@@ -206,7 +195,7 @@ export function ArtBoard() {
                 { value: 100, label: '100%' },
               ]}
             />
-            zoom: {zoom}%
+            {zoom}%
           </div>
         </Stack>
       </div>

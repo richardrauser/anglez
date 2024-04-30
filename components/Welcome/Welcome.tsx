@@ -6,14 +6,14 @@ export function Welcome() {
     <>
       <Title className={classes.title} ta="center" mt={100}>
         Welcome to{' '}
-        <Text inherit variant="gradient" component="span" gradient={{ from: 'pink', to: 'yellow' }}>
-          Planes
+        <Text inherit variant="gradient" component="span" gradient={{ from: 'blue', to: 'orange' }}>
+          anglez.xyz
         </Text>
       </Title>
       <Text c="dimmed" ta="center" size="lg" maw={580} mx="auto" mt="xl">
         Create abstract, on-chain NFT art.<br></br>
         <Anchor href="create" size="lg">
-          Get started creating Planes.
+          Get started creating anglez!
         </Anchor>
       </Text>
     </>

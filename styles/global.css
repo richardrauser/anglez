@@ -1,5 +1,17 @@
 body {
   background-color: var(--mantine-color-gray-3) !important;
+  font-family: 'Tektur', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+a {
+  text-decoration: none !important;
+}
+
+a:hover {
+  text-decoration: underline !important;
 }
 
 button.mantine-Button-root {
@@ -23,6 +35,10 @@ button.mantine-Button-root {
   text-align: center;
 }
 
+.basic {
+  background: #ccc;
+}
+
 .artboard {
   max-width: 500px;
   max-height: 500px;
@@ -36,6 +52,7 @@ button.mantine-Button-root {
 .artboardImage {
   width: 100%;
   height: 100%;
+  aspect-ratio: 1 / 1;
 }
 
 .mantine-ColorPicker-wrapper {
@@ -48,4 +65,8 @@ button.mantine-Button-root {
 .mantine-Slider-root {
   margin: 8px 16px 24px;
   display: block;
+}
+
+img.artwork {
+  background-color: white;
 }
