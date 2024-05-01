@@ -2,7 +2,9 @@
 import Loading from '@/components/Loading/Loading';
 import { TokenDetails, fetchTokenDetails } from '@/src/BlockchainAPI';
 import { Button, Text } from '@mantine/core';
+import { ethers } from 'ethers';
 import { useEffect, useState } from 'react';
+import ethereumIcon from '@/images/ethereum-white.png';
 
 export default function ArtworkPage({ params }: { params: { id: string } }) {
   const [tokenDetails, setTokenDetails] = useState<TokenDetails | null>(null);
