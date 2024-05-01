@@ -27,7 +27,8 @@
     "next": "14.0.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-toastify": "^10.0.5"
+    "react-toastify": "^10.0.5",
+    "watchpack": "^2.4.1"
   },
   "devDependencies": {
     "@babel/core": "^7.23.2",
