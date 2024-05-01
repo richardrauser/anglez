@@ -2,12 +2,12 @@ import { ethers, JsonRpcProvider } from 'ethers';
 import Anglez from '../contract/Anglez.json';
 import * as Errors from './ErrorMessages';
 import {
-  CosmicWorldsContractAddress,
-  CosmicWorldsCurrentNetworkID,
-  CosmicWorldsCurrentNetworkName,
-  CosmicWorldsCurrentNetworkCurrencySymbol,
-  CosmicWorldsCurrentNetworkRpcUrl,
-  CosmicWorldsCurrentNetworkExplorerUrl,
+  AnglezContractAddress,
+  AnglezCurrentNetworkID,
+  AnglezCurrentNetworkName,
+  AnglezCurrentNetworkCurrencySymbol,
+  AnglezCurrentNetworkRpcUrl,
+  AnglezCurrentNetworkExplorerUrl,
 } from './Constants';
 import { showInfoMessage } from './UIUtils';
 import { formatEther } from 'ethers';
@@ -37,19 +37,35 @@ export interface TokenDetails {
   };
 }
 
+export interface AccountDetails {
+  shortenedAddress: string;
+  fullAddress: string;
+  weiBalance: string;
+  displayBalance: string;
+}
+
+// class AccountDetails {
+//   constructor(shortenedAddress, fullAddress, weiBalance, displayBalance) {
+//     this.shortenedAddress = shortenedAddress;
+//     this.fullAddress = fullAddress;
+//     this.weiBalance = weiBalance;
+//     this.displayBalance = displayBalance; // ETH
+//   }
+// }
+
 const AccountDetailsKey = 'DS_ACCOUNT_DETAILS_KEY';
 
 async function getProvider() {
   console.log('Returning default provider..');
 
-  console.log('Current network: ' + CosmicWorldsCurrentNetworkName);
+  console.log('Current network: ' + AnglezCurrentNetworkName);
 
   let provider;
 
   if (typeof window === 'undefined') {
     console.log('No window.. not in browser.');
     // return new ethers.JsonRpcProvider("https://api.mycryptoapi.comx/eth");
-    if (CosmicWorldsCurrentNetworkName == 'localhost') {
+    if (AnglezCurrentNetworkName == 'localhost') {
       // console.log("Returning JsonRpcProvider..");
       // this will be readonly as it is not connected to a browser's ethereum wallet.
       // TODO: specify URLS from infura, etc to get this working: https://docs.ethers.org/v6/getting-started/#starting-connecting
@@ -62,10 +78,7 @@ async function getProvider() {
       console.log('got default provider.');
     } else {
       console.log('Returning Alchemy provider');
-      provider = new ethers.AlchemyProvider(
-        CosmicWorldsCurrentNetworkID,
-        process.env.ALCHEMY_API_KEY
-      );
+      provider = new ethers.AlchemyProvider(AnglezCurrentNetworkID, process.env.ALCHEMY_API_KEY);
     }
   } else {
     console.log('Have window.. in browser.');
@@ -81,10 +94,10 @@ async function getProvider() {
   // Check we are on expected network
   const network = await provider.getNetwork();
 
-  console.log('Desired chain ID: ' + CosmicWorldsCurrentNetworkID);
+  console.log('Desired chain ID: ' + AnglezCurrentNetworkID);
   console.log('Current chain ID: ' + network.chainId);
 
-  if (network.chainId != CosmicWorldsCurrentNetworkID) {
+  if (network.chainId != AnglezCurrentNetworkID) {
     console.log('Wrong network!');
     throw Error(Errors.DS_WRONG_ETH_NETWORK);
   }
@@ -95,27 +108,27 @@ async function getProvider() {
 
 export async function switchToCurrentNetwork() {
   // will attempt to add current network, behaviour is to switch if already present in MetaMask
-  console.log('Switching to ' + CosmicWorldsCurrentNetworkName + '...');
+  console.log('Switching to ' + AnglezCurrentNetworkName + '...');
 
   const provider = new ethers.BrowserProvider(window.ethereum);
   const network = await provider.getNetwork();
 
-  if (network.chainId == CosmicWorldsCurrentNetworkID) {
-    showInfoMessage("You're already on the " + CosmicWorldsCurrentNetworkName + ' network. Yay.');
+  if (network.chainId == AnglezCurrentNetworkID) {
+    showInfoMessage("You're already on the " + AnglezCurrentNetworkName + ' network. Yay.');
     return;
   }
 
   const data = [
     {
-      chainId: '0x' + CosmicWorldsCurrentNetworkID.toString(16),
-      chainName: CosmicWorldsCurrentNetworkName,
+      chainId: '0x' + AnglezCurrentNetworkID.toString(16),
+      chainName: AnglezCurrentNetworkName,
       nativeCurrency: {
-        name: CosmicWorldsCurrentNetworkCurrencySymbol,
-        symbol: CosmicWorldsCurrentNetworkCurrencySymbol,
+        name: AnglezCurrentNetworkCurrencySymbol,
+        symbol: AnglezCurrentNetworkCurrencySymbol,
         decimals: 18,
       },
-      rpcUrls: [CosmicWorldsCurrentNetworkRpcUrl],
-      blockExplorerUrls: [CosmicWorldsCurrentNetworkExplorerUrl],
+      rpcUrls: [AnglezCurrentNetworkRpcUrl],
+      blockExplorerUrls: [AnglezCurrentNetworkExplorerUrl],
     },
   ];
 
@@ -131,16 +144,16 @@ export async function getReadOnlyContract() {
   console.log('Getting read-only contract..');
   const provider = await getProvider();
 
-  console.log('CONTRACT ADDRESS: ' + CosmicWorldsContractAddress);
+  console.log('CONTRACT ADDRESS: ' + AnglezContractAddress);
 
-  return new ethers.Contract(CosmicWorldsContractAddress, Anglez.abi, provider);
+  return new ethers.Contract(AnglezContractAddress, Anglez.abi, provider);
 }
 
 export async function getReadWriteContract() {
   console.log('Getting read/write contract..');
   const provider = await getProvider();
   const signer = await provider.getSigner();
-  return new ethers.Contract(CosmicWorldsContractAddress, Anglez.abi, signer);
+  return new ethers.Contract(AnglezContractAddress, Anglez.abi, signer);
 }
 
 export async function isAccountConnected() {
@@ -162,7 +175,7 @@ export async function hasAccount() {
   }
 
   const provider = await getProvider();
-  const hasAccount = provider.hasSigner();
+  const hasAccount = provider.getSigner() !== null;
   console.log('Has account: ' + hasAccount);
   return hasAccount;
 }
@@ -171,7 +184,7 @@ export async function fetchAccount() {
   console.log('Fetching account..');
   const provider = await getProvider();
   // var [account] = await provider.listAccounts();
-  var account = await provider.account;
+  var account = await provider.getSigner(); // TODO: really what you want?
 
   console.log('GOT ACCOUNT: ' + account);
   if (account === undefined || account === null) {
@@ -201,14 +214,14 @@ export async function fetchAccountDetails() {
   }
 
   const weiBalance = await provider.getBalance(account);
-  const displayBalance = Number(formatEther(weiBalance)).toFixed(4);
+  const displayBalance = Number(formatEther(weiBalance)).toFixed(4).toString();
 
-  var accountDetails = new AccountDetails(
+  var accountDetails: AccountDetails = {
     shortenedAddress,
     fullAddress,
-    weiBalance.toString(),
-    displayBalance.toString()
-  );
+    weiBalance: weiBalance.toString(),
+    displayBalance,
+  };
 
   localStorage.setItem(AccountDetailsKey, JSON.stringify(accountDetails));
 
@@ -218,7 +231,12 @@ export async function fetchAccountDetails() {
 }
 
 export function fetchCachedAccountDetails() {
-  const accountDetails = JSON.parse(localStorage.getItem(AccountDetailsKey));
+  const accountDetailsJson = localStorage.getItem(AccountDetailsKey);
+  if (accountDetailsJson === null) {
+    console.log('details are null.');
+    return null;
+  }
+  const accountDetails = JSON.parse(accountDetailsJson);
 
   if (accountDetails === null) {
     console.log('details are null.');
@@ -245,15 +263,6 @@ export function fetchCachedAccountDetails() {
 
 export function clearCachedAccountDetails() {
   localStorage.removeItem(AccountDetailsKey);
-}
-
-class AccountDetails {
-  constructor(shortenedAddress, fullAddress, weiBalance, displayBalance) {
-    this.shortenedAddress = shortenedAddress;
-    this.fullAddress = fullAddress;
-    this.weiBalance = weiBalance;
-    this.displayBalance = displayBalance; // ETH
-  }
 }
 
 // export async function isCurrentAccountOwner() {
@@ -310,7 +319,7 @@ export async function fetchTokenDetails(tokenId: number) {
 
   if (tokenId === undefined || tokenId === null) {
     console.log('No token ID!');
-    return;
+    return null;
   }
   const contract = await getReadOnlyContract();
   const metadataDataUri = await contract.tokenURI(tokenId);
@@ -337,16 +346,23 @@ export async function fetchTokenDetails(tokenId: number) {
 
   // console.log("SVG: " + svg);
 
-  let seed = metadataObject.attributes.filter((attribute) => attribute.trait_type == 'seed')[0]
-    .value;
+  interface Attribute {
+    trait_type: string;
+    value: string;
+  }
+
+  let seed = metadataObject.attributes.filter(
+    (attribute: Attribute) => attribute.trait_type == 'seed'
+  )[0].value;
 
   let shapeCount = metadataObject.attributes.filter(
-    (attribute) => attribute.trait_type == 'shapes'
+    (attribute: Attribute) => attribute.trait_type == 'shapes'
   )[0].value;
-  let zoom = metadataObject.attributes.filter((attribute) => attribute.trait_type == 'zoom')[0]
-    .value;
+  let zoom = metadataObject.attributes.filter(
+    (attribute: Attribute) => attribute.trait_type == 'zoom'
+  )[0].value;
   let tintColor = metadataObject.attributes.filter(
-    (attribute) => attribute.trait_type == 'tint color'
+    (attribute: Attribute) => attribute.trait_type == 'tint color'
   )[0].value;
   // let tintBlue = metadataObject.attributes.filter(
   //   (attribute) => attribute.trait_type == 'tintBlue'
@@ -355,10 +371,10 @@ export async function fetchTokenDetails(tokenId: number) {
   //   (attribute) => attribute.trait_type == 'tintGreen'
   // )[0].value;
   let tintTransparency = metadataObject.attributes.filter(
-    (attribute) => attribute.trait_type == 'tint transparency'
+    (attribute: Attribute) => attribute.trait_type == 'tint transparency'
   )[0].value;
   let isCyclic = metadataObject.attributes.filter(
-    (attribute) => attribute.trait_type == 'cyclic'
+    (attribute: Attribute) => attribute.trait_type == 'cyclic'
   )[0].value;
   // let waterChoppiness = metadataObject.attributes.filter(
   //   (attribute) => attribute.trait_type == 'water'

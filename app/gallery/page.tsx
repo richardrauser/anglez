@@ -26,7 +26,7 @@ export default function GalleryPage() {
         <Loading />
       ) : (
         <SimpleGrid cols={1} spacing="lg">
-          {tokenIds?.map((tokenId) => <Artwork key={tokenId} tokenId={tokenId} />)}
+          {tokenIds?.map((tokenId) => <Artwork tokenId={tokenId} />)}
         </SimpleGrid>
       )}
     </>

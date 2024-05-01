@@ -6,7 +6,7 @@ import Loading from '../Loading/Loading';
 import Link from 'next/link';
 import styles from './Artwork.module.css';
 
-export default function Artwork(props) {
+export default function Artwork(props: { tokenId: number }) {
   const [loading, setLoading] = useState(true);
   const [tokenDetails, setTokenDetails] = useState<any | null>(null);
 

@@ -16,7 +16,7 @@ import classes from '@/styles/SplitButton.module.css';
 import '@/src/BlockchainAPI';
 import { handleError } from '@/src/ErrorHandler';
 import * as Errors from '@/src/ErrorMessages';
-import { CosmicWorldsCurrentNetworkExplorerUrl } from '@/src/Constants';
+import { AnglezCurrentNetworkExplorerUrl } from '@/src/Constants';
 import ethereum from '../images/ethereum.svg';
 import styles from './ConnectButton.module.css';
 import { ActionIcon, Button, Group, Menu, rem } from '@mantine/core';
@@ -30,13 +30,23 @@ import {
   IconWallet,
 } from '@tabler/icons-react';
 
-export default function ConnectButton(props) {
+declare global {
+  interface Window {
+    ethereum?: any;
+  }
+}
+
+export default function ConnectButton() {
   const [isLoading, setIsLoading] = React.useState(true);
   const [isWalletConnected, setIsWalletConnected] = useState(false);
   const [isWalletInstalled, setIsWalletInstalled] = useState(false);
   const [accountEthAddress, setAccountEthAddress] = useState('');
   const [accountEthBalance, setAccountEthBalance] = useState('');
   const [etherscanUrl, setEtherscanUrl] = useState('');
+
+  const visitMetaMask = async () => {
+    window.open('https://metamask.io', '_blank');
+  };
 
   const connectWallet = async () => {
     console.log('Attempting to connect wallet..');
@@ -50,7 +60,7 @@ export default function ConnectButton(props) {
     try {
       const accountDetails = await fetchAccountDetails();
       updateAccountDetails(accountDetails);
-    } catch (err) {
+    } catch (err: any) {
       console.log('ERROR: ' + err.message);
       handleError(err);
     }
@@ -112,7 +122,7 @@ export default function ConnectButton(props) {
     fetchDetails();
   };
 
-  const updateAccountDetails = (accountDetails) => {
+  const updateAccountDetails = (accountDetails: any) => {
     console.log('Updating account details..');
     const hasWallet = window.ethereum !== undefined && window.ethereum !== null;
     setIsLoading(false);
@@ -122,11 +132,7 @@ export default function ConnectButton(props) {
       setIsWalletConnected(true);
       setAccountEthAddress(accountDetails.shortenedAddress);
       setAccountEthBalance(accountDetails.displayBalance.toString());
-      setEtherscanUrl(
-        CosmicWorldsCurrentNetworkExplorerUrl.CurrentNetworkExplorerUrl +
-          'address/' +
-          accountDetails.fullAddress
-      );
+      setEtherscanUrl(AnglezCurrentNetworkExplorerUrl + 'address/' + accountDetails.fullAddress);
 
       console.log('Address: ', accountDetails.address);
       console.log('Balance: ', accountDetails.displayBalance);
@@ -141,8 +147,8 @@ export default function ConnectButton(props) {
   };
 
   useEffect(() => {
-    if (window.etherum != null) {
-      window.ethereum.on('accountsChanged', (accounts) => {
+    if (window.ethereum != null) {
+      window.ethereum.on('accountsChanged', (accounts: any) => {
         console.log('Accounts changed.');
         clearCachedAccountDetails();
         disconnectWallet();
@@ -151,7 +157,7 @@ export default function ConnectButton(props) {
       });
 
       // Is this causing multiple reloads?!
-      window.ethereum.on('chainChanged', (chainId) => {
+      window.ethereum.on('chainChanged', (chainId: any) => {
         console.log('Chain changed.');
         // Handle the new chain.
         // Correctly handling chain changes can be complicated.
@@ -182,9 +188,7 @@ export default function ConnectButton(props) {
       ) : (
         <div>
           {!isWalletInstalled ? (
-            <Button target="_blank" href="https://metamask.io">
-              Install MetaMask
-            </Button>
+            <Button onClick={visitMetaMask}>Install MetaMask</Button>
           ) : (
             <div>
               {!isWalletConnected ? (

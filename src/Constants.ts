@@ -1,79 +1,80 @@
-const CosmicWorldsLocalhostNetwork = 'localhost';
-const CosmicWorldsSepoliaNetwork = 'sepolia';
-const CosmicWorldsGoerliNetwork = 'goerli';
-const CosmicWorldMainnetNetwork = 'mainnet';
+const AnglezLocalhostNetwork = 'localhost';
+const AnglezSepoliaNetwork = 'sepolia';
+const AnglezGoerliNetwork = 'goerli';
+const AnglezMainnetNetwork = 'mainnet';
 
 // Change this to control which environment you're pointing at.
-const currentNetwork = CosmicWorldsLocalhostNetwork;
-// const currentNetwork = CosmicWorldsGoerliNetwork;
-// const currentNetwork = CosmicWorldsSepoliaNetwork;
-// const currentNetwork = CosmicWorldMainnetNetwork;
+const currentNetwork = AnglezLocalhostNetwork;
+// const currentNetwork = AnglezGoerliNetwork;
+// const currentNetwork = AnglezSepoliaNetwork;
+// const currentNetwork = AnglezMainnetNetwork;
 
-const CosmicWorldsCurrentNetworkIDKey = 'CosmicWorldsCurrentNetworkIDKey';
-const CosmicWorldsCurrentNetworkNameKey = 'CosmicWorldsCurrentNetworkNameKey';
-const CosmicWorldsCurrentNetworkCurrencySymbolKey = 'CosmicWorldsCurrentNetworkCurrencySymbolKey';
-const CosmicWorldsCurrentNetworkRpcUrlKey = 'CosmicWorldsCurrentNetworkRpcUrlKey';
-const CosmicWorldsCurrentNetworkExplorerUrlKey = 'CosmicWorldsCurrentNetworkExplorerUrlKey';
-const CosmicWorldsContractAddressKey = 'CosmicWorldsContractAddressKey';
+const AnglezCurrentNetworkIDKey = 'AnglezCurrentNetworkIDKey';
+const AnglezCurrentNetworkNameKey = 'AnglezCurrentNetworkNameKey';
+const AnglezCurrentNetworkCurrencySymbolKey = 'AnglezCurrentNetworkCurrencySymbolKey';
+const AnglezCurrentNetworkRpcUrlKey = 'AnglezCurrentNetworkRpcUrlKey';
+const AnglezCurrentNetworkExplorerUrlKey = 'AnglezCurrentNetworkExplorerUrlKey';
+const AnglezContractAddressKey = 'AnglezContractAddressKey';
 
 const networkConfig = networkConfigFor(currentNetwork);
-const CosmicWorldsCurrentNetworkID = networkConfig[CosmicWorldsCurrentNetworkIDKey];
-const CosmicWorldsCurrentNetworkName = networkConfig[CosmicWorldsCurrentNetworkNameKey];
-const CosmicWorldsCurrentNetworkCurrencySymbol =
-  networkConfig[CosmicWorldsCurrentNetworkCurrencySymbolKey];
-const CosmicWorldsCurrentNetworkRpcUrl = networkConfig[CosmicWorldsCurrentNetworkRpcUrlKey];
-const CosmicWorldsCurrentNetworkExplorerUrl =
-  networkConfig[CosmicWorldsCurrentNetworkExplorerUrlKey];
-const CosmicWorldsContractAddress = networkConfig[CosmicWorldsContractAddressKey];
+if (networkConfig === undefined) {
+  throw new Error('Invalid network');
+}
+const AnglezCurrentNetworkID = BigInt(networkConfig[AnglezCurrentNetworkIDKey]);
+const AnglezCurrentNetworkName = networkConfig[AnglezCurrentNetworkNameKey];
+const AnglezCurrentNetworkCurrencySymbol = networkConfig[AnglezCurrentNetworkCurrencySymbolKey];
+const AnglezCurrentNetworkRpcUrl = networkConfig[AnglezCurrentNetworkRpcUrlKey];
+const AnglezCurrentNetworkExplorerUrl = networkConfig[AnglezCurrentNetworkExplorerUrlKey];
+const AnglezContractAddress = networkConfig[AnglezContractAddressKey];
 
-function networkConfigFor(currentNetwork) {
-  if (currentNetwork === CosmicWorldsLocalhostNetwork) {
+function networkConfigFor(currentNetwork: string) {
+  if (currentNetwork === AnglezLocalhostNetwork) {
     return {
-      CosmicWorldsCurrentNetworkIDKey: 1337,
-      CosmicWorldsCurrentNetworkNameKey: 'localhost',
-      CosmicWorldsCurrentNetworkCurrencySymbolKey: 'ETH',
-      CosmicWorldsCurrentNetworkRpcUrlKey: 'http://localhost:8545',
-      CosmicWorldsCurrentNetworkExplorerUrlKey: 'https://www.superbad.com/',
-      CosmicWorldsContractAddressKey: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
+      AnglezCurrentNetworkIDKey: 1337,
+      AnglezCurrentNetworkNameKey: 'localhost',
+      AnglezCurrentNetworkCurrencySymbolKey: 'ETH',
+      AnglezCurrentNetworkRpcUrlKey: 'http://localhost:8545',
+      AnglezCurrentNetworkExplorerUrlKey: 'https://www.superbad.com/',
+      AnglezContractAddressKey: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
     };
-  } else if (currentNetwork === CosmicWorldsGoerliNetwork) {
+  } else if (currentNetwork === AnglezGoerliNetwork) {
     return {
-      CosmicWorldsCurrentNetworkIDKey: 5,
-      CosmicWorldsCurrentNetworkNameKey: 'Goerli',
-      CosmicWorldsCurrentNetworkCurrencySymbolKey: 'GoerliETH',
+      AnglezCurrentNetworkIDKey: 5,
+      AnglezCurrentNetworkNameKey: 'Goerli',
+      AnglezCurrentNetworkCurrencySymbolKey: 'GoerliETH',
       // TODO: RPC URL
-      CosmicWorldsCurrentNetworkRpcUrlKey: 'https://goerli.infura.io',
-      CosmicWorldsCurrentNetworkExplorerUrlKey: 'https://goerli.etherscan.io/',
-      CosmicWorldsContractAddressKey: '',
+      AnglezCurrentNetworkRpcUrlKey: 'https://goerli.infura.io',
+      AnglezCurrentNetworkExplorerUrlKey: 'https://goerli.etherscan.io/',
+      AnglezContractAddressKey: '',
     };
-  } else if (currentNetwork === CosmicWorldsSepoliaNetwork) {
+  } else if (currentNetwork === AnglezSepoliaNetwork) {
     return {
-      CosmicWorldsCurrentNetworkIDKey: 11155111,
-      CosmicWorldsCurrentNetworkNameKey: 'Sepolia',
-      CosmicWorldsCurrentNetworkCurrencySymbolKey: 'SepoliaETH',
+      AnglezCurrentNetworkIDKey: 11155111,
+      AnglezCurrentNetworkNameKey: 'Sepolia',
+      AnglezCurrentNetworkCurrencySymbolKey: 'SepoliaETH',
       // TODO: RPC URL
-      CosmicWorldsCurrentNetworkRpcUrlKey: 'https://sepolia.infura.io',
-      CosmicWorldsCurrentNetworkExplorerUrlKey: 'https://sepolia.etherscan.io/',
-      CosmicWorldsContractAddressKey: '0xFc0d97b66F3A1D9B97d6414c7b3d9431714C7B98',
+      AnglezCurrentNetworkRpcUrlKey: 'https://sepolia.infura.io',
+      AnglezCurrentNetworkExplorerUrlKey: 'https://sepolia.etherscan.io/',
+      AnglezContractAddressKey: '0xFc0d97b66F3A1D9B97d6414c7b3d9431714C7B98',
     };
-  } else if (currentNetwork === CosmicWorldMainnetNetwork) {
+  } else if (currentNetwork === AnglezMainnetNetwork) {
     return {
-      CosmicWorldsCurrentNetworkIDKey: 1,
-      CosmicWorldsCurrentNetworkNameKey: 'Ethereum Mainnet',
-      CosmicWorldsCurrentNetworkCurrencySymbolKey: 'ETH',
+      AnglezCurrentNetworkIDKey: 1,
+      AnglezCurrentNetworkNameKey: 'Ethereum Mainnet',
+      AnglezCurrentNetworkCurrencySymbolKey: 'ETH',
       // TODO: RPC URL
-      CosmicWorldsCurrentNetworkRpcUrlKey: 'https://mainnet.infura.io/v3/',
-      CosmicWorldsCurrentNetworkExplorerUrlKey: 'https://www.etherscan.io/',
-      CosmicWorldsContractAddressKey: '0xFc0d97b66F3A1D9B97d6414c7b3d9431714C7B98',
+      AnglezCurrentNetworkRpcUrlKey: 'https://mainnet.infura.io/v3/',
+      AnglezCurrentNetworkExplorerUrlKey: 'https://www.etherscan.io/',
+      AnglezContractAddressKey: '0xFc0d97b66F3A1D9B97d6414c7b3d9431714C7B98',
     };
   }
 }
 
 export {
-  CosmicWorldsCurrentNetworkID,
-  CosmicWorldsCurrentNetworkName,
-  CosmicWorldsCurrentNetworkCurrencySymbol,
-  CosmicWorldsCurrentNetworkRpcUrl,
-  CosmicWorldsCurrentNetworkExplorerUrl,
-  CosmicWorldsContractAddress,
+  AnglezCurrentNetworkID,
+  AnglezCurrentNetworkName,
+  AnglezCurrentNetworkCurrencySymbol,
+  AnglezCurrentNetworkRpcUrl,
+  AnglezCurrentNetworkExplorerUrl,
+  AnglezContractAddress,
 };

@@ -6,7 +6,7 @@ import { ethers } from 'ethers';
 import { useEffect, useState } from 'react';
 import ethereumIcon from '@/images/ethereum-white.png';
 
-export default function ArtworkPage({ params }: { params: { id: string } }) {
+export default function ArtworkPage({ params }: { params: { id: number } }) {
   const [tokenDetails, setTokenDetails] = useState<TokenDetails | null>(null);
 
   useEffect(() => {
