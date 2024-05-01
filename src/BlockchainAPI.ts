@@ -1,5 +1,5 @@
 import { ethers, JsonRpcProvider } from 'ethers';
-import Planes from '../contract/Planes.json';
+import Anglez from '../contract/Anglez.json';
 import * as Errors from './ErrorMessages';
 import {
   CosmicWorldsContractAddress,
@@ -133,14 +133,14 @@ export async function getReadOnlyContract() {
 
   console.log('CONTRACT ADDRESS: ' + CosmicWorldsContractAddress);
 
-  return new ethers.Contract(CosmicWorldsContractAddress, Planes.abi, provider);
+  return new ethers.Contract(CosmicWorldsContractAddress, Anglez.abi, provider);
 }
 
 export async function getReadWriteContract() {
   console.log('Getting read/write contract..');
   const provider = await getProvider();
   const signer = await provider.getSigner();
-  return new ethers.Contract(CosmicWorldsContractAddress, Planes.abi, signer);
+  return new ethers.Contract(CosmicWorldsContractAddress, Anglez.abi, signer);
 }
 
 export async function isAccountConnected() {

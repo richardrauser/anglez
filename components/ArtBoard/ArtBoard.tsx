@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import styles from './ArtBoard.module.css';
 import { Text, Radio, RadioGroup, Stack, Slider, SimpleGrid } from '@mantine/core';
-import { build, randomIntFromInterval } from '../../src/planes';
+import { build, randomIntFromInterval } from '../../src/anglez';
 import { Button, NumberInput, ColorPicker } from '@mantine/core';
 import { getReadWriteContract, mintCustomAnglez } from '../../src/BlockchainAPI';
 import { showErrorMessage } from '@/src/UIUtils';
@@ -20,8 +20,8 @@ export function ArtBoard() {
   // stored as rgb()
   const [tintColour, setTintColour] = useState('');
 
-  const generatePlanesDataUri = () => {
-    console.log('Generating planes...');
+  const generateSvgDataUri = () => {
+    console.log('Generating svg data URI...');
     const svgString = build(randomSeed, zoom, rgbToObj(tintColour), style, shapeCount);
     // console.log('SVG STRING: ' + svgString);
     const encodedSvgString = encodeURIComponent(svgString);
@@ -55,7 +55,7 @@ export function ArtBoard() {
   }, []);
 
   useEffect(() => {
-    const svg = generatePlanesDataUri();
+    const svg = generateSvgDataUri();
     setSvg(svg);
   }, [randomSeed, zoom, style, custom, shapeCount, tintColour]);
 

@@ -2,12 +2,12 @@ import { ethers, AbiCoder, BigInt, BigNumber, toBigInt } from 'ethers';
 
 // -------------- EXTERNAL ------------------
 
-// export function buildRandomPlanes() {
+// export function buildRandomAnglez() {
 //   const randomSeed = Math.trunc(Math.random() * 5_000_000);
-//   return buildPlanes(randomSeed);
+//   return buildAnglez(randomSeed);
 // }
 
-// export function buildPlanes(randomSeed) {
+// export function buildAnglez(randomSeed) {
 //   console.log(`Generating artboard for alien world with seed: ${randomSeed}`);
 //   const randomZoom = randomIntFromInterval(randomSeed, 90, 100);
 //   const svgString = encodeURIComponent(
@@ -77,7 +77,7 @@ function getColour(randomSeed, tintColour) {
   return finalColour;
 }
 
-export function generateRandomPlanesDataUri() {
+export function generateRandomAnglezDataUri() {
   const randomSeed = Math.trunc(Math.random() * 5_000_000);
   const zoom = randomIntFromInterval(randomSeed, 90, 100);
 
@@ -99,7 +99,7 @@ export function generateRandomPlanesDataUri() {
 }
 
 export function build(randomSeed, zoom, tintColour, style, shapeCount) {
-  console.log('Generating planes: ' + randomSeed + ' ' + zoom + ' ' + tintColour);
+  console.log('Generating anglez: ' + randomSeed + ' ' + zoom + ' ' + tintColour);
 
   const [viewBox, clipRect] = getViewBoxClipRect(150 - zoom);
   const defs = "<defs><clipPath id='masterClip'><rect " + clipRect + '/></clipPath></defs>';
@@ -287,7 +287,7 @@ function getRotation(randomSeed, rotationDegrees, rotationRange) {
 
 function updateArtBoard() {
   console.log('Generating artboard.. ');
-  const svgDataUri = generateRandomPlanesDataUri();
+  const svgDataUri = generateRandomAnglezDataUri();
   console.log(svgDataUri);
   // document.body.style.backgroundImage = svgDataUri;
   document.getElementById('artboardImage').src = svgDataUri;

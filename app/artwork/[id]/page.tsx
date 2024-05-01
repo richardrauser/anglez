@@ -19,7 +19,7 @@ export default function ArtworkPage({ params }: { params: { id: string } }) {
 
   return (
     <>
-      <h1>Planez #{params.id}</h1>
+      <h1>Anglezs #{params.id}</h1>
       {tokenDetails === null ? (
         <Loading />
       ) : (

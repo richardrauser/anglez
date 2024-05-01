@@ -2,7 +2,7 @@
 import { AppShell, Burger } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
-export function PlanesAppShell({ children }: { children: any }) {
+export function AnglezAppShell({ children }: { children: any }) {
   const [opened, { toggle }] = useDisclosure(false);
 
   return (
@@ -17,7 +17,7 @@ export function PlanesAppShell({ children }: { children: any }) {
     >
       <AppShell.Header>
         <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-        <div>LOGO - Planes</div>
+        <div>LOGO - Anglez</div>
       </AppShell.Header>
 
       <AppShell.Navbar p="md">Navbar</AppShell.Navbar>

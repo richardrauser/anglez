@@ -4,14 +4,14 @@ import 'styles/global.css';
 import React from 'react';
 import { MantineProvider, ColorSchemeScript } from '@mantine/core';
 import { theme } from '../theme';
-import { PlanesNavBar } from '@/components/PlanesNavBar/PlanesNavBar';
-// import { PlanesAppShell } from '../components/PlanesAppShell/PlanesAppShell';
+import { AnglezNavBar } from '@/components/NavBar/NavBar';
+// import { AnglezAppShell } from '../components/AnglezAppShell/AnglezAppShell';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 
 export const metadata = {
-  title: 'Planes generative NFT art',
-  description: 'Planes on-chain, generative NFT art by volstrate.',
+  title: 'Anglez generative NFT art',
+  description: 'Anglez on-chain, generative NFT art by volstrate.',
 };
 
 export default function RootLayout({ children }: { children: any }) {
@@ -33,8 +33,8 @@ export default function RootLayout({ children }: { children: any }) {
       </head>
       <body>
         <MantineProvider theme={theme}>
-          {/* <PlanesAppShell>{children}</PlanesAppShell> */}
-          <PlanesNavBar />
+          {/* <AnglezAppShell>{children}</AnglezAppShell> */}
+          <AnglezNavBar />
           <ToastContainer />
           <div className="mainContent">{children}</div>
         </MantineProvider>

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Container, Group, Burger } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 // import { MantineLogo } from '@mantinex/mantine-logo';
-import classes from './PlanesNavBar.module.css';
+import classes from './NavBar.module.css';
 import ConnectButton from '../ConnectButton/ConnectButton';
 
 const links = [
@@ -13,7 +13,7 @@ const links = [
   { link: '/about', label: 'about' },
 ];
 
-export function PlanesNavBar() {
+export function AnglezNavBar() {
   const [opened, { toggle }] = useDisclosure(false);
   const [active, setActive] = useState(links[0].link);
 
