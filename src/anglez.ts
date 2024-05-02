@@ -93,7 +93,7 @@ function getColour(randomSeed: number, tintColour: RGBAColor) {
 
 export function generateRandomTokenParams(seed: number): TokenParams {
   // const seed = Math.trunc(Math.random() * 5_000_000);
-  const zoom = randomIntFromInterval(seed + 1, 90, 100);
+  const zoom = randomIntFromInterval(seed + 3, 50, 100);
   const shapeCount = randomIntFromInterval(seed + 5, 5, 8);
 
   const red = randomIntFromInterval(seed + 6, 0, 255);
