@@ -42,6 +42,9 @@ button.mantine-Button-root {
 .artboard {
   max-width: 500px;
   max-height: 500px;
+  /* width: 100%;
+  height: 100%; */
+  aspect-ratio: 1 / 1;
 
   color: gray;
   background-color: white;
@@ -50,8 +53,8 @@ button.mantine-Button-root {
 }
 
 .artboardImage {
-  width: 100%;
-  height: 100%;
+  /* width: 100%;
+  height: 100%; */
   aspect-ratio: 1 / 1;
 }
 

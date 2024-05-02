@@ -39,6 +39,9 @@ export default function Artwork(props: { tokenId: number }) {
                   <b>Seed:</b> {tokenDetails?.attributes.seed}
                 </div>
                 <div>
+                  <b>Custom:</b> {tokenDetails?.attributes.isCustom}
+                </div>
+                <div>
                   <b>Shapes:</b> {tokenDetails?.attributes.shapeCount}
                 </div>
                 <div>

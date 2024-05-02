@@ -10,7 +10,11 @@ const links = [
   { link: '/', label: 'anglez.xyz v0.1' },
   { link: '/create', label: 'create' },
   { link: '/gallery', label: 'gallery' },
-  { link: '/about', label: 'about' },
+  // { link: '/about', label: 'about' },
+  {
+    link: 'https://docs.google.com/forms/d/e/1FAIpQLSfo2pZQHuzXXJHYt4nuneb9ww8XtbqEvOKYM5vPJ8M_IPQ88w/viewform',
+    label: 'feedback',
+  },
 ];
 
 export function AnglezNavBar() {

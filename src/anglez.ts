@@ -92,15 +92,16 @@ function getColour(randomSeed: number, tintColour: RGBAColor) {
 }
 
 export function generateRandomTokenParams(seed: number): TokenParams {
-  // const seed = Math.trunc(Math.random() * 5_000_000);
+  console.log('SEED: ' + seed);
   const zoom = randomIntFromInterval(seed + 3, 50, 100);
+  console.log('ZOOMZOOM: ' + zoom);
   const shapeCount = randomIntFromInterval(seed + 5, 5, 8);
 
   const red = randomIntFromInterval(seed + 6, 0, 255);
   const green = randomIntFromInterval(seed + 7, 0, 255);
   const blue = randomIntFromInterval(seed + 8, 0, 255);
   const alpha = '0.' + randomIntFromInterval(seed + 9, 10, 90);
-  const isCyclic = randomIntFromInterval(seed + 4, 0, 1) === 0;
+  const isCyclic = randomIntFromInterval(seed + 4, 0, 1) === 1;
 
   const tokenParams = {
     seed,
@@ -111,8 +112,6 @@ export function generateRandomTokenParams(seed: number): TokenParams {
   };
 
   return tokenParams;
-  // const svgString = encodeURIComponent(buildArtwork(tokenParams));
-  // return `data:image/svg+xml,${svgString}`;
 }
 
 export function buildArtwork(tokenParams: TokenParams) {

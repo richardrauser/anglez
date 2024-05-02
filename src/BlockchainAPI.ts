@@ -23,7 +23,8 @@ export interface TokenDetails {
     zoom: number;
     tintColor: string;
     tintTransparency: string;
-    isCyclic: boolean;
+    isCyclic: string;
+    isCustom: string;
   };
 }
 
@@ -369,6 +370,9 @@ export async function fetchTokenDetails(tokenId: number) {
   let isCyclic = metadataObject.attributes.filter(
     (attribute: Attribute) => attribute.trait_type == 'cyclic'
   )[0].value;
+  let isCustom = metadataObject.attributes.filter(
+    (attribute: Attribute) => attribute.trait_type == 'custom'
+  )[0].value;
   // let waterChoppiness = metadataObject.attributes.filter(
   //   (attribute) => attribute.trait_type == 'water'
   // )[0].value;
@@ -387,6 +391,7 @@ export async function fetchTokenDetails(tokenId: number) {
       tintColor,
       tintTransparency,
       isCyclic,
+      isCustom,
     },
   };
 
