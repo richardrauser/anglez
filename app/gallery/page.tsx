@@ -4,6 +4,7 @@ import { fetchRecentTokenIds } from '@/src/BlockchainAPI';
 import Loading from '@/components/Loading/Loading';
 import Artwork from '@/components/Artwork/Artwork';
 import { Container, Grid, SimpleGrid } from '@mantine/core';
+import { handleError } from '@/src/ErrorHandler';
 
 export default function GalleryPage() {
   const [loading, setLoading] = useState(true);
@@ -11,9 +12,16 @@ export default function GalleryPage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const tokens = await fetchRecentTokenIds();
-      setTokenIds(tokens);
-      setLoading(false);
+      try {
+        const tokens = await fetchRecentTokenIds();
+        console.log('Got tokens: ', tokens);
+        setTokenIds(tokens);
+        setLoading(false);
+      } catch (error) {
+        console.error('Gallery error:', error);
+        setLoading(false);
+        handleError(error);
+      }
     };
 
     fetchData();

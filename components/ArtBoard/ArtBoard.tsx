@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import styles from './ArtBoard.module.css';
-import { Text, Radio, RadioGroup, Stack, Slider, SimpleGrid } from '@mantine/core';
+import { Text, Radio, RadioGroup, Stack, Slider, SimpleGrid, Tabs, rem } from '@mantine/core';
 import { build, randomIntFromInterval } from '../../src/anglez';
 import { Button, NumberInput, ColorPicker } from '@mantine/core';
 import { getReadWriteContract, mintCustomAnglez } from '../../src/BlockchainAPI';
@@ -9,9 +9,10 @@ import { showErrorMessage } from '@/src/UIUtils';
 import { handleError } from '@/src/ErrorHandler';
 import { toast } from 'react-toastify';
 import { TokenParams } from '../../src/BlockchainAPI';
+import { IconNumber, IconSparkles, IconTools } from '@tabler/icons-react';
 
 export function ArtBoard() {
-  const [svg, setSvg] = useState('');
+  const [activeTab, setActiveTab] = useState<string | null>('random');
   const [randomSeed, setRandomSeed] = useState(100);
   const [custom, setCustom] = useState(false);
   const [zoom, setZoom] = useState(75);
@@ -19,6 +20,7 @@ export function ArtBoard() {
   const [shapeCount, setShapeCount] = useState(5);
   // stored as rgb()
   const [tintColour, setTintColour] = useState('');
+  const [svg, setSvg] = useState('');
 
   const generateSvgDataUri = () => {
     console.log('Generating svg data URI...');
@@ -138,66 +140,106 @@ export function ArtBoard() {
       </div>
 
       <div className={styles.artboardControls}>
-        <div className="panel">
-          <div>Random seed: {randomSeed}</div>
-          <Button onClick={generateNewSeed}>New Seed</Button>
-          <Button onClick={randomize}>Randomize All</Button>
-        </div>
-        <div className="panel">
-          <div>Mint!</div>
-          <Button onClick={mintRandom}>Mint random</Button>
-          <Button onClick={mintCustom}>Mint custom</Button>
-        </div>
-        <SimpleGrid cols={{ base: 1, xs: 2 }}>
-          <Stack>
+        <Tabs
+          variant="unstyled"
+          defaultValue="settings"
+          classNames={styles}
+          value={activeTab}
+          onChange={setActiveTab}
+        >
+          <Tabs.List grow>
+            <Tabs.Tab
+              value="random"
+              leftSection={<IconSparkles style={{ width: rem(16), height: rem(16) }} />}
+            >
+              Random
+            </Tabs.Tab>
+            <Tabs.Tab
+              value="custom"
+              leftSection={<IconTools style={{ width: rem(16), height: rem(16) }} />}
+            >
+              Custom
+            </Tabs.Tab>
+          </Tabs.List>
+          <Tabs.Panel value="random" pt="xs">
             <div className="panel">
-              <Text ta="left" size="m">
-                Style
-              </Text>
-              <RadioGroup value={style} onChange={setStyle} name="style">
-                {' '}
-                <Radio value="linear" label="linear" />
-                <Radio value="cycle" label="cyclic" />
-              </RadioGroup>
+              <div>Random seed: {randomSeed}</div>
+              <Button onClick={randomize}>Randomize</Button>
+              <Button
+                onClick={() => {
+                  setActiveTab('custom');
+                }}
+              >
+                Customize
+              </Button>
+              <Button className={styles.mintButton} onClick={mintRandom}>
+                Mint!
+              </Button>
             </div>
-            <div className="panel">
-              <Text ta="left" size="m">
-                Shapes
-              </Text>
-              <NumberInput value={shapeCount} onChange={(value) => setShapeCount(Number(value))} />
-            </div>
-          </Stack>
+          </Tabs.Panel>
+          <Tabs.Panel value="custom" pt="xs">
+            <SimpleGrid cols={{ base: 1, xs: 2 }}>
+              <Stack>
+                <div className="panel">
+                  <Text ta="left" size="m">
+                    Style
+                  </Text>
+                  <RadioGroup value={style} onChange={setStyle} name="style">
+                    {' '}
+                    <Radio value="linear" label="linear" />
+                    <Radio value="cycle" label="cyclic" />
+                  </RadioGroup>
+                </div>
+                <div className="panel">
+                  <Text ta="left" size="m">
+                    Shapes
+                  </Text>
+                  <NumberInput
+                    value={shapeCount}
+                    onChange={(value) => setShapeCount(Number(value))}
+                  />
+                </div>
+              </Stack>
 
-          <Stack>
+              <Stack>
+                <div className="panel">
+                  <Text ta="left" size="m">
+                    Tint
+                  </Text>
+                  <ColorPicker format="rgba" value={tintColour} onChange={setTintColour} />
+                </div>
+              </Stack>
+            </SimpleGrid>
+            <Stack>
+              <div className="panel">
+                <Text ta="left" size="m">
+                  Zoom
+                </Text>
+                <Slider
+                  name="Zoom"
+                  value={zoom}
+                  onChange={(value) => setZoom(value)}
+                  color="blue"
+                  min={50}
+                  max={100}
+                  marks={[
+                    { value: 50, label: '50%' },
+                    { value: 75, label: '75%' },
+                    { value: 100, label: '100%' },
+                  ]}
+                />
+                {zoom}%
+              </div>
+            </Stack>
             <div className="panel">
-              <Text ta="left" size="m">
-                Tint
-              </Text>
-              <ColorPicker format="rgba" value={tintColour} onChange={setTintColour} />
+              <div>Random seed: {randomSeed}</div>
+              <Button onClick={generateNewSeed}>New Seed</Button>
+              <Button className={styles.mintButton} onClick={mintRandom}>
+                Mint!
+              </Button>
             </div>
-          </Stack>
-        </SimpleGrid>
-        <Stack>
-          <div className="panel">
-            <Text ta="left" size="m">
-              Zoom
-            </Text>
-            <Slider
-              name="Zoom"
-              value={zoom}
-              onChange={(value) => setZoom(value)}
-              color="blue"
-              min={50}
-              max={100}
-              marks={[
-                { value: 50, label: '50%' },
-                { value: 75, label: '75%' },
-                { value: 100, label: '100%' },
-              ]}
-            />
-            {zoom}%
-          </div>
-        </Stack>
+          </Tabs.Panel>
+        </Tabs>
       </div>
     </div>
   );
