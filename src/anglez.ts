@@ -100,7 +100,7 @@ export function generateRandomTokenParams(seed: number): TokenParams {
   const red = randomIntFromInterval(seed + 6, 0, 255);
   const green = randomIntFromInterval(seed + 7, 0, 255);
   const blue = randomIntFromInterval(seed + 8, 0, 255);
-  const alpha = '0.' + randomIntFromInterval(seed + 9, 10, 90);
+  const alpha = randomIntFromInterval(seed + 9, 10, 90) / 100;
   const isCyclic = randomIntFromInterval(seed + 4, 0, 1) === 1;
 
   const tokenParams = {
