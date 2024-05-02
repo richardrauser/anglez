@@ -11,17 +11,7 @@ import {
 } from './Constants';
 import { showInfoMessage } from './UIUtils';
 import { formatEther } from 'ethers';
-
-export interface TokenParams {
-  seed: number;
-  shapeCount: number;
-  zoom: number;
-  tintRed: number;
-  tintGreen: number;
-  tintBlue: number;
-  tintAlpha: number;
-  isCyclic: boolean;
-}
+import { TokenParams } from './anglez';
 
 export interface TokenDetails {
   tokenId: number;
@@ -291,6 +281,9 @@ export async function mintCustomAnglez(tokenParams: TokenParams) {
   const contract = await getReadWriteContract();
   //     function mintCustom(uint24 seed, uint8 shapeCount, uint8 zoom, uint8 tintRed, uint8 tintGreen, uint8 tintBlue, uint8 tintAlpha, bool isCyclic) public payable {
 
+  const alpha = Math.round(tokenParams.tintColour.a * 255);
+  console.log('Alpha: ' + alpha);
+
   const mintPrice = await contract.getCustomMintPrice();
   console.log('Mint price: ' + mintPrice.toString());
 
@@ -303,10 +296,10 @@ export async function mintCustomAnglez(tokenParams: TokenParams) {
     tokenParams.seed,
     tokenParams.shapeCount,
     tokenParams.zoom,
-    tokenParams.tintRed,
-    tokenParams.tintGreen,
-    tokenParams.tintBlue,
-    tokenParams.tintAlpha,
+    tokenParams.tintColour.r,
+    tokenParams.tintColour.g,
+    tokenParams.tintColour.b,
+    alpha,
     tokenParams.isCyclic,
     overrides
   );

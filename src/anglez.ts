@@ -1,4 +1,18 @@
-import { ethers, AbiCoder, BigInt, BigNumber, toBigInt } from 'ethers';
+import { ethers, AbiCoder, toBigInt } from 'ethers';
+
+export interface TokenParams {
+  seed: number;
+  shapeCount: number;
+  zoom: number;
+  tintColour: RGBAColor;
+  isCyclic: boolean;
+}
+export type RGBAColor = {
+  r: number;
+  g: number;
+  b: number;
+  a: number;
+};
 
 // -------------- EXTERNAL ------------------
 
@@ -21,7 +35,7 @@ import { ethers, AbiCoder, BigInt, BigNumber, toBigInt } from 'ethers';
 // Generate random int, inclusive of min/max
 
 // Generate random int, inclusive of min/max
-export function randomIntFromInterval(randomSeed, min, max) {
+export function randomIntFromInterval(randomSeed: number, min: number, max: number) {
   if (max <= min) {
     return min;
   }
@@ -57,7 +71,7 @@ export function randomIntFromInterval(randomSeed, min, max) {
 //   return value;
 // }
 
-function getColour(randomSeed, tintColour) {
+function getColour(randomSeed: number, tintColour: RGBAColor) {
   const redRandom = randomIntFromInterval(randomSeed, 0, 255);
   const greenRandom = randomIntFromInterval(randomSeed + 2, 0, 255);
   const blueRandom = randomIntFromInterval(randomSeed + 1, 0, 255);
@@ -77,42 +91,52 @@ function getColour(randomSeed, tintColour) {
   return finalColour;
 }
 
-export function generateRandomAnglezDataUri() {
-  const randomSeed = Math.trunc(Math.random() * 5_000_000);
-  const zoom = randomIntFromInterval(randomSeed, 90, 100);
+export function generateRandomTokenParams(seed: number): TokenParams {
+  // const seed = Math.trunc(Math.random() * 5_000_000);
+  const zoom = randomIntFromInterval(seed + 1, 90, 100);
+  const shapeCount = randomIntFromInterval(seed + 5, 5, 8);
 
-  const red = randomIntFromInterval(randomSeed, 100, 255);
-  const green = randomIntFromInterval(randomSeed, 101, 255);
-  const blue = randomIntFromInterval(randomSeed, 102, 255);
-  const alpha = randomIntFromInterval(randomSeed, 10, 90) / 100;
-  const tintColour = { r: red, g: green, b: blue, a: alpha };
+  const red = randomIntFromInterval(seed + 6, 0, 255);
+  const green = randomIntFromInterval(seed + 7, 0, 255);
+  const blue = randomIntFromInterval(seed + 8, 0, 255);
+  const alpha = '0.' + randomIntFromInterval(seed + 9, 10, 90);
+  const isCyclic = randomIntFromInterval(seed + 4, 0, 1) === 0;
 
-  const polyRepeatChance = randomIntFromInterval(randomSeed + 400, 0, 100);
-  const style = polyRepeatChance > 80 ? 'cycle' : 'linear';
+  const tokenParams = {
+    seed,
+    shapeCount,
+    zoom,
+    tintColour: { r: red, g: green, b: blue, a: alpha },
+    isCyclic,
+  };
 
-  const randomShapeCount = randomIntFromInterval(randomSeed, 5, 8);
-
-  const svgString = encodeURIComponent(
-    build(randomSeed, zoom, tintColour, style, randomShapeCount)
-  );
-  return `data:image/svg+xml,${svgString}`;
+  return tokenParams;
+  // const svgString = encodeURIComponent(buildArtwork(tokenParams));
+  // return `data:image/svg+xml,${svgString}`;
 }
 
-export function build(randomSeed, zoom, tintColour, style, shapeCount) {
-  console.log('Generating anglez: ' + randomSeed + ' ' + zoom + ' ' + tintColour);
+export function buildArtwork(tokenParams: TokenParams) {
+  console.log(
+    'Generating anglez: ' + tokenParams.seed + ' ' + tokenParams.zoom + ' ' + tokenParams.tintColour
+  );
 
-  const [viewBox, clipRect] = getViewBoxClipRect(150 - zoom);
+  const [viewBox, clipRect] = getViewBoxClipRect(150 - tokenParams.zoom);
   const defs = "<defs><clipPath id='masterClip'><rect " + clipRect + '/></clipPath></defs>';
 
   var maxPolyRepeat;
 
-  if (style === 'cycle') {
-    maxPolyRepeat = randomIntFromInterval(randomSeed + 300, 2, 8);
+  if (tokenParams.isCyclic) {
+    maxPolyRepeat = randomIntFromInterval(tokenParams.seed + 300, 2, 8);
   } else {
     maxPolyRepeat = 1;
   }
 
-  const shapes = getShapes(randomSeed, tintColour, shapeCount, maxPolyRepeat);
+  const shapes = getShapes(
+    tokenParams.seed,
+    tokenParams.tintColour,
+    tokenParams.shapeCount,
+    maxPolyRepeat
+  );
 
   return (
     "<svg xmlns='http://www.w3.org/2000/svg' viewBox='" +
@@ -130,7 +154,7 @@ export function build(randomSeed, zoom, tintColour, style, shapeCount) {
   );
 }
 
-function getViewBoxClipRect(zoom) {
+function getViewBoxClipRect(zoom: number) {
   console.log('Zoom: ' + zoom);
   zoom = zoom * 10;
   const widthHeight = 500 + zoom;
@@ -169,7 +193,12 @@ function getViewBoxClipRect(zoom) {
   return [viewBox, clipRect];
 }
 
-function getShapes(randomSeed, tintColour, shapeCount, maxPolyRepeat) {
+function getShapes(
+  randomSeed: number,
+  tintColour: RGBAColor,
+  shapeCount: number,
+  maxPolyRepeat: number
+) {
   var shapes = '';
   // TODO: consider best max ( 5 15?)
   // console.log('_------- RANDOM SEED: ' + randomSeed);
@@ -266,29 +295,29 @@ function getShapes(randomSeed, tintColour, shapeCount, maxPolyRepeat) {
   return shapes;
 }
 
-function getRotation(randomSeed, rotationDegrees, rotationRange) {
-  const randomDegrees = randomIntFromInterval(randomSeed, 0, rotationRange);
-  var rotation = 0;
+// function getRotation(randomSeed: number, rotationDegrees: number, rotationRange: number) {
+//   const randomDegrees = randomIntFromInterval(randomSeed, 0, rotationRange);
+//   var rotation = 0;
 
-  if (randomDegrees === 0) {
-    rotation = rotationDegrees;
-  } else if (randomDegrees < rotationRange) {
-    rotation = 360 + rotationDegrees - randomDegrees + rotationRange / 2;
-  } else {
-    rotation = rotationDegrees + randomDegrees - rotationRange / 2;
-  }
+//   if (randomDegrees === 0) {
+//     rotation = rotationDegrees;
+//   } else if (randomDegrees < rotationRange) {
+//     rotation = 360 + rotationDegrees - randomDegrees + rotationRange / 2;
+//   } else {
+//     rotation = rotationDegrees + randomDegrees - rotationRange / 2;
+//   }
 
-  if (rotation > 360) {
-    rotation = rotation - 360;
-  }
+//   if (rotation > 360) {
+//     rotation = rotation - 360;
+//   }
 
-  return rotation;
-}
+//   return rotation;
+// }
 
-function updateArtBoard() {
-  console.log('Generating artboard.. ');
-  const svgDataUri = generateRandomAnglezDataUri();
-  console.log(svgDataUri);
-  // document.body.style.backgroundImage = svgDataUri;
-  document.getElementById('artboardImage').src = svgDataUri;
-}
+// function updateArtBoard() {
+//   console.log('Generating artboard.. ');
+//   const svgDataUri = generateRandomAnglezDataUri();
+//   console.log(svgDataUri);
+//   // document.body.style.backgroundImage = svgDataUri;
+//   document.getElementById('artboardImage').src = svgDataUri;
+// }

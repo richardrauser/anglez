@@ -2,14 +2,19 @@
 import { useEffect, useState } from 'react';
 import styles from './ArtBoard.module.css';
 import { Text, Radio, RadioGroup, Stack, Slider, SimpleGrid, Tabs, rem } from '@mantine/core';
-import { build, randomIntFromInterval } from '../../src/anglez';
+import {
+  RGBAColor,
+  buildArtwork,
+  generateRandomTokenParams,
+  randomIntFromInterval,
+} from '../../src/anglez';
 import { Button, NumberInput, ColorPicker } from '@mantine/core';
 import { getReadWriteContract, mintCustomAnglez } from '../../src/BlockchainAPI';
 import { showErrorMessage } from '@/src/UIUtils';
 import { handleError } from '@/src/ErrorHandler';
 import { toast } from 'react-toastify';
-import { TokenParams } from '../../src/BlockchainAPI';
-import { IconNumber, IconSparkles, IconTools } from '@tabler/icons-react';
+import { TokenParams } from '../../src/anglez';
+import { IconSparkles, IconTools } from '@tabler/icons-react';
 
 export function ArtBoard() {
   const [activeTab, setActiveTab] = useState<string | null>('random');
@@ -24,7 +29,16 @@ export function ArtBoard() {
 
   const generateSvgDataUri = () => {
     console.log('Generating svg data URI...');
-    const svgString = build(randomSeed, zoom, rgbToObj(tintColour), style, shapeCount);
+
+    const tokenParams: TokenParams = {
+      seed: randomSeed,
+      shapeCount: shapeCount,
+      zoom: zoom,
+      tintColour: rgbToObj(tintColour),
+      isCyclic: style === 'cycle',
+    };
+
+    const svgString = buildArtwork(tokenParams);
     // console.log('SVG STRING: ' + svgString);
     const encodedSvgString = encodeURIComponent(svgString);
     return `data:image/svg+xml,${encodedSvgString}`;
@@ -35,7 +49,9 @@ export function ArtBoard() {
 
     setRandomSeed(Math.trunc(Math.random() * 5_000_000));
 
-    const randomZoom = randomIntFromInterval(randomSeed + 1, 90, 100);
+    const tokenParams = generateRandomTokenParams(randomSeed);
+
+    const zoom = randomIntFromInterval(randomSeed + 3, 50, 100);
 
     // const polyRepeatChance = randomIntFromInterval(randomSeed + 400, 0, 100);
     // const randomStyle = polyRepeatChance > 80 ? 'cycle' : 'linear';
@@ -82,36 +98,24 @@ export function ArtBoard() {
   const mintCustom = async () => {
     console.log('Minting custom...');
 
-    const rgbObj = rgbToObj(tintColour);
-    const alpha = Math.round(rgbObj.a * 255);
-    console.log('Alpha: ' + alpha);
-
     const tokenParams: TokenParams = {
       seed: randomSeed,
       shapeCount: shapeCount,
       zoom: zoom,
-      tintRed: rgbObj.r,
-      tintGreen: rgbObj.g,
-      tintBlue: rgbObj.b,
-      tintAlpha: alpha,
+      tintColour: rgbToObj(tintColour),
       isCyclic: style === 'cycle',
     };
+
+    console.log('Minting with params: ' + JSON.stringify(tokenParams));
 
     try {
       //     function mintCustom(uint24 seed, uint8 shapeCount, uint8 zoom, uint8 tintRed, uint8 tintGreen, uint8 tintBlue, uint8 tintAlpha, bool isCyclic) public payable {
       await mintCustomAnglez(tokenParams);
       toast.success('Your NFT has been minted!');
     } catch (error: any) {
-      console.error('Minting error! ', error);
+      console.error('Minting error: ', error);
       handleError(error);
     }
-  };
-
-  type RGBAColor = {
-    r: number;
-    g: number;
-    b: number;
-    a: number;
   };
 
   const rgbToObj = (rgbString: string) => {
@@ -234,7 +238,7 @@ export function ArtBoard() {
             <div className="panel">
               <div>Random seed: {randomSeed}</div>
               <Button onClick={generateNewSeed}>New Seed</Button>
-              <Button className={styles.mintButton} onClick={mintRandom}>
+              <Button className={styles.mintButton} onClick={mintCustom}>
                 Mint!
               </Button>
             </div>
