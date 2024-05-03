@@ -1,3 +1,4 @@
+import { shortenAddress } from '@/src/BlockchainAPI';
 import {
   AnglezContractAddress,
   AnglezCurrentNetworkExplorerUrl,
@@ -10,8 +11,8 @@ export default function AboutPage() {
       <h1>About</h1>
       <div className="panel">
         <p>
-          anglez is coloful, abstract, on-chain generative NFT art. Each piece is completely unique,
-          and can be generated at random or customized.
+          anglez is colourful, abstract, on-chain generative NFT art. Each piece is completely
+          unique, and can be generated at random or customized.
         </p>
         <h2>how do I use this?</h2>
         <p>
@@ -35,7 +36,7 @@ export default function AboutPage() {
         <p>
           The anglez smart contract address on {AnglezCurrentNetworkName} is:{' '}
           <a href={AnglezCurrentNetworkExplorerUrl + 'address/' + AnglezContractAddress}>
-            ${AnglezContractAddress}
+            {shortenAddress(AnglezContractAddress)}
           </a>
           . <br />
         </p>
