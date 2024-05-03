@@ -244,10 +244,15 @@ export function ArtBoard() {
               </Stack>
               <div className="panel">
                 <div>Random seed: {randomSeed}</div>
+                <Button onClick={randomize}>Randomize all</Button>
                 <Button onClick={newSeedPressed}>New Seed</Button>
                 <Button className={styles.mintButton} onClick={mintCustom}>
                   Mint!
                 </Button>
+                <p>
+                  <b>Randomize all</b> randomizes all settings, while <b>New Seed</b> with randomize
+                  the seed value but, preserve your customisations.
+                </p>
               </div>
             </Tabs.Panel>
           </Tabs>

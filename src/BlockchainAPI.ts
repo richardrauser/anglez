@@ -46,6 +46,29 @@ export interface AccountDetails {
 
 const AccountDetailsKey = 'DS_ACCOUNT_DETAILS_KEY';
 
+async function getJsonRpcProvider() {
+  // return new ethers.JsonRpcProvider("https://api.mycryptoapi.comx/eth");
+  let provider;
+
+  if (AnglezCurrentNetworkName == 'localhost') {
+    // console.log("Returning JsonRpcProvider..");
+    // this will be readonly as it is not connected to a browser's ethereum wallet.
+    // TODO: specify URLS from infura, etc to get this working: https://docs.ethers.org/v6/getting-started/#starting-connecting
+    // provider = new ethers.JsonRpcProvider();
+
+    console.log('returning default provider pointing locally');
+    // provider = ethers.getDefaultProvider("http://localhost:8545");
+    // provider = ethers.getDefaultProvider("http://127.0.0.1:8545/");
+    provider = new ethers.JsonRpcProvider(); // will point locally
+    console.log('got default provider.');
+  } else {
+    console.log('Returning Alchemy provider');
+    provider = new ethers.AlchemyProvider(AnglezCurrentNetworkID, process.env.ALCHEMY_API_KEY);
+  }
+
+  return provider;
+}
+
 async function getProvider() {
   console.log('Returning default provider..');
 
@@ -55,27 +78,14 @@ async function getProvider() {
 
   if (typeof window === 'undefined') {
     console.log('No window.. not in browser.');
-    // return new ethers.JsonRpcProvider("https://api.mycryptoapi.comx/eth");
-    if (AnglezCurrentNetworkName == 'localhost') {
-      // console.log("Returning JsonRpcProvider..");
-      // this will be readonly as it is not connected to a browser's ethereum wallet.
-      // TODO: specify URLS from infura, etc to get this working: https://docs.ethers.org/v6/getting-started/#starting-connecting
-      // provider = new ethers.JsonRpcProvider();
-
-      console.log('returning default provider pointing locally');
-      // provider = ethers.getDefaultProvider("http://localhost:8545");
-      // provider = ethers.getDefaultProvider("http://127.0.0.1:8545/");
-      provider = new ethers.JsonRpcProvider(); // will point locally
-      console.log('got default provider.');
-    } else {
-      console.log('Returning Alchemy provider');
-      provider = new ethers.AlchemyProvider(AnglezCurrentNetworkID, process.env.ALCHEMY_API_KEY);
-    }
+    return getJsonRpcProvider();
   } else {
     console.log('Have window.. in browser.');
     if (!window.ethereum) {
+      // this is fine for read only contracts, but not read write (as user needs wallet)
       console.log('No Ethereum wallet found. Throwing error NO_ETH_WALLET');
-      throw Error(Errors.DS_NO_ETH_WALLET);
+      return getJsonRpcProvider();
+      // throw Error(Errors.DS_NO_ETH_WALLET);
     }
     provider = new ethers.BrowserProvider(window.ethereum);
   }
@@ -142,6 +152,12 @@ export async function getReadOnlyContract() {
 
 export async function getReadWriteContract() {
   console.log('Getting read/write contract..');
+
+  if (!window.ethereum) {
+    console.log('No Ethereum wallet found. Throwing error NO_ETH_WALLET');
+    throw Error(Errors.DS_NO_ETH_WALLET);
+  }
+
   const provider = await getProvider();
   const signer = await provider.getSigner();
   return new ethers.Contract(AnglezContractAddress, Anglez.abi, signer);

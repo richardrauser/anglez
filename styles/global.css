@@ -14,7 +14,7 @@ a:hover {
   text-decoration: underline !important;
 }
 
-button.mantine-Button-root {
+.panel button.mantine-Button-root {
   margin: 16px;
 }
 
