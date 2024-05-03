@@ -5,6 +5,11 @@ import { Button, Text } from '@mantine/core';
 import { ethers } from 'ethers';
 import { useEffect, useState } from 'react';
 import ethereumIcon from '@/images/ethereum-white.png';
+import {
+  AnglezContractAddress,
+  AnglezCurrentNetworkExplorerUrl,
+  AnglezCurrentNetworkName,
+} from '@/src/Constants';
 
 export default function ArtworkPage({ params }: { params: { id: number } }) {
   const [tokenDetails, setTokenDetails] = useState<TokenDetails | null>(null);
@@ -18,6 +23,18 @@ export default function ArtworkPage({ params }: { params: { id: number } }) {
     };
     fetchData();
   }, []);
+
+  const handleViewOnOpenSea = async () => {
+    const url = `https://testnets.opensea.io/assets/${AnglezCurrentNetworkName.toLocaleLowerCase()}/${AnglezContractAddress}?a=${
+      params.id
+    }`;
+    window.open(url, '_blank');
+  };
+
+  const handleViewOnBlockExplorer = async () => {
+    const url = `${AnglezCurrentNetworkExplorerUrl}/token/${AnglezContractAddress}?a=${params.id}`;
+    window.open(url, '_blank');
+  };
 
   return (
     <>
@@ -55,11 +72,14 @@ export default function ArtworkPage({ params }: { params: { id: number } }) {
               <div>
                 <b>Tint transparency:</b> {tokenDetails?.attributes.tintTransparency}{' '}
               </div>
+              <div>
+                <b>Owner:</b> <i>coming soon...</i>{' '}
+              </div>
             </Text>
-            <Button color="blue" size="lg">
+            <Button onClick={handleViewOnOpenSea} color="blue" size="lg">
               View on OpenSea
             </Button>
-            <Button color="blue" size="lg">
+            <Button onClick={handleViewOnBlockExplorer} color="blue" size="lg">
               View on Block Explorer
             </Button>
           </div>

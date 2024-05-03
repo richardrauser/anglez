@@ -83,10 +83,11 @@ async function getProvider() {
     console.log('Have window.. in browser.');
     if (!window.ethereum) {
       // this is fine for read only contracts, but not read write (as user needs wallet)
-      console.log('No Ethereum wallet found. Throwing error NO_ETH_WALLET');
+      console.log('No Ethereum wallet found. Getting JSON RPC provider..');
       return getJsonRpcProvider();
       // throw Error(Errors.DS_NO_ETH_WALLET);
     }
+    console.log('Got window.ethereum.. returning browser provider..');
     provider = new ethers.BrowserProvider(window.ethereum);
   }
 
@@ -205,6 +206,13 @@ export async function fetchAccount() {
   }
   return account;
 }
+export function shortenAddress(fullAddress: string) {
+  var shortenedAddress = fullAddress;
+  if (shortenedAddress.length > 10) {
+    shortenedAddress = shortenedAddress.substring(0, 6) + '...' + shortenedAddress.slice(-4);
+  }
+  return shortenedAddress;
+}
 
 export async function fetchAccountDetails() {
   console.log('Fetching account details from blockchain..');
@@ -212,13 +220,9 @@ export async function fetchAccountDetails() {
   const account = await fetchAccount();
   const provider = await getProvider();
 
-  const fullAddress = account.toString();
-  var shortenedAddress = fullAddress;
+  const fullAddress = account.address;
+  var shortenedAddress = shortenAddress(fullAddress);
   console.log('Getting details of account: ' + fullAddress);
-
-  if (shortenedAddress.length > 10) {
-    shortenedAddress = shortenedAddress.substring(0, 6) + '...' + shortenedAddress.slice(-4);
-  }
 
   const weiBalance = await provider.getBalance(account);
   const displayBalance = Number(formatEther(weiBalance)).toFixed(4).toString();

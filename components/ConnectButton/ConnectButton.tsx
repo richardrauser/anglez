@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-// import NavDropdown from 'react-bootstrap/NavDropdown';
-// import Spinner from 'react-bootstrap/Spinner';
-// import Button from 'react-bootstrap/Button';
-import Image from 'next/image';
-// import { Wallet2 } from 'react-bootstrap-icons';
-
 import {
   fetchAccountDetails,
   fetchCachedAccountDetails,
@@ -15,20 +9,10 @@ import {
 import classes from '@/styles/SplitButton.module.css';
 import '@/src/BlockchainAPI';
 import { handleError } from '@/src/ErrorHandler';
-import * as Errors from '@/src/ErrorMessages';
 import { AnglezCurrentNetworkExplorerUrl } from '@/src/Constants';
-import ethereum from '../images/ethereum.svg';
 import styles from './ConnectButton.module.css';
 import { ActionIcon, Button, Group, Menu, rem } from '@mantine/core';
-import {
-  IconBookmark,
-  IconCalendar,
-  IconChevronDown,
-  IconMoneybag,
-  IconReload,
-  IconTrash,
-  IconWallet,
-} from '@tabler/icons-react';
+import { IconChevronDown, IconMoneybag, IconReload, IconWallet } from '@tabler/icons-react';
 
 declare global {
   interface Window {
@@ -82,18 +66,12 @@ export default function ConnectButton() {
         return;
       }
 
-      const cachedDetails = fetchCachedAccountDetails();
-      if (cachedDetails !== undefined && cachedDetails !== null) {
-        console.log(
-          'Got address (' +
-            cachedDetails.address +
-            ') and balance (' +
-            cachedDetails.displayBalance +
-            ').'
-        );
-        updateAccountDetails(cachedDetails);
-        return;
-      }
+      // const cachedDetails = fetchCachedAccountDetails();
+      // if (cachedDetails !== undefined && cachedDetails !== null) {
+      //   console.log('Got cached details: ' + JSON.stringify(cachedDetails));
+      //   updateAccountDetails(cachedDetails);
+      //   return;
+      // }
 
       const accountDetails = await fetchAccountDetails();
       updateAccountDetails(accountDetails);
@@ -123,7 +101,7 @@ export default function ConnectButton() {
   };
 
   const updateAccountDetails = (accountDetails: any) => {
-    console.log('Updating account details..');
+    console.log('Updating account details: ' + JSON.stringify(accountDetails));
     const hasWallet = window.ethereum !== undefined && window.ethereum !== null;
     setIsLoading(false);
     if (accountDetails != null && hasWallet) {
@@ -134,7 +112,7 @@ export default function ConnectButton() {
       setAccountEthBalance(accountDetails.displayBalance.toString());
       setEtherscanUrl(AnglezCurrentNetworkExplorerUrl + 'address/' + accountDetails.fullAddress);
 
-      console.log('Address: ', accountDetails.address);
+      console.log('Address: ', accountDetails.shortenedAddress);
       console.log('Balance: ', accountDetails.displayBalance);
     } else {
       console.log('No details or wallet.');
@@ -194,7 +172,7 @@ export default function ConnectButton() {
               {!isWalletConnected ? (
                 <Button onClick={connectWallet}>Connect wallet</Button>
               ) : (
-                <Group wrap="nowrap" gap={0}>
+                <Group wrap="nowrap" gap={1}>
                   <Button className={classes.button} onClick={disconnectWallet}>
                     Disconnect Wallet
                   </Button>

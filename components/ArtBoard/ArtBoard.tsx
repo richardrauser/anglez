@@ -250,8 +250,8 @@ export function ArtBoard() {
                   Mint!
                 </Button>
                 <p>
-                  <b>Randomize all</b> randomizes all settings, while <b>New Seed</b> with randomize
-                  the seed value but, preserve your customisations.
+                  <b>Randomize all</b> randomizes everything, while <b>New Seed</b> randomizes the
+                  seed value, but preserves your custom values.
                 </p>
               </div>
             </Tabs.Panel>

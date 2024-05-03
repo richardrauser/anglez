@@ -33,11 +33,10 @@ export function handleError(error: any) {
     );
   } else if (error.message === Errors.DS_WRONG_ETH_NETWORK) {
     const errorMessage =
-      "You're on the wrong network. Please switch to " + AnglezCurrentNetworkName + '.';
-    // const onClose = switchToCurrentNetwork;
-    // const onClose = null;
-    //    showErrorMessage(errorMessage, onClose);
-    showErrorMessage(errorMessage);
+      "You're on the wrong network. Tap here to switch to " + AnglezCurrentNetworkName + '.';
+    const onClose = switchToCurrentNetwork;
+    showErrorMessage(errorMessage, onClose);
+    // showErrorMessage(errorMessage);
   } else if (error.code != null) {
     showErrorMessage('An error occurred: (' + error.code + ') ' + error.message);
   } else {
