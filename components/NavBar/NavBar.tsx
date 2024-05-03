@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { Container, Group, Burger } from '@mantine/core';
+import { Container, Group, Burger, Transition, Paper } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 // import { MantineLogo } from '@mantinex/mantine-logo';
 import classes from './NavBar.module.css';
@@ -41,11 +41,18 @@ export function AnglezNavBar() {
     <header className={classes.header}>
       <Container size="md" className={classes.inner}>
         {/* <MantineLogo size={28} /> */}
+
+        <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm"></Burger>
         <Group gap={5} visibleFrom="xs">
           {items}
         </Group>
-
-        <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm" />
+        <Transition transition="slide-down" duration={200} mounted={opened}>
+          {(styles) => (
+            <Paper className={classes.dropdown} withBorder style={styles}>
+              {items}
+            </Paper>
+          )}
+        </Transition>
         <ConnectButton />
       </Container>
     </header>

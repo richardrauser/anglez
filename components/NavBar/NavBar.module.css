@@ -31,3 +31,20 @@
     color: var(--mantine-color-white);
   }
 }
+
+.dropdown {
+  position: absolute;
+  top: 48px;
+  left: 8px;
+  font-size: 24px !important;
+  /* right: 50px; */
+  /* z-index: 9999;  */
+  /* borderTopRightRadius: 0,
+  borderTopLeftRadius: 0,
+  borderTopWidth: 0,
+  overflow: 'hidden',
+
+  [theme.fn.largerThan('sm')]: {
+    display: 'none',
+  }, */
+}
