@@ -87,6 +87,12 @@ async function getProvider() {
       return getJsonRpcProvider();
       // throw Error(Errors.DS_NO_ETH_WALLET);
     }
+    console.log('Window.ethereum exists. Providers: ' + window.ethereum.providers);
+
+    // for (let i = 0; i < window.ethereum.providers.length; i++) {
+    //   console.log('Provider ' + i + ': ' + window.ethereum.providers[i].chainId);
+    // }
+
     console.log('Got window.ethereum.. returning browser provider..');
     provider = new ethers.BrowserProvider(window.ethereum);
   }
