@@ -154,7 +154,7 @@ export function buildArtwork(tokenParams: TokenParams) {
 }
 
 function getViewBoxClipRect(zoom: number) {
-  console.log('Zoom: ' + zoom);
+  // console.log('Zoom: ' + zoom);
   zoom = zoom * 10;
   const widthHeight = 500 + zoom;
   var viewBox = '';
@@ -187,7 +187,7 @@ function getViewBoxClipRect(zoom: number) {
       "'";
   }
 
-  console.log('View box: ' + viewBox);
+  // console.log('View box: ' + viewBox);
 
   return [viewBox, clipRect];
 }
@@ -207,8 +207,8 @@ function getShapes(
   // polygon loop
 
   for (var i = 0; i < shapeCount; i++) {
-    console.log('BEGINNING LOOP randomSeed: ');
-    console.log(randomSeed);
+    // console.log('BEGINNING LOOP randomSeed: ');
+    // console.log(randomSeed);
     const pointCount = randomIntFromInterval(randomSeed + i, 3, 5);
 
     // console.log('polygon: ' + i);
@@ -231,9 +231,9 @@ function getShapes(
       }
     }
 
-    console.log('points');
-    console.log(i);
-    console.log(points);
+    // console.log('points');
+    // console.log(i);
+    // console.log(points);
 
     let polygonOpacity;
     let midStopOpacity;
@@ -284,11 +284,11 @@ function getShapes(
 
     //    <polygon points="${points}" fill="url(#gradient${i})" opacity="${polygonOpacity}" />    `;
 
-    console.log('randomSeed before incrementing: ');
-    console.log(randomSeed);
-    randomSeed += 100;
-    console.log('randomSeed before incrementing: ');
-    console.log(randomSeed);
+    // console.log('randomSeed before incrementing: ');
+    // console.log(randomSeed);
+    // randomSeed += 100;
+    // console.log('randomSeed before incrementing: ');
+    // console.log(randomSeed);
   }
 
   return shapes;
