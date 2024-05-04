@@ -23,7 +23,8 @@ export interface TokenDetails {
     zoom: number;
     tintColor: string;
     tintTransparency: string;
-    isCyclic: string;
+    style: string;
+    structure: string;
     isCustom: string;
   };
 }
@@ -406,8 +407,12 @@ export async function fetchTokenDetails(tokenId: number) {
   let tintTransparency = metadataObject.attributes.filter(
     (attribute: Attribute) => attribute.trait_type == 'tint transparency'
   )[0].value;
-  let isCyclic = metadataObject.attributes.filter(
-    (attribute: Attribute) => attribute.trait_type == 'cyclic'
+  // TODO: words from contract instead of true/false!
+  let style = metadataObject.attributes.filter(
+    (attribute: Attribute) => attribute.trait_type == 'style'
+  )[0].value;
+  let structure = metadataObject.attributes.filter(
+    (attribute: Attribute) => attribute.trait_type == 'structure'
   )[0].value;
   let isCustom = metadataObject.attributes.filter(
     (attribute: Attribute) => attribute.trait_type == 'custom'
@@ -429,7 +434,8 @@ export async function fetchTokenDetails(tokenId: number) {
       zoom,
       tintColor,
       tintTransparency,
-      isCyclic,
+      style,
+      structure,
       isCustom,
     },
   };

@@ -55,7 +55,7 @@ function networkConfigFor(currentNetwork: string) {
       // TODO: RPC URL
       AnglezCurrentNetworkRpcUrlKey: 'https://sepolia.infura.io',
       AnglezCurrentNetworkExplorerUrlKey: 'https://sepolia.etherscan.io/',
-      AnglezContractAddressKey: '0x6Eb1daA08a8AA05Ff881c1232c555d6cDDb4e68a', // correct!
+      AnglezContractAddressKey: '0xa4f60F9f2C0acDCc98030744e21dEbAF4754Cc97', // correct!
     };
   } else if (currentNetwork === AnglezMainnetNetwork) {
     return {

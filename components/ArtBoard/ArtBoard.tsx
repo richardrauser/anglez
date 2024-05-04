@@ -189,6 +189,28 @@ export function ArtBoard() {
                   Mint!
                 </Button>
               </div>
+              <div className="panel">
+                <Text ta="left" size="lg">
+                  <div>
+                    <b>Seed:</b> {randomSeed}
+                  </div>
+                  <div>
+                    <b>Shapes:</b> {shapeCount}
+                  </div>
+                  <div>
+                    <b>Zoom:</b> {zoom}
+                  </div>
+                  <div>
+                    <b>Style:</b> {style}
+                  </div>
+                  <div>
+                    <b>Structure:</b> {structure}
+                  </div>
+                  <div>
+                    <b>Tint color:</b> {tintColour}{' '}
+                  </div>
+                </Text>
+              </div>
             </Tabs.Panel>
             <Tabs.Panel value="custom" pt="xs">
               <SimpleGrid cols={{ base: 1, xs: 2 }}>

@@ -48,7 +48,10 @@ export default function Artwork(props: { tokenId: number }) {
                   <b>Zoom:</b> {tokenDetails?.attributes.zoom}
                 </div>
                 <div>
-                  <b>Cyclic:</b> {tokenDetails?.attributes.isCyclic}
+                  <b>Style:</b> {tokenDetails?.attributes.style}
+                </div>
+                <div>
+                  <b>Structure:</b> {tokenDetails?.attributes.structure}
                 </div>
                 <div>
                   <b>Tint color:</b> {tokenDetails?.attributes.tintColor}{' '}

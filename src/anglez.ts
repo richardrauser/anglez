@@ -211,6 +211,7 @@ function getShapes(
   for (var i = 0; i < shapeCount; i++) {
     // console.log('BEGINNING LOOP randomSeed: ');
     // console.log(randomSeed);
+    // TODO: raise point count for chaotic?
     const pointCount = randomIntFromInterval(randomSeed + i, 3, 4);
 
     // console.log('polygon: ' + i);
