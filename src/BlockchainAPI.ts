@@ -108,16 +108,17 @@ async function getProvider() {
   console.log('Got provider.. now checking network.');
 
   // Check we are on expected network
-  const network = await provider.getNetwork();
+  // const network = await provider.getNetwork();
 
-  console.log('Desired chain ID: ' + AnglezCurrentNetworkID);
-  console.log('Current chain ID: ' + network.chainId);
+  // console.log('Desired chain ID: ' + AnglezCurrentNetworkID);
+  // console.log('Current chain ID: ' + network.chainId);
 
-  if (network.chainId != AnglezCurrentNetworkID) {
-    console.log('Wrong network!');
-    throw Error(Errors.DS_WRONG_ETH_NETWORK);
-  }
+  // if (network.chainId != AnglezCurrentNetworkID) {
+  //   console.log('Wrong network!');
+  //   throw Error(Errors.DS_WRONG_ETH_NETWORK);
+  // }
 
+  switchToCurrentNetwork();
   console.log('Returning provider..');
   return provider;
 }
@@ -127,12 +128,12 @@ export async function switchToCurrentNetwork() {
   console.log('Switching to ' + AnglezCurrentNetworkName + '...');
 
   const provider = new ethers.BrowserProvider(window.ethereum);
-  const network = await provider.getNetwork();
+  // const network = await provider.getNetwork();
 
-  if (network.chainId == AnglezCurrentNetworkID) {
-    showInfoMessage("You're already on the " + AnglezCurrentNetworkName + ' network. Yay.');
-    return;
-  }
+  // if (network.chainId == AnglezCurrentNetworkID) {
+  //   showInfoMessage("You're already on the " + AnglezCurrentNetworkName + ' network. Yay.');
+  //   return;
+  // }
 
   const data = [
     {
