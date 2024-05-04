@@ -51,7 +51,7 @@ function networkConfigFor(currentNetwork: string) {
     return {
       AnglezCurrentNetworkIDKey: 11155111,
       AnglezCurrentNetworkNameKey: 'Sepolia',
-      AnglezCurrentNetworkCurrencySymbolKey: 'SepoliaETH',
+      AnglezCurrentNetworkCurrencySymbolKey: 'ETH',
       // TODO: RPC URL
       AnglezCurrentNetworkRpcUrlKey: 'https://sepolia.infura.io',
       AnglezCurrentNetworkExplorerUrlKey: 'https://sepolia.etherscan.io/',

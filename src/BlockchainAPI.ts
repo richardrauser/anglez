@@ -89,8 +89,16 @@ async function getProvider() {
     }
     console.log('Window.ethereum exists. Providers: ' + window.ethereum.providers);
 
-    // for (let i = 0; i < window.ethereum.providers.length; i++) {
-    //   console.log('Provider ' + i + ': ' + window.ethereum.providers[i].chainId);
+    // if (window.ethereum.providers) {
+    //   console.log("Window.ethereum.providers exists. Let's see what's in there..");
+    //   // for (let i = 0; i < window.ethereum.providers.length; i++) {
+    //   //   console.log('Provider ' + i + ': ' + window.ethereum.providers[i].chainId);
+    //   // }
+    //   const metamaskProviders = window.ethereum.providers.filter((provider) => {
+    //     provider.isMetaMask === true;
+    //   });
+
+    //   provider = metamaskProviders[0];
     // }
 
     console.log('Got window.ethereum.. returning browser provider..');
@@ -129,23 +137,27 @@ export async function switchToCurrentNetwork() {
   const data = [
     {
       chainId: '0x' + AnglezCurrentNetworkID.toString(16),
-      chainName: AnglezCurrentNetworkName,
-      nativeCurrency: {
-        name: AnglezCurrentNetworkCurrencySymbol,
-        symbol: AnglezCurrentNetworkCurrencySymbol,
-        decimals: 18,
-      },
-      rpcUrls: [AnglezCurrentNetworkRpcUrl],
-      blockExplorerUrls: [AnglezCurrentNetworkExplorerUrl],
+      // chainName: AnglezCurrentNetworkName,
+      // nativeCurrency: {
+      //   name: AnglezCurrentNetworkCurrencySymbol,
+      //   symbol: AnglezCurrentNetworkCurrencySymbol,
+      //   decimals: 18,
+      // },
+      // rpcUrls: [AnglezCurrentNetworkRpcUrl],
+      // blockExplorerUrls: [AnglezCurrentNetworkExplorerUrl],
     },
   ];
 
   console.log(data);
 
-  const tx = await window.ethereum.request({ method: 'wallet_addEthereumChain', params: data });
+  const tx = await window.ethereum.request({ method: 'wallet_switchEthereumChain', params: data });
   if (tx) {
     console.log(tx);
   }
+  // const tx = await window.ethereum.request({ method: 'wallet_addEthereumChain', params: data });
+  // if (tx) {
+  //   console.log(tx);
+  // }
 }
 
 export async function getReadOnlyContract() {
