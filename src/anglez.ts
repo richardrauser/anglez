@@ -1,4 +1,5 @@
 import { ethers, AbiCoder, toBigInt } from 'ethers';
+import { maxHeaderSize } from 'http';
 
 export interface TokenParams {
   seed: number;
@@ -120,9 +121,6 @@ export function generateRandomTokenParams(seed: number): TokenParams {
 export function buildArtwork(tokenParams: TokenParams) {
   console.log(`Generating anglez: ${JSON.stringify(tokenParams)}`);
 
-  const [viewBox, clipRect] = getViewBoxClipRect(150 - tokenParams.zoom);
-  const defs = "<defs><clipPath id='masterClip'><rect " + clipRect + '/></clipPath></defs>';
-
   var maxPolyRepeat;
 
   if (tokenParams.isCyclic) {
@@ -131,7 +129,7 @@ export function buildArtwork(tokenParams: TokenParams) {
     maxPolyRepeat = 1;
   }
 
-  const shapes = getShapes(
+  const [shapes, viewBox] = getShapes(
     tokenParams.seed,
     tokenParams.tintColour,
     tokenParams.shapeCount,
@@ -143,15 +141,9 @@ export function buildArtwork(tokenParams: TokenParams) {
     "<svg xmlns='http://www.w3.org/2000/svg' viewBox='" +
     viewBox +
     "'>" +
-    defs +
-    ` 
-      // <filter id="dropShadow"  color-interpolation-filters="sRGB">
-      //   <feDropShadow dx="5" dy="5" stdDeviation="1" flood-opacity="0.2"/>
-      // </filter>
-    ` +
-    "<g filter='url()' clip-path='url(#masterClip)'>" +
     shapes +
-    '</g></svg>'
+    // '</g>' +
+    '</svg>'
   );
 }
 
@@ -206,6 +198,8 @@ function getShapes(
   // console.log('_------- RANDOM SEED: ' + randomSeed);
   var minX = 1000;
   var maxX = 0;
+  var minY = 1000;
+  var maxY = 0;
 
   // polygon loop
   for (var i = 0; i < shapeCount; i++) {
@@ -231,6 +225,12 @@ function getShapes(
       }
       if (x < minX) {
         minX = x;
+      }
+      if (y < minY) {
+        minY = y;
+      }
+      if (y > maxY) {
+        maxY = y;
       }
     }
 
@@ -297,7 +297,55 @@ function getShapes(
     // console.log(randomSeed);
   }
 
-  return shapes;
+  console.log('minX: ' + minX);
+  console.log('maxX: ' + maxX);
+  console.log('minY: ' + minY);
+  console.log('maxY: ' + maxY);
+
+  const structureWidth = maxX - minX;
+  const structureHeight = maxY - minY;
+
+  console.log('structureWidth: ' + structureWidth);
+  console.log('structureHeight: ' + structureHeight);
+
+  var viewBox;
+  console.log('maxPolyRepeat: ' + maxPolyRepeat);
+  // if (maxPolyRepeat == 1 || maxPolyRepeat == 2 || maxPolyRepeat == 4) {
+  //   const margin = 10;
+  //   // const leftMargin = minX - margin;
+  //   // const rightMargin = 1000 - maxX - 2 * margin;
+  //   // const newLeftMargin = (leftMargin + rightMargin) / 2;
+  //   const xOffset = minX - margin; // leftMargin;
+  //   const width = structureWidth + margin;
+  //   // const xOffset = (minX + (1000 - maxX)) / 2 - margin;
+  //   const yOffset = minY - margin;
+  //   const height = structureHeight + margin;
+  //   viewBox = `${xOffset} ${yOffset} ${width} ${height}`;
+  // } else {
+  //   const maxDimension = Math.max(structureWidth, structureHeight);
+
+  const widthHeight = 1414; // sqrt(maxDimension * maxDimension + maxDimension * maxDimension);
+
+  console.log('widthHeight: ' + widthHeight);
+
+  const offset = (1000 - widthHeight) / 2;
+  viewBox = offset + ' ' + offset + ' ' + widthHeight + ' ' + widthHeight;
+  // }
+
+  console.log('viewBox:' + viewBox);
+
+  return [shapes, viewBox];
+}
+
+function sqrt(x: number) {
+  var z = (x + 1) / 2;
+  var y = x;
+  while (z < y) {
+    y = z;
+    z = (x / z + z) / 2;
+  }
+
+  return y;
 }
 
 // function getRotation(randomSeed: number, rotationDegrees: number, rotationRange: number) {

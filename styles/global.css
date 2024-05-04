@@ -48,8 +48,11 @@ a:hover {
 
   color: gray;
   background-color: white;
+  /* background-color: #22aa22; */
+
   text-align: center;
   margin: 24px auto;
+  padding: 0px !important;
 }
 
 .artboardImage {

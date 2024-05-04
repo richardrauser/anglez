@@ -192,9 +192,6 @@ export function ArtBoard() {
               <div className="panel">
                 <Text ta="left" size="lg">
                   <div>
-                    <b>Seed:</b> {randomSeed}
-                  </div>
-                  <div>
                     <b>Shapes:</b> {shapeCount}
                   </div>
                   <div>
@@ -255,7 +252,7 @@ export function ArtBoard() {
                   </div>
                 </Stack>
               </SimpleGrid>
-              <Stack>
+              {/* <Stack>
                 <div className="panel">
                   <Text ta="left" size="m">
                     Zoom
@@ -275,7 +272,7 @@ export function ArtBoard() {
                   />
                   {zoom}%
                 </div>
-              </Stack>
+              </Stack> */}
               <div className="panel">
                 <div>Random seed: {randomSeed}</div>
                 <Button onClick={randomize}>Randomize all</Button>
