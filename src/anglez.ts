@@ -6,6 +6,7 @@ export interface TokenParams {
   zoom: number;
   tintColour: RGBAColor;
   isCyclic: boolean;
+  isChaotic: boolean;
 }
 export type RGBAColor = {
   r: number;
@@ -102,6 +103,7 @@ export function generateRandomTokenParams(seed: number): TokenParams {
   const blue = randomIntFromInterval(seed + 8, 0, 255);
   const alpha = randomIntFromInterval(seed + 9, 10, 90) / 100;
   const isCyclic = randomIntFromInterval(seed + 4, 0, 1) === 1;
+  const isChaotic = randomIntFromInterval(seed + 11, 0, 1) === 1;
 
   const tokenParams = {
     seed,
@@ -109,15 +111,14 @@ export function generateRandomTokenParams(seed: number): TokenParams {
     zoom,
     tintColour: { r: red, g: green, b: blue, a: alpha },
     isCyclic,
+    isChaotic,
   };
 
   return tokenParams;
 }
 
 export function buildArtwork(tokenParams: TokenParams) {
-  console.log(
-    'Generating anglez: ' + tokenParams.seed + ' ' + tokenParams.zoom + ' ' + tokenParams.tintColour
-  );
+  console.log(`Generating anglez: ${JSON.stringify(tokenParams)}`);
 
   const [viewBox, clipRect] = getViewBoxClipRect(150 - tokenParams.zoom);
   const defs = "<defs><clipPath id='masterClip'><rect " + clipRect + '/></clipPath></defs>';
@@ -134,7 +135,8 @@ export function buildArtwork(tokenParams: TokenParams) {
     tokenParams.seed,
     tokenParams.tintColour,
     tokenParams.shapeCount,
-    maxPolyRepeat
+    maxPolyRepeat,
+    tokenParams.isChaotic
   );
 
   return (
@@ -196,7 +198,8 @@ function getShapes(
   randomSeed: number,
   tintColour: RGBAColor,
   shapeCount: number,
-  maxPolyRepeat: number
+  maxPolyRepeat: number,
+  isChaotic: boolean
 ) {
   var shapes = '';
   // TODO: consider best max ( 5 15?)
@@ -205,11 +208,10 @@ function getShapes(
   var maxX = 0;
 
   // polygon loop
-
   for (var i = 0; i < shapeCount; i++) {
     // console.log('BEGINNING LOOP randomSeed: ');
     // console.log(randomSeed);
-    const pointCount = randomIntFromInterval(randomSeed + i, 3, 5);
+    const pointCount = randomIntFromInterval(randomSeed + i, 3, 4);
 
     // console.log('polygon: ' + i);
     // console.log('pointCount: ' + pointCount);
@@ -231,9 +233,9 @@ function getShapes(
       }
     }
 
-    // console.log('points');
-    // console.log(i);
-    // console.log(points);
+    console.log('points');
+    console.log(i);
+    console.log(points);
 
     let polygonOpacity;
     let midStopOpacity;
@@ -248,7 +250,8 @@ function getShapes(
 
     // console.log('gradientRotation: ' + gradientRotation);
 
-    const polygonCount = randomIntFromInterval(randomSeed + 17, 1, maxPolyRepeat);
+    const polygonCount =
+      maxPolyRepeat == 1 ? 1 : randomIntFromInterval(randomSeed + 17, 2, maxPolyRepeat);
     var polygons = '';
     var polyRotation = 0;
     var polyRotationDelta = 360 / polygonCount; //randomIntFromInterval(randomSeed + 18, 10, 180);
@@ -286,7 +289,9 @@ function getShapes(
 
     // console.log('randomSeed before incrementing: ');
     // console.log(randomSeed);
-    // randomSeed += 100;
+    if (isChaotic) {
+      randomSeed += 100;
+    }
     // console.log('randomSeed before incrementing: ');
     // console.log(randomSeed);
   }

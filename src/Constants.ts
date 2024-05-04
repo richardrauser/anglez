@@ -55,7 +55,7 @@ function networkConfigFor(currentNetwork: string) {
       // TODO: RPC URL
       AnglezCurrentNetworkRpcUrlKey: 'https://sepolia.infura.io',
       AnglezCurrentNetworkExplorerUrlKey: 'https://sepolia.etherscan.io/',
-      AnglezContractAddressKey: '0x1C079486a5CF1e46fE66f54E0E4ab6CC6e63194E', // correct!
+      AnglezContractAddressKey: '0x6Eb1daA08a8AA05Ff881c1232c555d6cDDb4e68a', // correct!
     };
   } else if (currentNetwork === AnglezMainnetNetwork) {
     return {
@@ -65,7 +65,7 @@ function networkConfigFor(currentNetwork: string) {
       // TODO: RPC URL
       AnglezCurrentNetworkRpcUrlKey: 'https://mainnet.infura.io/v3/',
       AnglezCurrentNetworkExplorerUrlKey: 'https://www.etherscan.io/',
-      AnglezContractAddressKey: '0xFc0d97b66F3A1D9B97d6414c7b3d9431714C7B98',
+      AnglezContractAddressKey: '',
     };
   }
 }

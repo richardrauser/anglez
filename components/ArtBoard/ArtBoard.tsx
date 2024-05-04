@@ -23,7 +23,8 @@ export function ArtBoard() {
   const [randomSeed, setRandomSeed] = useState(0);
   const [custom, setCustom] = useState(false);
   const [zoom, setZoom] = useState(75);
-  const [style, setStyle] = useState('linear');
+  const [style, setStyle] = useState('cyclic');
+  const [structure, setStructure] = useState('folded');
   const [shapeCount, setShapeCount] = useState(5);
   // stored as rgb()
   const [tintColour, setTintColour] = useState('');
@@ -37,7 +38,8 @@ export function ArtBoard() {
       shapeCount: shapeCount,
       zoom: zoom,
       tintColour: rgbToObj(tintColour),
-      isCyclic: style === 'cycle',
+      isCyclic: style === 'cyclic',
+      isChaotic: structure === 'chaotic',
     };
 
     const svgString = buildArtwork(tokenParams);
@@ -61,7 +63,8 @@ export function ArtBoard() {
     setTintColour(
       `rgba(${tokenParams.tintColour.r}, ${tokenParams.tintColour.g}, ${tokenParams.tintColour.b}, ${tokenParams.tintColour.a})`
     );
-    setStyle(tokenParams.isCyclic ? 'cycle' : 'linear');
+    setStyle(tokenParams.isCyclic ? 'cyclic' : 'linear');
+    setStructure(tokenParams.isChaotic ? 'chaotic' : 'folded');
     setLoading(false);
   };
 
@@ -72,7 +75,7 @@ export function ArtBoard() {
   useEffect(() => {
     const svg = generateSvgDataUri();
     setSvg(svg);
-  }, [randomSeed, zoom, style, custom, shapeCount, tintColour]);
+  }, [randomSeed, zoom, style, structure, custom, shapeCount, tintColour]);
 
   const newSeedPressed = () => {
     const newSeed = generateNewSeed();
@@ -105,7 +108,8 @@ export function ArtBoard() {
       shapeCount: shapeCount,
       zoom: zoom,
       tintColour: rgbToObj(tintColour),
-      isCyclic: style === 'cycle',
+      isCyclic: style === 'cyclic',
+      isChaotic: structure === 'chaotic',
     };
 
     console.log('Minting with params: ' + JSON.stringify(tokenParams));
@@ -196,7 +200,15 @@ export function ArtBoard() {
                     <RadioGroup value={style} onChange={setStyle} name="style">
                       {' '}
                       <Radio value="linear" label="linear" />
-                      <Radio value="cycle" label="cyclic" />
+                      <Radio value="cyclic" label="cyclic" />
+                    </RadioGroup>
+                    <Text ta="left" size="m">
+                      Structure
+                    </Text>
+                    <RadioGroup value={structure} onChange={setStructure} name="structure">
+                      {' '}
+                      <Radio value="folded" label="folded" />
+                      <Radio value="chaotic" label="chaotic" />
                     </RadioGroup>
                   </div>
                   <div className="panel">
