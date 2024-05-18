@@ -321,9 +321,9 @@ function getShapes(
     height = structureHeight + 100;
     yOffset = minY - 50;
 
-    shapes += `
-      <rect x="${minX}" y="${minY}" width="${structureWidth}" height="${structureHeight}" fill="#f00" opacity="0.2"/>
-    `;
+    // shapes += `
+    //   <rect x="${minX}" y="${minY}" width="${structureWidth}" height="${structureHeight}" fill="#f00" opacity="0.2"/>
+    // `;
   } else {
     const margin = Math.min(minX, 1000 - maxX, minY, 1000 - maxY) + 10;
     const artboardWidthHeight = 1000 - 2 * margin;
