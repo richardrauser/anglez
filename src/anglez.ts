@@ -281,9 +281,9 @@ function getShapes(
     ${polygons}
     // TODO: consider drop shadow
     // shapes += `;
-    //   <rect x="{$minX}" y="1100" width="${
-    //     maxX - minX
-    //   }" height="10" fill="#fff" opacity="0"/>
+    // <rect x="{$minX}" y="1100" width="${
+    //   maxX - minX
+    // }" height="10" fill="#fff" opacity="0"/>
     // `;
 
     //    <polygon points="${points}" fill="url(#gradient${i})" opacity="${polygonOpacity}" />    `;
@@ -308,31 +308,51 @@ function getShapes(
   console.log('structureWidth: ' + structureWidth);
   console.log('structureHeight: ' + structureHeight);
 
-  var viewBox;
   console.log('maxPolyRepeat: ' + maxPolyRepeat);
-  // if (maxPolyRepeat == 1 || maxPolyRepeat == 2 || maxPolyRepeat == 4) {
-  //   const margin = 10;
-  //   // const leftMargin = minX - margin;
-  //   // const rightMargin = 1000 - maxX - 2 * margin;
-  //   // const newLeftMargin = (leftMargin + rightMargin) / 2;
-  //   const xOffset = minX - margin; // leftMargin;
-  //   const width = structureWidth + margin;
-  //   // const xOffset = (minX + (1000 - maxX)) / 2 - margin;
-  //   const yOffset = minY - margin;
-  //   const height = structureHeight + margin;
-  //   viewBox = `${xOffset} ${yOffset} ${width} ${height}`;
-  // } else {
-  //   const maxDimension = Math.max(structureWidth, structureHeight);
 
-  const widthHeight = 1414; // sqrt(maxDimension * maxDimension + maxDimension * maxDimension);
+  var width: number;
+  var height: number;
+  var xOffset: number;
+  var yOffset: number;
 
-  console.log('widthHeight: ' + widthHeight);
+  if (maxPolyRepeat == 1) {
+    width = structureWidth + 100;
+    xOffset = minX - 50; // (1000 - width) / 2;
+    height = structureHeight + 100;
+    yOffset = minY - 50;
 
-  const offset = (1000 - widthHeight) / 2;
-  viewBox = offset + ' ' + offset + ' ' + widthHeight + ' ' + widthHeight;
-  // }
+    shapes += `
+      <rect x="${minX}" y="${minY}" width="${structureWidth}" height="${structureHeight}" fill="#f00" opacity="0.2"/>
+    `;
+  } else {
+    const margin = Math.min(minX, 1000 - maxX, minY, 1000 - maxY) + 10;
+    const artboardWidthHeight = 1000 - 2 * margin;
 
-  console.log('viewBox:' + viewBox);
+    console.log('artboardWidthHeight: ' + artboardWidthHeight);
+
+    const temp = 2 * Math.pow(artboardWidthHeight, 2);
+    console.log('temp: ' + temp);
+    const widthHeight = sqrt(temp);
+
+    console.log('widthHeight: ' + widthHeight);
+
+    const offset = (1000 - widthHeight) / 2;
+
+    width = widthHeight;
+    xOffset = offset;
+    height = widthHeight;
+    yOffset = offset;
+
+    // shapes += `
+    // <rect x="${0}" y="${0}" width="${width}" height="${height}" fill="#f00" opacity="0.2"/>
+    // `;
+  }
+
+  // (1000 - height) / 2;
+
+  const viewBox = xOffset + ' ' + yOffset + ' ' + width + ' ' + height;
+
+  console.log('viewBox!:' + viewBox);
 
   return [shapes, viewBox];
 }
