@@ -84,7 +84,7 @@ function getColour(randomSeed: number, tintColour: RGBAColor) {
 
   const alpha255 = Math.round(alpha * 255);
 
-  s; // console.log('alpha255: ' + alpha255);
+  // console.log('alpha255: ' + alpha255);
 
   // alpha blending
   const red = safeTint(redRandom, redTint, alpha255);
