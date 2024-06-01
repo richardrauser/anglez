@@ -82,15 +82,36 @@ function getColour(randomSeed: number, tintColour: RGBAColor) {
   const blueTint = tintColour.b;
   const alpha = tintColour.a;
 
+  const alpha255 = Math.round(alpha * 255);
+
+  s; // console.log('alpha255: ' + alpha255);
+
   // alpha blending
-  // TODO: mimic SOL algorithm
-  const red = redRandom + Math.round((redTint - redRandom) * alpha);
-  const green = greenRandom + Math.round((greenTint - greenRandom) * alpha);
-  const blue = blueRandom + Math.round((blueTint - blueRandom) * alpha);
+  const red = safeTint(redRandom, redTint, alpha255);
+  const green = safeTint(greenRandom, greenTint, alpha255);
+  const blue = safeTint(blueRandom, blueTint, alpha255);
 
   const finalColour = 'rgb(' + red + ', ' + green + ', ' + blue + ')';
 
   return finalColour;
+}
+
+function safeTint(colourComponent: number, tintComponent: number, alpha: number) {
+  if (alpha == 0) {
+    return colourComponent;
+  }
+
+  var safelyTinted: number;
+
+  if (colourComponent <= tintComponent) {
+    const offset = ((tintComponent - colourComponent) * alpha) / 255;
+    safelyTinted = colourComponent + Math.floor(offset);
+  } else {
+    const offset = ((colourComponent - tintComponent) * alpha) / 255;
+    safelyTinted = colourComponent - Math.floor(offset);
+  }
+
+  return safelyTinted;
 }
 
 export function generateRandomTokenParams(seed: number): TokenParams {

@@ -322,7 +322,7 @@ export async function mintCustomAnglez(tokenParams: TokenParams) {
   //     function mintCustom(uint24 seed, uint8 shapeCount, uint8 tintRed, uint8 tintGreen, uint8 tintBlue, uint8 tintAlpha, bool isCyclic) public payable {
 
   const alpha = Math.round(tokenParams.tintColour.a * 255);
-  console.log('Alpha: ' + alpha);
+  // console.log('Alpha255 blockchainAPI: ' + alpha);
 
   const mintPrice = await contract.getCustomMintPrice();
   console.log('Mint price: ' + mintPrice.toString());
