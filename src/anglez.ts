@@ -12,7 +12,7 @@ export type RGBAColor = {
   r: number;
   g: number;
   b: number;
-  a: number; // TODO: atypically, range is 0 - 255
+  a: number;
 };
 
 // -------------- EXTERNAL ------------------
@@ -47,7 +47,6 @@ export function randomIntFromInterval(randomSeed: number, min: number, max: numb
   // console.log('max: ' + max);
   // console.log('min: ' + min);
 
-  // TODO: work out correct way to do this.
   // const random = (seed % toBigInt(max - min)) + toBigInt(min);
   const random = (seed % toBigInt(max - min + 1)) + toBigInt(min);
   // var i = Math.floor(Math.random() * (max - min + 1) + min);
@@ -328,9 +327,8 @@ function getShapes(
     // `;
   }
 
-  // (1000 - height) / 2;
-
   const viewBox = xOffset + ' ' + yOffset + ' ' + width + ' ' + height;
+  // const viewBox = '-100 -100 1200 1200';
 
   console.log('viewBox:' + viewBox);
 

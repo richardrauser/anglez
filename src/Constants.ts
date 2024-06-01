@@ -1,12 +1,10 @@
 const AnglezLocalhostNetwork = 'localhost';
 const AnglezSepoliaNetwork = 'sepolia';
-const AnglezGoerliNetwork = 'goerli';
 const AnglezMainnetNetwork = 'mainnet';
 
 // Change this to control which environment you're pointing at.
-const currentNetwork = AnglezLocalhostNetwork;
-// const currentNetwork = AnglezGoerliNetwork;
-// const currentNetwork = AnglezSepoliaNetwork;
+// const currentNetwork = AnglezLocalhostNetwork;
+const currentNetwork = AnglezSepoliaNetwork;
 // const currentNetwork = AnglezMainnetNetwork;
 
 const AnglezCurrentNetworkIDKey = 'AnglezCurrentNetworkIDKey';
@@ -37,16 +35,6 @@ function networkConfigFor(currentNetwork: string) {
       AnglezCurrentNetworkExplorerUrlKey: 'https://www.superbad.com/',
       AnglezContractAddressKey: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
     };
-  } else if (currentNetwork === AnglezGoerliNetwork) {
-    return {
-      AnglezCurrentNetworkIDKey: 5,
-      AnglezCurrentNetworkNameKey: 'Goerli',
-      AnglezCurrentNetworkCurrencySymbolKey: 'GoerliETH',
-      // TODO: RPC URL
-      AnglezCurrentNetworkRpcUrlKey: 'https://goerli.infura.io',
-      AnglezCurrentNetworkExplorerUrlKey: 'https://goerli.etherscan.io/',
-      AnglezContractAddressKey: '',
-    };
   } else if (currentNetwork === AnglezSepoliaNetwork) {
     return {
       AnglezCurrentNetworkIDKey: 11155111,
@@ -55,7 +43,7 @@ function networkConfigFor(currentNetwork: string) {
       // TODO: RPC URL
       AnglezCurrentNetworkRpcUrlKey: 'https://sepolia.infura.io',
       AnglezCurrentNetworkExplorerUrlKey: 'https://sepolia.etherscan.io/',
-      AnglezContractAddressKey: '0x056d1e8B73Ca3a5Be280d2523234880e4aCDDBF2', // correct!
+      AnglezContractAddressKey: '0x70aC6eBA906182E5417A47299a1485A67312d3B9',
     };
   } else if (currentNetwork === AnglezMainnetNetwork) {
     return {
