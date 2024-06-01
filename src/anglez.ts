@@ -4,7 +4,6 @@ import { maxHeaderSize } from 'http';
 export interface TokenParams {
   seed: number;
   shapeCount: number;
-  zoom: number;
   tintColour: RGBAColor;
   isCyclic: boolean;
   isChaotic: boolean;
@@ -13,7 +12,7 @@ export type RGBAColor = {
   r: number;
   g: number;
   b: number;
-  a: number;
+  a: number; // TODO: atypically, range is 0 - 255
 };
 
 // -------------- EXTERNAL ------------------
@@ -84,9 +83,10 @@ function getColour(randomSeed: number, tintColour: RGBAColor) {
   const alpha = tintColour.a;
 
   // alpha blending
-  const red = redRandom + (redTint - redRandom) * alpha;
-  const green = greenRandom + (greenTint - greenRandom) * alpha;
-  const blue = blueRandom + (blueTint - blueRandom) * alpha;
+  // TODO: mimic SOL algorithm
+  const red = redRandom + Math.round((redTint - redRandom) * alpha);
+  const green = greenRandom + Math.round((greenTint - greenRandom) * alpha);
+  const blue = blueRandom + Math.round((blueTint - blueRandom) * alpha);
 
   const finalColour = 'rgb(' + red + ', ' + green + ', ' + blue + ')';
 
@@ -95,8 +95,6 @@ function getColour(randomSeed: number, tintColour: RGBAColor) {
 
 export function generateRandomTokenParams(seed: number): TokenParams {
   console.log('SEED: ' + seed);
-  const zoom = randomIntFromInterval(seed + 3, 50, 100);
-  console.log('ZOOMZOOM: ' + zoom);
   const shapeCount = randomIntFromInterval(seed + 5, 5, 8);
 
   const red = randomIntFromInterval(seed + 6, 0, 255);
@@ -109,7 +107,6 @@ export function generateRandomTokenParams(seed: number): TokenParams {
   const tokenParams = {
     seed,
     shapeCount,
-    zoom,
     tintColour: { r: red, g: green, b: blue, a: alpha },
     isCyclic,
     isChaotic,
@@ -145,45 +142,6 @@ export function buildArtwork(tokenParams: TokenParams) {
     // '</g>' +
     '</svg>'
   );
-}
-
-function getViewBoxClipRect(zoom: number) {
-  // console.log('Zoom: ' + zoom);
-  zoom = zoom * 10;
-  const widthHeight = 500 + zoom;
-  var viewBox = '';
-  var clipRect = '';
-  var offset = (zoom - 500) / 2;
-  if (zoom > 500) {
-    viewBox = '-' + offset + ' -' + offset + ' ' + widthHeight + ' ' + widthHeight;
-    clipRect =
-      "x='-" +
-      offset +
-      "' y='-" +
-      offset +
-      "' width='" +
-      widthHeight +
-      "' height='" +
-      widthHeight +
-      "'";
-  } else {
-    offset = zoom === 500 ? 0 : (500 - zoom) / 2;
-    viewBox = '' + offset + ' ' + offset + ' ' + widthHeight + ' ' + widthHeight;
-    clipRect =
-      "x='" +
-      offset +
-      "' y='" +
-      offset +
-      "' width='" +
-      widthHeight +
-      "' height='" +
-      widthHeight +
-      "'";
-  }
-
-  // console.log('View box: ' + viewBox);
-
-  return [viewBox, clipRect];
 }
 
 function getShapes(
@@ -332,7 +290,8 @@ function getShapes(
 
     const temp = 2 * Math.pow(artboardWidthHeight, 2);
     console.log('temp: ' + temp);
-    const widthHeight = sqrt(temp);
+    // so we get an even number
+    const widthHeight = Math.floor((Math.floor(sqrt(temp)) + 1) / 2) * 2;
 
     console.log('widthHeight: ' + widthHeight);
 
@@ -352,7 +311,7 @@ function getShapes(
 
   const viewBox = xOffset + ' ' + yOffset + ' ' + width + ' ' + height;
 
-  console.log('viewBox!:' + viewBox);
+  console.log('viewBox:' + viewBox);
 
   return [shapes, viewBox];
 }

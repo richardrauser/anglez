@@ -20,7 +20,6 @@ export interface TokenDetails {
   attributes: {
     seed: number;
     shapeCount: number;
-    zoom: number;
     tintColor: string;
     tintTransparency: string;
     style: string;
@@ -320,7 +319,7 @@ export async function mintCustomAnglez(tokenParams: TokenParams) {
   console.log('Minting custom Anglez with params  ' + tokenParams);
 
   const contract = await getReadWriteContract();
-  //     function mintCustom(uint24 seed, uint8 shapeCount, uint8 zoom, uint8 tintRed, uint8 tintGreen, uint8 tintBlue, uint8 tintAlpha, bool isCyclic) public payable {
+  //     function mintCustom(uint24 seed, uint8 shapeCount, uint8 tintRed, uint8 tintGreen, uint8 tintBlue, uint8 tintAlpha, bool isCyclic) public payable {
 
   const alpha = Math.round(tokenParams.tintColour.a * 255);
   console.log('Alpha: ' + alpha);
@@ -329,19 +328,19 @@ export async function mintCustomAnglez(tokenParams: TokenParams) {
   console.log('Mint price: ' + mintPrice.toString());
 
   const overrides = {
-    // gasLimit: 140000,
+    // gasLimit: 200000,
     value: mintPrice,
   };
 
   const mintTx = await contract.mintCustom(
     tokenParams.seed,
     tokenParams.shapeCount,
-    tokenParams.zoom,
     tokenParams.tintColour.r,
     tokenParams.tintColour.g,
     tokenParams.tintColour.b,
     alpha,
     tokenParams.isCyclic,
+    tokenParams.isChaotic,
     overrides
   );
 
@@ -392,9 +391,6 @@ export async function fetchTokenDetails(tokenId: number) {
   let shapeCount = metadataObject.attributes.filter(
     (attribute: Attribute) => attribute.trait_type == 'shapes'
   )[0].value;
-  let zoom = metadataObject.attributes.filter(
-    (attribute: Attribute) => attribute.trait_type == 'zoom'
-  )[0].value;
   let tintColor = metadataObject.attributes.filter(
     (attribute: Attribute) => attribute.trait_type == 'tint color'
   )[0].value;
@@ -431,7 +427,6 @@ export async function fetchTokenDetails(tokenId: number) {
     attributes: {
       seed,
       shapeCount,
-      zoom,
       tintColor,
       tintTransparency,
       style,

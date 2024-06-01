@@ -22,7 +22,6 @@ export function ArtBoard() {
   const [activeTab, setActiveTab] = useState<string | null>('random');
   const [randomSeed, setRandomSeed] = useState(0);
   const [custom, setCustom] = useState(false);
-  const [zoom, setZoom] = useState(75);
   const [style, setStyle] = useState('cyclic');
   const [structure, setStructure] = useState('folded');
   const [shapeCount, setShapeCount] = useState(5);
@@ -36,10 +35,9 @@ export function ArtBoard() {
     const tokenParams: TokenParams = {
       seed: randomSeed,
       shapeCount: shapeCount,
-      zoom: zoom,
       tintColour: rgbToObj(tintColour),
-      isCyclic: style === 'cyclic',
-      isChaotic: structure === 'chaotic',
+      isCyclic: style == 'cyclic',
+      isChaotic: structure == 'chaotic',
     };
 
     const svgString = buildArtwork(tokenParams);
@@ -57,7 +55,6 @@ export function ArtBoard() {
 
     console.log('Randomized params: ' + JSON.stringify(tokenParams));
     setRandomSeed(newSeed);
-    setZoom(tokenParams.zoom);
     setShapeCount(tokenParams.shapeCount);
 
     setTintColour(
@@ -75,7 +72,7 @@ export function ArtBoard() {
   useEffect(() => {
     const svg = generateSvgDataUri();
     setSvg(svg);
-  }, [randomSeed, zoom, style, structure, custom, shapeCount, tintColour]);
+  }, [randomSeed, style, structure, custom, shapeCount, tintColour]);
 
   const newSeedPressed = () => {
     const newSeed = generateNewSeed();
@@ -106,10 +103,9 @@ export function ArtBoard() {
     const tokenParams: TokenParams = {
       seed: randomSeed,
       shapeCount: shapeCount,
-      zoom: zoom,
       tintColour: rgbToObj(tintColour),
-      isCyclic: style === 'cyclic',
-      isChaotic: structure === 'chaotic',
+      isCyclic: style == 'cyclic',
+      isChaotic: structure == 'chaotic',
     };
 
     console.log('Minting with params: ' + JSON.stringify(tokenParams));
@@ -195,9 +191,6 @@ export function ArtBoard() {
                     <b>Shapes:</b> {shapeCount}
                   </div>
                   <div>
-                    <b>Zoom:</b> {zoom}
-                  </div>
-                  <div>
                     <b>Style:</b> {style}
                   </div>
                   <div>
@@ -210,6 +203,19 @@ export function ArtBoard() {
               </div>
             </Tabs.Panel>
             <Tabs.Panel value="custom" pt="xs">
+              <div className="panel">
+                <div>Random seed: {randomSeed}</div>
+                <Button onClick={randomize}>Randomize all</Button>
+                <Button onClick={newSeedPressed}>New Seed</Button>
+                <Button className={styles.mintButton} onClick={mintCustom}>
+                  Mint!
+                </Button>
+                <p>
+                  <b>Randomize all</b> randomizes everything, while <b>New Seed</b> randomizes the
+                  seed value, but preserves your custom values.
+                </p>
+              </div>
+
               <SimpleGrid cols={{ base: 1, xs: 2 }}>
                 <Stack>
                   <div className="panel">
@@ -273,18 +279,6 @@ export function ArtBoard() {
                   {zoom}%
                 </div>
               </Stack> */}
-              <div className="panel">
-                <div>Random seed: {randomSeed}</div>
-                <Button onClick={randomize}>Randomize all</Button>
-                <Button onClick={newSeedPressed}>New Seed</Button>
-                <Button className={styles.mintButton} onClick={mintCustom}>
-                  Mint!
-                </Button>
-                <p>
-                  <b>Randomize all</b> randomizes everything, while <b>New Seed</b> randomizes the
-                  seed value, but preserves your custom values.
-                </p>
-              </div>
             </Tabs.Panel>
           </Tabs>
         </div>

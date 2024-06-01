@@ -4,9 +4,9 @@ const AnglezGoerliNetwork = 'goerli';
 const AnglezMainnetNetwork = 'mainnet';
 
 // Change this to control which environment you're pointing at.
-// const currentNetwork = AnglezLocalhostNetwork;
+const currentNetwork = AnglezLocalhostNetwork;
 // const currentNetwork = AnglezGoerliNetwork;
-const currentNetwork = AnglezSepoliaNetwork;
+// const currentNetwork = AnglezSepoliaNetwork;
 // const currentNetwork = AnglezMainnetNetwork;
 
 const AnglezCurrentNetworkIDKey = 'AnglezCurrentNetworkIDKey';
@@ -55,7 +55,7 @@ function networkConfigFor(currentNetwork: string) {
       // TODO: RPC URL
       AnglezCurrentNetworkRpcUrlKey: 'https://sepolia.infura.io',
       AnglezCurrentNetworkExplorerUrlKey: 'https://sepolia.etherscan.io/',
-      AnglezContractAddressKey: '0xa4f60F9f2C0acDCc98030744e21dEbAF4754Cc97', // correct!
+      AnglezContractAddressKey: '0x056d1e8B73Ca3a5Be280d2523234880e4aCDDBF2', // correct!
     };
   } else if (currentNetwork === AnglezMainnetNetwork) {
     return {
