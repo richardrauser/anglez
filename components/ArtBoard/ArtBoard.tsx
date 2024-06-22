@@ -97,7 +97,9 @@ export function ArtBoard() {
       const mintTx = await mintRandomAnglez(randomSeed);
 
       console.log('Mint tx: ' + mintTx.hash);
-      toast.success('Your NFT is currently minting!');
+      toast.success(
+        'Transaction successfully submitted and your NFT is currently minting! Try another?'
+      );
       setIsMinting(false);
       randomize();
     } catch (error: any) {
@@ -126,7 +128,9 @@ export function ArtBoard() {
       const mintTx = await mintCustomAnglez(tokenParams);
       console.log('Mint tx: ' + mintTx.hash);
       setIsMinting(false);
-      toast.success('Your NFT is currently minting!');
+      toast.success(
+        'Transaction successfully submitted and your NFT is currently minting! Try another?'
+      );
       randomize();
     } catch (error: any) {
       console.error('Minting error: ', error);
