@@ -45,9 +45,6 @@ export default function Artwork(props: { tokenId: number }) {
                   <b>Shapes:</b> {tokenDetails?.attributes.shapeCount}
                 </div>
                 <div>
-                  <b>Zoom:</b> {tokenDetails?.attributes.zoom}
-                </div>
-                <div>
                   <b>Style:</b> {tokenDetails?.attributes.style}
                 </div>
                 <div>

@@ -202,7 +202,17 @@ export function ArtBoard() {
                     <b>Structure:</b> {structure}
                   </div>
                   <div>
-                    <b>Tint color:</b> {tintColour}{' '}
+                    <b>Tint color:</b>{' '}
+                    {'rgb(' +
+                      rgbToObj(tintColour).r +
+                      ', ' +
+                      rgbToObj(tintColour).g +
+                      ', ' +
+                      rgbToObj(tintColour).b +
+                      ')'}{' '}
+                  </div>
+                  <div>
+                    <b>Tint transparency:</b> {rgbToObj(tintColour).a * 100} %
                   </div>
                 </Text>
               </div>
