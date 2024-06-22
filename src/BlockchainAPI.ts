@@ -315,6 +315,20 @@ export function clearCachedAccountDetails() {
 //   return (ethAddress === ownerAddress);
 // }
 
+export async function fetchRandomMintPrice() {
+  const contract = await getReadOnlyContract();
+  const mintPrice = await contract.getRandomMintPrice();
+
+  return mintPrice;
+}
+
+export async function fetchCustomMintPrice() {
+  const contract = await getReadOnlyContract();
+  const mintPrice = await contract.getCustomMintPrice();
+
+  return mintPrice;
+}
+
 export async function mintRandomAnglez(randomSeed: number) {
   const contract = await getReadWriteContract();
   const mintTx = await contract.mintRandom(randomSeed);
