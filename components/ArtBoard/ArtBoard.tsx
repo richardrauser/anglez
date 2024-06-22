@@ -19,9 +19,9 @@ import Loading from '../Loading/Loading';
 
 export function ArtBoard() {
   const [loading, setLoading] = useState(true);
+  // TODO: handle situation where user switches back to random tab with custom setting set
   const [activeTab, setActiveTab] = useState<string | null>('random');
   const [randomSeed, setRandomSeed] = useState(0);
-  const [custom, setCustom] = useState(false);
   const [style, setStyle] = useState('cyclic');
   const [structure, setStructure] = useState('folded');
   const [shapeCount, setShapeCount] = useState(5);
@@ -32,13 +32,18 @@ export function ArtBoard() {
   const generateSvgDataUri = () => {
     console.log('Generating svg data URI...');
 
-    const tokenParams: TokenParams = {
-      seed: randomSeed,
-      shapeCount: shapeCount,
-      tintColour: rgbToObj(tintColour),
-      isCyclic: style == 'cyclic',
-      isChaotic: structure == 'chaotic',
-    };
+    var tokenParams: TokenParams;
+    if (activeTab == 'random') {
+      tokenParams = generateRandomTokenParams(randomSeed);
+    } else {
+      tokenParams = {
+        seed: randomSeed,
+        shapeCount: shapeCount,
+        tintColour: rgbToObj(tintColour),
+        isCyclic: style == 'cyclic',
+        isChaotic: structure == 'chaotic',
+      };
+    }
 
     const svgString = buildArtwork(tokenParams);
     // console.log('SVG STRING: ' + svgString);
@@ -72,7 +77,7 @@ export function ArtBoard() {
   useEffect(() => {
     const svg = generateSvgDataUri();
     setSvg(svg);
-  }, [randomSeed, style, structure, custom, shapeCount, tintColour]);
+  }, [activeTab, randomSeed, style, structure, shapeCount, tintColour]);
 
   const newSeedPressed = () => {
     const newSeed = generateNewSeed();
