@@ -9,7 +9,7 @@ import {
   randomIntFromInterval,
 } from '../../src/anglez';
 import { Button, NumberInput, ColorPicker } from '@mantine/core';
-import { getReadWriteContract, mintCustomAnglez } from '../../src/BlockchainAPI';
+import { getReadWriteContract, mintCustomAnglez, mintRandomAnglez } from '../../src/BlockchainAPI';
 import { showErrorMessage } from '@/src/UIUtils';
 import { handleError } from '@/src/ErrorHandler';
 import { toast } from 'react-toastify';
@@ -28,6 +28,7 @@ export function ArtBoard() {
   // stored as rgb()
   const [tintColour, setTintColour] = useState('');
   const [svg, setSvg] = useState('');
+  const [isMinting, setIsMinting] = useState(false);
 
   const generateSvgDataUri = () => {
     console.log('Generating svg data URI...');
@@ -92,12 +93,16 @@ export function ArtBoard() {
     console.log('Minting random...');
 
     try {
-      const contract = await getReadWriteContract();
+      setIsMinting(true);
+      const mintTx = await mintRandomAnglez(randomSeed);
 
-      const mintTx = await contract.mintRandom(randomSeed);
       console.log('Mint tx: ' + mintTx.hash);
+      toast.success('Your NFT is currently minting!');
+      setIsMinting(false);
+      randomize();
     } catch (error: any) {
       console.error('Minting error! ', error);
+      setIsMinting(false);
       handleError(error);
     }
   };
@@ -114,19 +119,24 @@ export function ArtBoard() {
     };
 
     console.log('Minting with params: ' + JSON.stringify(tokenParams));
+    setIsMinting(true);
 
     try {
       //     function mintCustom(uint24 seed, uint8 shapeCount, uint8 zoom, uint8 tintRed, uint8 tintGreen, uint8 tintBlue, uint8 tintAlpha, bool isCyclic) public payable {
-      await mintCustomAnglez(tokenParams);
-      toast.success('Your NFT has been minted!');
+      const mintTx = await mintCustomAnglez(tokenParams);
+      console.log('Mint tx: ' + mintTx.hash);
+      setIsMinting(false);
+      toast.success('Your NFT is currently minting!');
+      randomize();
     } catch (error: any) {
       console.error('Minting error: ', error);
+      setIsMinting(false);
       handleError(error);
     }
   };
 
   const rgbToObj = (rgbString: string) => {
-    console.log('RGB: ' + rgbString);
+    // console.log('RGB: ' + rgbString);
     let colors = ['r', 'g', 'b', 'a'];
 
     let colorArray = rgbString
@@ -140,7 +150,7 @@ export function ArtBoard() {
       a: Number(colorArray[3]),
     };
 
-    console.log('RGB obj: ' + JSON.stringify(color));
+    // console.log('RGB obj: ' + JSON.stringify(color));
     return color;
   };
 
@@ -178,17 +188,24 @@ export function ArtBoard() {
             <Tabs.Panel value="random" pt="xs">
               <div className="panel">
                 <div>Random seed: {randomSeed}</div>
-                <Button onClick={randomize}>Randomize</Button>
-                <Button
-                  onClick={() => {
-                    setActiveTab('custom');
-                  }}
-                >
-                  Customize
-                </Button>
-                <Button className={styles.mintButton} onClick={mintRandom}>
-                  Mint!
-                </Button>
+
+                {isMinting ? (
+                  <Loading />
+                ) : (
+                  <>
+                    <Button onClick={randomize}>Randomize</Button>
+                    <Button
+                      onClick={() => {
+                        setActiveTab('custom');
+                      }}
+                    >
+                      Customize
+                    </Button>
+                    <Button className={styles.mintButton} onClick={mintRandom}>
+                      Mint!
+                    </Button>
+                  </>
+                )}
               </div>
               <div className="panel">
                 <Text ta="left" size="lg">
@@ -220,15 +237,21 @@ export function ArtBoard() {
             <Tabs.Panel value="custom" pt="xs">
               <div className="panel">
                 <div>Random seed: {randomSeed}</div>
-                <Button onClick={randomize}>Randomize all</Button>
-                <Button onClick={newSeedPressed}>New Seed</Button>
-                <Button className={styles.mintButton} onClick={mintCustom}>
-                  Mint!
-                </Button>
-                <p>
-                  <b>Randomize all</b> randomizes everything, while <b>New Seed</b> randomizes the
-                  seed value, but preserves your custom values.
-                </p>
+                {isMinting ? (
+                  <Loading />
+                ) : (
+                  <>
+                    <Button onClick={randomize}>Randomize all</Button>
+                    <Button onClick={newSeedPressed}>New Seed</Button>
+                    <Button className={styles.mintButton} onClick={mintCustom}>
+                      Mint!
+                    </Button>
+                    <p>
+                      <b>Randomize all</b> randomizes everything, while <b>New Seed</b> randomizes
+                      the seed value, but preserves your custom values.
+                    </p>
+                  </>
+                )}
               </div>
 
               <SimpleGrid cols={{ base: 1, xs: 2 }}>

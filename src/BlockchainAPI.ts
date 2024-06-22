@@ -315,6 +315,13 @@ export function clearCachedAccountDetails() {
 //   return (ethAddress === ownerAddress);
 // }
 
+export async function mintRandomAnglez(randomSeed: number) {
+  const contract = await getReadWriteContract();
+  const mintTx = await contract.mintRandom(randomSeed);
+
+  return mintTx;
+}
+
 export async function mintCustomAnglez(tokenParams: TokenParams) {
   console.log('Minting custom Anglez with params  ' + tokenParams);
 
@@ -345,6 +352,8 @@ export async function mintCustomAnglez(tokenParams: TokenParams) {
   );
 
   console.log('Mint tx: ' + mintTx.hash);
+
+  return mintTx;
 }
 
 export async function fetchTokenDetails(tokenId: number) {
