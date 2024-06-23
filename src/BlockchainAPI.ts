@@ -18,16 +18,7 @@ export interface AccountDetails {
   displayBalance: string;
 }
 
-// class AccountDetails {
-//   constructor(shortenedAddress, fullAddress, weiBalance, displayBalance) {
-//     this.shortenedAddress = shortenedAddress;
-//     this.fullAddress = fullAddress;
-//     this.weiBalance = weiBalance;
-//     this.displayBalance = displayBalance; // ETH
-//   }
-// }
-
-const AccountDetailsKey = 'DS_ACCOUNT_DETAILS_KEY';
+const AccountDetailsKey = 'NGLZ_ACCOUNT_DETAILS_KEY';
 
 // async function getJsonRpcProvider() {
 //   // return new ethers.JsonRpcProvider("https://api.mycryptoapi.comx/eth");
@@ -65,7 +56,7 @@ async function getProvider() {
   } else {
     console.log('Have window.. in browser.');
     if (!window.ethereum) {
-      throw Error(Errors.AGLZ_NO_ETH_WALLET);
+      throw Error(Errors.NGLZ_NO_ETH_WALLET);
     }
 
     console.log('Window.ethereum exists. Providers: ' + window.ethereum.providers);
@@ -89,15 +80,15 @@ async function getProvider() {
   console.log('Got provider.. now checking network.');
 
   // Check we are on expected network
-  // const network = await provider.getNetwork();
+  const network = await provider.getNetwork();
 
-  // console.log('Desired chain ID: ' + AnglezCurrentNetworkID);
-  // console.log('Current chain ID: ' + network.chainId);
+  console.log('Desired chain ID: ' + AnglezCurrentNetworkID);
+  console.log('Current chain ID: ' + network.chainId);
 
-  // if (network.chainId != AnglezCurrentNetworkID) {
-  //   console.log('Wrong network!');
-  //   throw Error(Errors.DS_WRONG_ETH_NETWORK);
-  // }
+  if (network.chainId != AnglezCurrentNetworkID) {
+    console.log('Wrong network!');
+    throw Error(Errors.NGLZ_WRONG_ETH_NETWORK);
+  }
 
   // switchToCurrentNetwork();
   console.log('Returning provider..');
@@ -156,7 +147,7 @@ export async function getReadWriteContract() {
 
   if (!window.ethereum) {
     console.log('No Ethereum wallet found. Throwing error NO_ETH_WALLET');
-    throw Error(Errors.AGLZ_NO_ETH_WALLET);
+    throw Error(Errors.NGLZ_NO_ETH_WALLET);
   }
 
   const provider = await getProvider();
@@ -210,7 +201,7 @@ export async function connectAccount() {
   console.log('ACCOUNT FROM ETH_REQUESTACCOUNTS: ' + account);
 
   if (account === undefined || account === null) {
-    throw Error(Errors.AGLZ_NO_ETH_ACCOUNT);
+    throw Error(Errors.NGLZ_NO_ETH_ACCOUNT);
   }
 
   return account;
@@ -245,7 +236,7 @@ export async function loadAccountDetails(account: JsonRpcSigner) {
     displayBalance,
   };
 
-  // localStorage.setItem(AccountDetailsKey, JSON.stringify(accountDetails));
+  localStorage.setItem(AccountDetailsKey, JSON.stringify(accountDetails));
 
   // fetchCachedAccountDetails();
 
@@ -313,7 +304,7 @@ export async function mintRandomAnglez(randomSeed: number) {
   const isSeedUsed = await contract.isSeedMinted(randomSeed);
   if (isSeedUsed) {
     console.log('Seed already used!');
-    throw Error(Errors.AGLZ_SEED_USED);
+    throw Error(Errors.NGLZ_SEED_USED);
   }
 
   const mintPrice = await contract.getRandomMintPrice();
@@ -339,7 +330,7 @@ export async function mintCustomAnglez(tokenParams: TokenParams) {
   const isSeedUsed = await contract.isSeedMinted(tokenParams.seed);
   if (isSeedUsed) {
     console.log('Seed already used!');
-    throw Error(Errors.AGLZ_SEED_USED);
+    throw Error(Errors.NGLZ_SEED_USED);
   }
 
   const alpha = Math.round(tokenParams.tintColour.a * 255);
@@ -369,13 +360,4 @@ export async function mintCustomAnglez(tokenParams: TokenParams) {
   const receipt = await mintTx.wait();
 
   return receipt;
-}
-
-export async function fetchTotalSupply() {
-  const contract = await getReadOnlyContract();
-  console.log('Got contract.');
-  const tokenCount = await contract.totalSupply();
-  console.log('Token count: ' + tokenCount);
-
-  return tokenCount;
 }

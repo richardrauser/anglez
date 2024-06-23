@@ -157,3 +157,12 @@ export async function fetchTokenDetails(tokenId: number) {
 
   return tokenDetails;
 }
+
+export async function fetchTotalSupply() {
+  const contract = await getReadOnlyContract();
+  console.log('Got contract.');
+  const tokenCount = await contract.totalSupply();
+  console.log('Token count: ' + tokenCount);
+
+  return tokenCount;
+}

@@ -67,12 +67,12 @@ export default function ConnectButton() {
       //   updateAccountDetails(null);
       //   return;
       // }
-      // const cachedDetails = fetchCachedAccountDetails();
-      // if (cachedDetails !== undefined && cachedDetails !== null) {
-      //   console.log('Got cached details: ' + JSON.stringify(cachedDetails));
-      //   updateAccountDetails(cachedDetails);
-      //   return;
-      // }
+      const cachedDetails = fetchCachedAccountDetails();
+      if (cachedDetails !== undefined && cachedDetails !== null) {
+        console.log('Got cached details: ' + JSON.stringify(cachedDetails));
+        updateAccountDetails(cachedDetails);
+        return;
+      }
       const account = await fetchCurrentAccount();
       if (account) {
         const accountDetails = await loadAccountDetails(account);
