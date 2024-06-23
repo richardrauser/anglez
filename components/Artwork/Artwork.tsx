@@ -10,22 +10,22 @@ export default function Artwork(props: { tokenId: number }) {
   const [loading, setLoading] = useState(true);
   const [tokenDetails, setTokenDetails] = useState<any | null>(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const details = await fetchTokenDetails(props.tokenId);
-      console.log('Details: ' + JSON.stringify(details));
-      setTokenDetails(details);
-      setLoading(false);
-    };
+  const fetchData = async () => {
+    const details = await fetchTokenDetails(props.tokenId);
+    // console.log('Details: ' + JSON.stringify(details));
+    setTokenDetails(details);
+    setLoading(false);
+  };
 
+  useEffect(() => {
     fetchData();
-  }, []);
+  }, [tokenDetails]);
 
   return (
     <Card className="basic" withBorder shadow="sm" radius="md">
       <Card.Section withBorder inheritPadding py="xs">
         <Text ta="left" size="xl">
-          <Link href={'artwork/' + props.tokenId}>Anglez #{props.tokenId}</Link>
+          <Link href={'artwork/' + props.tokenId}>{'Anglez #' + props.tokenId}</Link>
         </Text>
       </Card.Section>
       <div>

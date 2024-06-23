@@ -52,7 +52,7 @@ export async function fetchRecentTokenIds() {
   const tokenCount = await contract.totalSupply();
   console.log('Token count: ' + tokenCount);
 
-  const maxToDisplay = 12;
+  const maxToDisplay = 10;
 
   var tokens: number[] = [];
 

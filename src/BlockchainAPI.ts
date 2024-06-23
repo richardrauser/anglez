@@ -361,3 +361,18 @@ export async function mintCustomAnglez(tokenParams: TokenParams) {
 
   return receipt;
 }
+
+export async function fetchYourTokens() {
+  const contract = await getReadOnlyContract();
+
+  const address = await fetchCurrentAccount();
+
+  if (address === undefined || !address) {
+    return null;
+  }
+
+  const tokens = await contract.tokensOfOwner(address);
+  console.log('fetchYourTokens- tokens: ' + tokens);
+
+  return tokens.toArray().reverse();
+}

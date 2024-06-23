@@ -73,6 +73,7 @@ export default function ConnectButton() {
         updateAccountDetails(cachedDetails);
         return;
       }
+
       const account = await fetchCurrentAccount();
       if (account) {
         const accountDetails = await loadAccountDetails(account);
