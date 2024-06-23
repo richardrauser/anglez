@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
 import {
-  fetchAccountDetails,
+  fetchCurrentAccount,
+  loadAccountDetails,
   fetchCachedAccountDetails,
   clearCachedAccountDetails,
   hasAccount,
+  connectAccount,
 } from '@/src/BlockchainAPI';
 import classes from '@/styles/SplitButton.module.css';
 import '@/src/BlockchainAPI';
@@ -42,7 +44,8 @@ export default function ConnectButton() {
     //   showErrorMessage("Please unlock MetaMask.");
     // } else {
     try {
-      const accountDetails = await fetchAccountDetails();
+      const account = await connectAccount();
+      const accountDetails = await loadAccountDetails(account);
       updateAccountDetails(accountDetails);
     } catch (err: any) {
       console.log('ERROR: ' + err.message);
@@ -70,8 +73,13 @@ export default function ConnectButton() {
       //   updateAccountDetails(cachedDetails);
       //   return;
       // }
-      // const accountDetails = await fetchAccountDetails();
-      // updateAccountDetails(accountDetails);
+      const account = await fetchCurrentAccount();
+      if (account) {
+        const accountDetails = await loadAccountDetails(account);
+        updateAccountDetails(accountDetails);
+      } else {
+        updateAccountDetails(null);
+      }
     } catch (error) {
       console.log('Error occurred fetching account details. ' + error);
       setIsLoading(false);
@@ -122,13 +130,14 @@ export default function ConnectButton() {
   };
 
   useEffect(() => {
+    console.log('Running ConnectButton useEffect..');
     if (window.ethereum != null) {
       window.ethereum.on('accountsChanged', (accounts: any) => {
         console.log('Accounts changed.');
         clearCachedAccountDetails();
         disconnectWallet();
         // Is this causing multiple reloads?!
-        fetchDetails();
+        // fetchDetails();
       });
 
       // Is this causing multiple reloads?!
@@ -145,10 +154,7 @@ export default function ConnectButton() {
       });
     }
 
-    async function fetchData() {
-      await fetchDetails();
-    }
-    fetchData();
+    fetchDetails();
   }, []);
 
   // if (typeof window.ethereum === 'undefined') {

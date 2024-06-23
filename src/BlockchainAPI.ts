@@ -1,4 +1,4 @@
-import { ethers, JsonRpcProvider } from 'ethers';
+import { ethers, formatEther, JsonRpcProvider, JsonRpcSigner } from 'ethers';
 import Anglez from '../contract/Anglez.json';
 import * as Errors from './ErrorMessages';
 import {
@@ -29,28 +29,28 @@ export interface AccountDetails {
 
 const AccountDetailsKey = 'DS_ACCOUNT_DETAILS_KEY';
 
-async function getJsonRpcProvider() {
-  // return new ethers.JsonRpcProvider("https://api.mycryptoapi.comx/eth");
-  let provider;
+// async function getJsonRpcProvider() {
+//   // return new ethers.JsonRpcProvider("https://api.mycryptoapi.comx/eth");
+//   let provider;
 
-  if (AnglezCurrentNetworkName == 'localhost') {
-    // console.log("Returning JsonRpcProvider..");
-    // this will be readonly as it is not connected to a browser's ethereum wallet.
-    // TODO: specify URLS from infura, etc to get this working: https://docs.ethers.org/v6/getting-started/#starting-connecting
-    // provider = new ethers.JsonRpcProvider();
+//   if (AnglezCurrentNetworkName == 'localhost') {
+//     // console.log("Returning JsonRpcProvider..");
+//     // this will be readonly as it is not connected to a browser's ethereum wallet.
+//     // TODO: specify URLS from infura, etc to get this working: https://docs.ethers.org/v6/getting-started/#starting-connecting
+//     // provider = new ethers.JsonRpcProvider();
 
-    console.log('returning default provider pointing locally');
-    // provider = ethers.getDefaultProvider("http://localhost:8545");
-    // provider = ethers.getDefaultProvider("http://127.0.0.1:8545/");
-    provider = new ethers.JsonRpcProvider(); // will point locally
-    console.log('got default provider.');
-  } else {
-    provider = new ethers.JsonRpcProvider(); // getAlchemyProvider();
-    console.log('TODO: handle this!!!');
-  }
+//     console.log('returning default provider pointing locally');
+//     // provider = ethers.getDefaultProvider("http://localhost:8545");
+//     // provider = ethers.getDefaultProvider("http://127.0.0.1:8545/");
+//     provider = new ethers.JsonRpcProvider(); // will point locally
+//     console.log('got default provider.');
+//   } else {
+//     provider = new ethers.JsonRpcProvider(); // getAlchemyProvider();
+//     console.log('TODO: handle this!!!');
+//   }
 
-  return provider;
-}
+//   return provider;
+// }
 
 async function getProvider() {
   console.log('Returning default provider..');
@@ -61,15 +61,13 @@ async function getProvider() {
 
   if (typeof window === 'undefined') {
     console.log('No window.. not in browser.');
-    return getJsonRpcProvider();
+    throw Error('Not in browser.');
   } else {
     console.log('Have window.. in browser.');
     if (!window.ethereum) {
-      // this is fine for read only contracts, but not read write (as user needs wallet)
-      console.log('No Ethereum wallet found. Getting JSON RPC provider..');
-      return getJsonRpcProvider();
-      // throw Error(Errors.DS_NO_ETH_WALLET);
+      throw Error(Errors.AGLZ_NO_ETH_WALLET);
     }
+
     console.log('Window.ethereum exists. Providers: ' + window.ethereum.providers);
 
     // if (window.ethereum.providers) {
@@ -190,25 +188,36 @@ export async function hasAccount() {
   return hasAccount;
 }
 
-export async function fetchAccount() {
+export async function fetchCurrentAccount() {
   console.log('Fetching account..');
   const provider = await getProvider();
-  // var [account] = await provider.listAccounts();
-  var account = await provider.getSigner(); // TODO: really what you want?
+  var accounts = await provider.listAccounts();
+  var account = accounts[0];
+  // var account = await provider.getSigner(); // TODO: really what you want?
 
-  console.log('GOT ACCOUNT: ' + account);
-  if (account === undefined || account === null) {
-    [account] = await window.ethereum.request({ method: 'eth_requestAccounts' });
-
-    console.log('ACCOUNT FROM ETH_REQUESTACCOUNTS: ' + account);
+  if (account) {
+    console.log('GOT ACCOUNT: ' + account);
+  } else {
+    console.log('NO ACCOUNT CURRENTLY CONNECTED.');
   }
+
+  return account;
+}
+
+export async function connectAccount() {
+  const [account] = await window.ethereum.request({ method: 'eth_requestAccounts' });
+
+  console.log('ACCOUNT FROM ETH_REQUESTACCOUNTS: ' + account);
 
   if (account === undefined || account === null) {
     throw Error(Errors.AGLZ_NO_ETH_ACCOUNT);
   }
+
   return account;
 }
+
 export function shortenAddress(fullAddress: string) {
+  console.log('Shortening address: ' + fullAddress);
   var shortenedAddress = fullAddress;
   if (shortenedAddress.length > 10) {
     shortenedAddress = shortenedAddress.substring(0, 6) + '...' + shortenedAddress.slice(-4);
@@ -216,31 +225,31 @@ export function shortenAddress(fullAddress: string) {
   return shortenedAddress;
 }
 
-export async function fetchAccountDetails() {
+export async function loadAccountDetails(account: JsonRpcSigner) {
   console.log('Fetching account details from blockchain..');
+  console.log('Account: ' + account);
 
-  // const account = await fetchAccount();
-  // const provider = await getProvider();
+  const provider = await getProvider();
 
-  // const fullAddress = account.address;
-  // var shortenedAddress = shortenAddress(fullAddress);
-  // console.log('Getting details of account: ' + fullAddress);
+  const fullAddress = account.toString();
+  var shortenedAddress = shortenAddress(fullAddress);
+  console.log('Getting details of account: ' + fullAddress);
 
-  // const weiBalance = await provider.getBalance(account);
-  // const displayBalance = Number(formatEther(weiBalance)).toFixed(4).toString();
+  const weiBalance = await provider.getBalance(account);
+  const displayBalance = Number(formatEther(weiBalance)).toFixed(4).toString();
 
-  // var accountDetails: AccountDetails = {
-  //   shortenedAddress,
-  //   fullAddress,
-  //   weiBalance: weiBalance.toString(),
-  //   displayBalance,
-  // };
+  var accountDetails: AccountDetails = {
+    shortenedAddress,
+    fullAddress,
+    weiBalance: weiBalance.toString(),
+    displayBalance,
+  };
 
   // localStorage.setItem(AccountDetailsKey, JSON.stringify(accountDetails));
 
   // fetchCachedAccountDetails();
 
-  // return accountDetails;
+  return accountDetails;
 }
 
 export function fetchCachedAccountDetails() {

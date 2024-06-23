@@ -7,7 +7,7 @@ export function handleError(error: any) {
   console.log('Handling error ' + error.code + ': ' + error.message);
 
   if (error.code === 4001) {
-    showErrorMessage('You rejected the transaction. :-(');
+    showErrorMessage('You rejected the request. 😢');
   } else if (error.code === 'INSUFFICIENT_FUNDS') {
     showErrorMessage(
       'Insufficient funds to pay for this transation. Please add more funds to your crypto wallet.'
@@ -23,7 +23,7 @@ export function handleError(error: any) {
       showErrorMessage('Oops, an Internal JSON RPC error occurred. ');
     }
   } else if (error.code === 'ACTION_REJECTED') {
-    showErrorMessage('You rejected the transaction.');
+    showErrorMessage('You rejected the request. 😢');
   } else if (error.message === Errors.AGLZ_NO_ETH_WALLET) {
     showErrorMessage('No crypto wallet detected. Please install MetaMask.');
   } else if (
