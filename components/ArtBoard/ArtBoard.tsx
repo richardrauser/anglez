@@ -256,7 +256,7 @@ export function ArtBoard() {
                       ')'}{' '}
                   </div>
                   <div>
-                    <b>Tint transparency:</b> {rgbToObj(tintColour).a * 100} %
+                    <b>Tint transparency:</b> {Math.round(rgbToObj(tintColour).a * 100)} %
                   </div>
                 </Text>
               </div>

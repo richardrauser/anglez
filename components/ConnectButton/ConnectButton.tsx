@@ -58,23 +58,20 @@ export default function ConnectButton() {
     setEtherscanUrl('');
 
     try {
-      const connected = await hasAccount();
-
-      if (!connected) {
-        console.log('Not connected..');
-        updateAccountDetails(null);
-        return;
-      }
-
+      // const connected = await hasAccount();
+      // if (!connected) {
+      //   console.log('Not connected..');
+      //   updateAccountDetails(null);
+      //   return;
+      // }
       // const cachedDetails = fetchCachedAccountDetails();
       // if (cachedDetails !== undefined && cachedDetails !== null) {
       //   console.log('Got cached details: ' + JSON.stringify(cachedDetails));
       //   updateAccountDetails(cachedDetails);
       //   return;
       // }
-
-      const accountDetails = await fetchAccountDetails();
-      updateAccountDetails(accountDetails);
+      // const accountDetails = await fetchAccountDetails();
+      // updateAccountDetails(accountDetails);
     } catch (error) {
       console.log('Error occurred fetching account details. ' + error);
       setIsLoading(false);

@@ -13,21 +13,6 @@ import { showInfoMessage } from './UIUtils';
 import { formatEther } from 'ethers';
 import { TokenParams } from './anglez';
 
-export interface TokenDetails {
-  tokenId: number;
-  svg: string;
-  svgDataUri: string;
-  attributes: {
-    seed: number;
-    shapeCount: number;
-    tintColor: string;
-    tintTransparency: string;
-    style: string;
-    structure: string;
-    isCustom: string;
-  };
-}
-
 export interface AccountDetails {
   shortenedAddress: string;
   fullAddress: string;
@@ -62,8 +47,8 @@ async function getJsonRpcProvider() {
     provider = new ethers.JsonRpcProvider(); // will point locally
     console.log('got default provider.');
   } else {
-    console.log('Returning Alchemy provider');
-    provider = new ethers.AlchemyProvider(AnglezCurrentNetworkID, process.env.ALCHEMY_API_KEY);
+    provider = new ethers.JsonRpcProvider(); // getAlchemyProvider();
+    console.log('TODO: handle this!!!');
   }
 
   return provider;
@@ -118,7 +103,7 @@ async function getProvider() {
   //   throw Error(Errors.DS_WRONG_ETH_NETWORK);
   // }
 
-  switchToCurrentNetwork();
+  // switchToCurrentNetwork();
   console.log('Returning provider..');
   return provider;
 }
@@ -236,28 +221,28 @@ export function shortenAddress(fullAddress: string) {
 export async function fetchAccountDetails() {
   console.log('Fetching account details from blockchain..');
 
-  const account = await fetchAccount();
-  const provider = await getProvider();
+  // const account = await fetchAccount();
+  // const provider = await getProvider();
 
-  const fullAddress = account.address;
-  var shortenedAddress = shortenAddress(fullAddress);
-  console.log('Getting details of account: ' + fullAddress);
+  // const fullAddress = account.address;
+  // var shortenedAddress = shortenAddress(fullAddress);
+  // console.log('Getting details of account: ' + fullAddress);
 
-  const weiBalance = await provider.getBalance(account);
-  const displayBalance = Number(formatEther(weiBalance)).toFixed(4).toString();
+  // const weiBalance = await provider.getBalance(account);
+  // const displayBalance = Number(formatEther(weiBalance)).toFixed(4).toString();
 
-  var accountDetails: AccountDetails = {
-    shortenedAddress,
-    fullAddress,
-    weiBalance: weiBalance.toString(),
-    displayBalance,
-  };
+  // var accountDetails: AccountDetails = {
+  //   shortenedAddress,
+  //   fullAddress,
+  //   weiBalance: weiBalance.toString(),
+  //   displayBalance,
+  // };
 
-  localStorage.setItem(AccountDetailsKey, JSON.stringify(accountDetails));
+  // localStorage.setItem(AccountDetailsKey, JSON.stringify(accountDetails));
 
-  fetchCachedAccountDetails();
+  // fetchCachedAccountDetails();
 
-  return accountDetails;
+  // return accountDetails;
 }
 
 export function fetchCachedAccountDetails() {
@@ -385,97 +370,6 @@ export async function mintCustomAnglez(tokenParams: TokenParams) {
   return receipt;
 }
 
-export async function fetchTokenDetails(tokenId: number) {
-  console.log('Getting metadata for token ID: ' + tokenId);
-
-  if (tokenId === undefined || tokenId === null) {
-    console.log('No token ID!');
-    return null;
-  }
-  const contract = await getReadOnlyContract();
-  const metadataDataUri = await contract.tokenURI(tokenId);
-  var metadataJson = '';
-
-  if (metadataDataUri.startsWith('data:text/plain,')) {
-    metadataJson = metadataDataUri.replace('data:text/plain,', '');
-  } else if (metadataDataUri.startsWith('data:application/json,')) {
-    metadataJson = metadataDataUri.replace('data:application/json,', '');
-  } else if (metadataDataUri.startsWith('data:application/json;base64,')) {
-    const metadataJsonBase64Encoded = metadataDataUri.replace('data:application/json;base64,', '');
-    let buffer = new Buffer(metadataJsonBase64Encoded, 'base64');
-
-    metadataJson = buffer.toString('utf-8');
-  }
-
-  console.log('METADATA: ' + metadataJson);
-
-  const metadataObject = JSON.parse(metadataJson);
-
-  const svg = metadataObject.image.replace('data:image/svg+xml,', '');
-  const encodedSvg = encodeURIComponent(svg);
-  const svgDataUri = `data:image/svg+xml,${encodedSvg}`;
-
-  // console.log("SVG: " + svg);
-
-  interface Attribute {
-    trait_type: string;
-    value: string;
-  }
-
-  let seed = metadataObject.attributes.filter(
-    (attribute: Attribute) => attribute.trait_type == 'seed'
-  )[0].value;
-
-  let shapeCount = metadataObject.attributes.filter(
-    (attribute: Attribute) => attribute.trait_type == 'shapes'
-  )[0].value;
-  let tintColor = metadataObject.attributes.filter(
-    (attribute: Attribute) => attribute.trait_type == 'tint color'
-  )[0].value;
-  // let tintBlue = metadataObject.attributes.filter(
-  //   (attribute) => attribute.trait_type == 'tintBlue'
-  // )[0].value;
-  // let tintGreen = metadataObject.attributes.filter(
-  //   (attribute) => attribute.trait_type == 'tintGreen'
-  // )[0].value;
-  let tintTransparency = metadataObject.attributes.filter(
-    (attribute: Attribute) => attribute.trait_type == 'tint transparency'
-  )[0].value;
-  // TODO: words from contract instead of true/false!
-  let style = metadataObject.attributes.filter(
-    (attribute: Attribute) => attribute.trait_type == 'style'
-  )[0].value;
-  let structure = metadataObject.attributes.filter(
-    (attribute: Attribute) => attribute.trait_type == 'structure'
-  )[0].value;
-  let isCustom = metadataObject.attributes.filter(
-    (attribute: Attribute) => attribute.trait_type == 'custom'
-  )[0].value;
-  // let waterChoppiness = metadataObject.attributes.filter(
-  //   (attribute) => attribute.trait_type == 'water'
-  // )[0].value;
-  // let cloudType = metadataObject.attributes.filter(
-  //   (attribute) => attribute.trait_type == 'clouds'
-  // )[0].value;
-
-  const tokenDetails: TokenDetails = {
-    tokenId,
-    svg,
-    svgDataUri,
-    attributes: {
-      seed,
-      shapeCount,
-      tintColor,
-      tintTransparency,
-      style,
-      structure,
-      isCustom,
-    },
-  };
-
-  return tokenDetails;
-}
-
 export async function fetchTotalSupply() {
   const contract = await getReadOnlyContract();
   console.log('Got contract.');
@@ -483,28 +377,4 @@ export async function fetchTotalSupply() {
   console.log('Token count: ' + tokenCount);
 
   return tokenCount;
-}
-
-export async function fetchRecentTokenIds() {
-  const contract = await getReadOnlyContract();
-
-  const contractAddress = await contract.getAddress();
-  console.log('fetchRecentTokens: Contract address: ' + contractAddress);
-
-  const tokenCount = await contract.totalSupply();
-  console.log('Token count: ' + tokenCount);
-
-  const maxToDisplay = 12;
-
-  var tokens: number[] = [];
-
-  // because tokenCount is a BigInt
-  const tokenCountInt = Number(tokenCount);
-  for (var i = tokenCountInt - 1; i >= 0 && i >= tokenCountInt - maxToDisplay; i--) {
-    console.log(i);
-    // const tokenId = await contract.tokenByIndex(i);
-    tokens.push(i);
-  }
-
-  return tokens;
 }

@@ -1,6 +1,7 @@
 'use client';
 import Loading from '@/components/Loading/Loading';
-import { TokenDetails, fetchTokenDetails } from '@/src/BlockchainAPI';
+import { TokenDetails } from '@/src/TokenDetails';
+import { fetchTokenDetails } from '@/src/BlockchainServerAPI';
 import { Button, Text } from '@mantine/core';
 import { ethers } from 'ethers';
 import { useEffect, useState } from 'react';

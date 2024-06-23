@@ -1,6 +1,6 @@
 import { Card, SimpleGrid, Text } from '@mantine/core';
 import { useEffect } from 'react';
-import { fetchTokenDetails } from '@/src/BlockchainAPI';
+import { fetchTokenDetails } from '@/src/BlockchainServerAPI';
 import { useState } from 'react';
 import Loading from '../Loading/Loading';
 import Link from 'next/link';
