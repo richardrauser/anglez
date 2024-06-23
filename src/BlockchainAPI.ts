@@ -9,8 +9,6 @@ import {
   AnglezCurrentNetworkRpcUrl,
   AnglezCurrentNetworkExplorerUrl,
 } from './Constants';
-import { showInfoMessage } from './UIUtils';
-import { formatEther } from 'ethers';
 import { TokenParams } from './anglez';
 
 export interface AccountDetails {
@@ -300,20 +298,6 @@ export function clearCachedAccountDetails() {
 //   return (ethAddress === ownerAddress);
 // }
 
-export async function fetchRandomMintPrice() {
-  const contract = await getReadOnlyContract();
-  const mintPrice = await contract.getRandomMintPrice();
-
-  return formatEther(mintPrice);
-}
-
-export async function fetchCustomMintPrice() {
-  const contract = await getReadOnlyContract();
-  const mintPrice = await contract.getCustomMintPrice();
-
-  return formatEther(mintPrice);
-}
-
 export async function mintRandomAnglez(randomSeed: number) {
   const contract = await getReadWriteContract();
 
@@ -323,7 +307,15 @@ export async function mintRandomAnglez(randomSeed: number) {
     throw Error(Errors.AGLZ_SEED_USED);
   }
 
-  const mintTx = await contract.mintRandom(randomSeed);
+  const mintPrice = await contract.getRandomMintPrice();
+  console.log('Mint price: ' + mintPrice.toString());
+
+  const overrides = {
+    // gasLimit: 200000,
+    value: mintPrice,
+  };
+
+  const mintTx = await contract.mintRandom(randomSeed, overrides);
   const receipt = await mintTx.wait();
 
   return receipt;

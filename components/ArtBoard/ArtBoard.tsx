@@ -4,12 +4,9 @@ import styles from './ArtBoard.module.css';
 import { Text, Radio, RadioGroup, Stack, SimpleGrid, Tabs, rem } from '@mantine/core';
 import { RGBAColor, buildArtwork, generateRandomTokenParams } from '../../src/anglez';
 import { Button, NumberInput, ColorPicker } from '@mantine/core';
-import {
-  fetchCustomMintPrice,
-  fetchRandomMintPrice,
-  mintCustomAnglez,
-  mintRandomAnglez,
-} from '../../src/BlockchainAPI';
+import { mintCustomAnglez, mintRandomAnglez } from '../../src/BlockchainAPI';
+import { fetchCustomMintPrice, fetchRandomMintPrice } from '../../src/BlockchainServerAPI';
+
 import { handleError } from '@/src/ErrorHandler';
 import { toast } from 'react-toastify';
 import { TokenParams } from '../../src/anglez';

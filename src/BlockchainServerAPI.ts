@@ -11,6 +11,7 @@ import {
 } from './Constants';
 import Anglez from '../contract/Anglez.json';
 import { TokenDetails } from './TokenDetails';
+import { formatEther } from 'ethers';
 
 export async function getAlchemyProvider() {
   console.log('Returning Alchemy provider');
@@ -26,6 +27,20 @@ export async function getReadOnlyContract() {
   console.log('CONTRACT ADDRESS: ' + AnglezContractAddress);
 
   return new ethers.Contract(AnglezContractAddress, Anglez.abi, provider);
+}
+
+export async function fetchRandomMintPrice() {
+  const contract = await getReadOnlyContract();
+  const mintPrice = await contract.getRandomMintPrice();
+
+  return formatEther(mintPrice);
+}
+
+export async function fetchCustomMintPrice() {
+  const contract = await getReadOnlyContract();
+  const mintPrice = await contract.getCustomMintPrice();
+
+  return formatEther(mintPrice);
 }
 
 export async function fetchRecentTokenIds() {
