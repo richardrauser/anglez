@@ -20,23 +20,25 @@ export function handleError(error: any) {
     }
   } else if (error.code === 'ACTION_REJECTED') {
     showErrorMessage('You rejected the transaction.');
-  } else if (error.message === Errors.DS_NO_ETH_WALLET) {
+  } else if (error.message === Errors.AGLZ_NO_ETH_WALLET) {
     showErrorMessage('No crypto wallet detected. Please install MetaMask.');
   } else if (
     error.code === 'UNSUPPORTED_OPERATION' &&
     error.message.startsWith('unknown account')
   ) {
     showErrorMessage('You need to connect an Ethereum wallet like MetaMask.');
-  } else if (error.message === Errors.DS_NO_ETH_ACCOUNT) {
+  } else if (error.message === Errors.AGLZ_NO_ETH_ACCOUNT) {
     showErrorMessage(
       'You need to connect an account via your crypto wallet before you can do that.'
     );
-  } else if (error.message === Errors.DS_WRONG_ETH_NETWORK) {
+  } else if (error.message === Errors.AGLZ_WRONG_ETH_NETWORK) {
     const errorMessage =
       "You're on the wrong network. Tap here to switch to " + AnglezCurrentNetworkName + '.';
     const onClose = switchToCurrentNetwork;
     showErrorMessage(errorMessage, onClose);
     // showErrorMessage(errorMessage);
+  } else if (error.message === Errors.AGLZ_SEED_USED) {
+    showErrorMessage('This random seed has already been used! Randomize or refresh and try again.');
   } else if (error.code != null) {
     showErrorMessage('An error occurred: (' + error.code + ') ' + error.message);
   } else {

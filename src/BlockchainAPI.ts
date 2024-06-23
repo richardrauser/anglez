@@ -175,7 +175,7 @@ export async function getReadWriteContract() {
 
   if (!window.ethereum) {
     console.log('No Ethereum wallet found. Throwing error NO_ETH_WALLET');
-    throw Error(Errors.DS_NO_ETH_WALLET);
+    throw Error(Errors.AGLZ_NO_ETH_WALLET);
   }
 
   const provider = await getProvider();
@@ -221,7 +221,7 @@ export async function fetchAccount() {
   }
 
   if (account === undefined || account === null) {
-    throw Error(Errors.DS_NO_ETH_ACCOUNT);
+    throw Error(Errors.AGLZ_NO_ETH_ACCOUNT);
   }
   return account;
 }
@@ -319,21 +319,29 @@ export async function fetchRandomMintPrice() {
   const contract = await getReadOnlyContract();
   const mintPrice = await contract.getRandomMintPrice();
 
-  return mintPrice;
+  return formatEther(mintPrice);
 }
 
 export async function fetchCustomMintPrice() {
   const contract = await getReadOnlyContract();
   const mintPrice = await contract.getCustomMintPrice();
 
-  return mintPrice;
+  return formatEther(mintPrice);
 }
 
 export async function mintRandomAnglez(randomSeed: number) {
   const contract = await getReadWriteContract();
-  const mintTx = await contract.mintRandom(randomSeed);
 
-  return mintTx;
+  const isSeedUsed = await contract.isSeedMinted(randomSeed);
+  if (isSeedUsed) {
+    console.log('Seed already used!');
+    throw Error(Errors.AGLZ_SEED_USED);
+  }
+
+  const mintTx = await contract.mintRandom(randomSeed);
+  const receipt = await mintTx.wait();
+
+  return receipt;
 }
 
 export async function mintCustomAnglez(tokenParams: TokenParams) {
@@ -341,6 +349,12 @@ export async function mintCustomAnglez(tokenParams: TokenParams) {
 
   const contract = await getReadWriteContract();
   //     function mintCustom(uint24 seed, uint8 shapeCount, uint8 tintRed, uint8 tintGreen, uint8 tintBlue, uint8 tintAlpha, bool isCyclic) public payable {
+
+  const isSeedUsed = await contract.isSeedMinted(tokenParams.seed);
+  if (isSeedUsed) {
+    console.log('Seed already used!');
+    throw Error(Errors.AGLZ_SEED_USED);
+  }
 
   const alpha = Math.round(tokenParams.tintColour.a * 255);
   // console.log('Alpha255 blockchainAPI: ' + alpha);
@@ -366,8 +380,9 @@ export async function mintCustomAnglez(tokenParams: TokenParams) {
   );
 
   console.log('Mint tx: ' + mintTx.hash);
+  const receipt = await mintTx.wait();
 
-  return mintTx;
+  return receipt;
 }
 
 export async function fetchTokenDetails(tokenId: number) {

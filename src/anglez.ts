@@ -36,7 +36,7 @@ export type RGBAColor = {
 // Generate random int, inclusive of min/max
 
 // Generate random int, inclusive of min/max
-export function randomIntFromInterval(randomSeed: number, min: number, max: number) {
+function randomIntFromInterval(randomSeed: number, min: number, max: number) {
   if (max <= min) {
     return min;
   }

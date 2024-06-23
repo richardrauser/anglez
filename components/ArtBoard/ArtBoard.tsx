@@ -1,16 +1,15 @@
 'use client';
 import { useEffect, useState } from 'react';
 import styles from './ArtBoard.module.css';
-import { Text, Radio, RadioGroup, Stack, Slider, SimpleGrid, Tabs, rem } from '@mantine/core';
-import {
-  RGBAColor,
-  buildArtwork,
-  generateRandomTokenParams,
-  randomIntFromInterval,
-} from '../../src/anglez';
+import { Text, Radio, RadioGroup, Stack, SimpleGrid, Tabs, rem } from '@mantine/core';
+import { RGBAColor, buildArtwork, generateRandomTokenParams } from '../../src/anglez';
 import { Button, NumberInput, ColorPicker } from '@mantine/core';
-import { getReadWriteContract, mintCustomAnglez, mintRandomAnglez } from '../../src/BlockchainAPI';
-import { showErrorMessage } from '@/src/UIUtils';
+import {
+  fetchCustomMintPrice,
+  fetchRandomMintPrice,
+  mintCustomAnglez,
+  mintRandomAnglez,
+} from '../../src/BlockchainAPI';
 import { handleError } from '@/src/ErrorHandler';
 import { toast } from 'react-toastify';
 import { TokenParams } from '../../src/anglez';
@@ -19,8 +18,9 @@ import Loading from '../Loading/Loading';
 
 export function ArtBoard() {
   const [loading, setLoading] = useState(true);
-  // TODO: handle situation where user switches back to random tab with custom setting set
   const [activeTab, setActiveTab] = useState<string | null>('random');
+  const [randomMintPrice, setRandomMintPrice] = useState<string | null>(null);
+  const [customMintPrice, setCustomMintPrice] = useState<string | null>(null);
   const [randomSeed, setRandomSeed] = useState(0);
   const [style, setStyle] = useState('cyclic');
   const [structure, setStructure] = useState('folded');
@@ -71,11 +71,25 @@ export function ArtBoard() {
     setLoading(false);
   };
 
+  const getRandomMintPrice = async () => {
+    const price = await fetchRandomMintPrice();
+    console.log('RANDOM MINT PRICE: ', price.toString());
+    setRandomMintPrice(price);
+  };
+  const getCustomMintPrice = async () => {
+    const price = await fetchCustomMintPrice();
+    console.log('CUSTOM MINT PRICE: ', price.toString());
+    setCustomMintPrice(price);
+  };
+
   useEffect(() => {
     randomize();
   }, []);
 
   useEffect(() => {
+    getRandomMintPrice();
+    getCustomMintPrice();
+
     const svg = generateSvgDataUri();
     setSvg(svg);
   }, [activeTab, randomSeed, style, structure, shapeCount, tintColour]);
@@ -94,14 +108,18 @@ export function ArtBoard() {
 
     try {
       setIsMinting(true);
-      const mintTx = await mintRandomAnglez(randomSeed);
+      const mintReceipt = await mintRandomAnglez(randomSeed);
 
-      console.log('Mint tx: ' + mintTx.hash);
-      toast.success(
-        'Transaction successfully submitted and your NFT is currently minting! Try another?'
-      );
+      console.log('Mint tx: ' + mintReceipt.hash);
+
+      if (mintReceipt.status == 1) {
+        toast.success('Your Anglez NFT has successfully minted! Try another?');
+      } else {
+        toast.error('There was an error minting your Anglez NFT. Please try again.');
+      }
+
       setIsMinting(false);
-      randomize();
+      // randomize();
     } catch (error: any) {
       console.error('Minting error! ', error);
       setIsMinting(false);
@@ -125,13 +143,16 @@ export function ArtBoard() {
 
     try {
       //     function mintCustom(uint24 seed, uint8 shapeCount, uint8 zoom, uint8 tintRed, uint8 tintGreen, uint8 tintBlue, uint8 tintAlpha, bool isCyclic) public payable {
-      const mintTx = await mintCustomAnglez(tokenParams);
-      console.log('Mint tx: ' + mintTx.hash);
+      const mintReceipt = await mintCustomAnglez(tokenParams);
+      console.log('Mint tx: ' + mintReceipt.hash);
       setIsMinting(false);
-      toast.success(
-        'Transaction successfully submitted and your NFT is currently minting! Try another?'
-      );
-      randomize();
+
+      if (mintReceipt.status == 1) {
+        toast.success('Your Anglez NFT has successfully minted! Try another?');
+      } else {
+        toast.error('There was an error minting your Anglez NFT. Please try again.');
+      }
+      // randomize();
     } catch (error: any) {
       console.error('Minting error: ', error);
       setIsMinting(false);
@@ -205,9 +226,11 @@ export function ArtBoard() {
                     >
                       Customize
                     </Button>
+                    {/* {randomMintCost != null && ( */}
                     <Button className={styles.mintButton} onClick={mintRandom}>
-                      Mint!
+                      Mint! ({randomMintPrice} ETH)
                     </Button>
+                    {/* )} */}
                   </>
                 )}
               </div>
@@ -248,7 +271,7 @@ export function ArtBoard() {
                     <Button onClick={randomize}>Randomize all</Button>
                     <Button onClick={newSeedPressed}>New Seed</Button>
                     <Button className={styles.mintButton} onClick={mintCustom}>
-                      Mint!
+                      Mint! ({customMintPrice + ' ETH'})
                     </Button>
                     <p>
                       <b>Randomize all</b> randomizes everything, while <b>New Seed</b> randomizes
