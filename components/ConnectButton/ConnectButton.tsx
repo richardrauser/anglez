@@ -30,7 +30,7 @@ export default function ConnectButton() {
   const [accountEthBalance, setAccountEthBalance] = useState('');
   const [etherscanUrl, setEtherscanUrl] = useState('');
 
-  const visitMetaMask = async () => {
+  const visitWalletWebsite = async () => {
     window.open('https://metamask.io', '_blank');
   };
 
@@ -170,7 +170,7 @@ export default function ConnectButton() {
       ) : (
         <div>
           {!isWalletInstalled ? (
-            <Button onClick={visitMetaMask}>Install MetaMask</Button>
+            <Button onClick={visitWalletWebsite}>Install wallet</Button>
           ) : (
             <div>
               {!isWalletConnected ? (

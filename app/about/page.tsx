@@ -16,7 +16,8 @@ export default function AboutPage() {
         </p>
         <h2>how do I use this?</h2>
         <p>
-          First, install a crypto wallet like <a href="https://metamask.io">MetaMask</a>.
+          First, install a crypto wallet like <a href="https://metamask.io">MetaMask</a> or{' '}
+          <a href="https://www.coinbase.com/wallet">Coinbase Wallet</a>.
         </p>
         <p>
           Next, you need Seploia ETH in order to mint anglez. You can get Sepolia ETH by using a

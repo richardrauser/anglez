@@ -14,7 +14,7 @@ export function handleError(error: any) {
     );
   } else if (error.code === -32002) {
     // -32002: already requesting accounts
-    showErrorMessage('Already requesting accounts. Please open MetaMask to confirm.');
+    showErrorMessage('Already requesting accounts. Please open your crypto wallet to confirm.');
   } else if (error.code === -32603) {
     // Internal JSON RPC error
     if (error.data != null && error.data.message != null) {
@@ -25,12 +25,12 @@ export function handleError(error: any) {
   } else if (error.code === 'ACTION_REJECTED') {
     showErrorMessage('You rejected the request. 😢');
   } else if (error.message === Errors.NGLZ_NO_ETH_WALLET) {
-    showErrorMessage('No crypto wallet detected. Please install MetaMask.');
+    showErrorMessage('No crypto wallet detected. Please install MetaMask or Coinbase Wallet.');
   } else if (
     error.code === 'UNSUPPORTED_OPERATION' &&
     error.message.startsWith('unknown account')
   ) {
-    showErrorMessage('You need to connect an Ethereum wallet like MetaMask.');
+    showErrorMessage('You need to connect an Ethereum wallet like MetaMask or Coinbase Wallet.');
   } else if (error.message === Errors.NGLZ_NO_ETH_ACCOUNT) {
     showErrorMessage(
       'You need to connect an account via your crypto wallet before you can do that.'
