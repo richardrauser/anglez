@@ -215,7 +215,7 @@ export function ArtBoard() {
                 <div>Random seed: {randomSeed}</div>
 
                 {isMinting ? (
-                  <Loading />
+                  <Loading loadingText="Minting! Waiting for transaction receipt..." />
                 ) : (
                   <>
                     <Button onClick={randomize}>Randomize</Button>
@@ -265,7 +265,7 @@ export function ArtBoard() {
               <div className="panel">
                 <div>Random seed: {randomSeed}</div>
                 {isMinting ? (
-                  <Loading />
+                  <Loading loadingText="Minting! Waiting for transaction receipt..." />
                 ) : (
                   <>
                     <Button onClick={randomize}>Randomize all</Button>
