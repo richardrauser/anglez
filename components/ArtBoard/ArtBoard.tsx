@@ -290,6 +290,7 @@ export function ArtBoard() {
                       Shapes
                     </Text>
                     <NumberInput
+                      size="md"
                       value={shapeCount}
                       min={2}
                       max={20}
@@ -316,14 +317,14 @@ export function ArtBoard() {
                   <Loading loadingText="Minting! Waiting for transaction receipt..." />
                 ) : (
                   <>
-                    <Button onClick={randomize}>Randomize all</Button>
+                    <Button onClick={randomize}>Randomize</Button>
                     <Button onClick={newSeedPressed}>New Seed</Button>
                     <Button className={styles.mintButton} onClick={mintCustom}>
                       Mint! ({customMintPrice + ' ETH'})
                     </Button>
                     <Text size="sm">
-                      <b>Randomize all</b> randomizes everything, while <b>New Seed</b> randomizes
-                      the seed value, but preserves your custom values.
+                      <b>Randomize</b> randomizes everything, while <b>New Seed</b> randomizes the
+                      seed value, but preserves your custom values.
                     </Text>
                   </>
                 )}
