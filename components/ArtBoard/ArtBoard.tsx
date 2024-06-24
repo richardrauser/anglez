@@ -219,30 +219,7 @@ export function ArtBoard() {
             </Tabs.List>
             <Tabs.Panel value="random" pt="xs">
               <div className="panel">
-                <div>Random seed: {randomSeed}</div>
-
-                {isMinting ? (
-                  <Loading loadingText="Minting! Waiting for transaction receipt..." />
-                ) : (
-                  <>
-                    <Button onClick={randomize}>Randomize</Button>
-                    <Button
-                      onClick={() => {
-                        setActiveTab('custom');
-                      }}
-                    >
-                      Customize
-                    </Button>
-                    {/* {randomMintCost != null && ( */}
-                    <Button className={styles.mintButton} onClick={mintRandom}>
-                      Mint! ({randomMintPrice} ETH)
-                    </Button>
-                    {/* )} */}
-                  </>
-                )}
-              </div>
-              <div className="panel">
-                <Text ta="left" size="lg">
+                <Text ta="left" size="sm">
                   <div>
                     <b>Shapes:</b> {shapeCount}
                   </div>
@@ -266,6 +243,29 @@ export function ArtBoard() {
                     <b>Tint transparency:</b> {Math.round(rgbToObj(tintColour).a * 100)} %
                   </div>
                 </Text>
+              </div>
+              <div className="panel">
+                <div>Random seed: {randomSeed}</div>
+
+                {isMinting ? (
+                  <Loading loadingText="Minting! Waiting for transaction receipt..." />
+                ) : (
+                  <>
+                    <Button onClick={randomize}>Randomize</Button>
+                    <Button
+                      onClick={() => {
+                        setActiveTab('custom');
+                      }}
+                    >
+                      Customize
+                    </Button>
+                    {/* {randomMintCost != null && ( */}
+                    <Button className={styles.mintButton} onClick={mintRandom}>
+                      Mint! ({randomMintPrice} ETH)
+                    </Button>
+                    {/* )} */}
+                  </>
+                )}
               </div>
             </Tabs.Panel>
             <Tabs.Panel value="custom" pt="xs">
@@ -321,10 +321,10 @@ export function ArtBoard() {
                     <Button className={styles.mintButton} onClick={mintCustom}>
                       Mint! ({customMintPrice + ' ETH'})
                     </Button>
-                    <p>
+                    <Text size="sm">
                       <b>Randomize all</b> randomizes everything, while <b>New Seed</b> randomizes
                       the seed value, but preserves your custom values.
-                    </p>
+                    </Text>
                   </>
                 )}
               </div>
