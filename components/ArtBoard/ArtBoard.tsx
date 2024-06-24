@@ -1,7 +1,17 @@
 'use client';
 import { useEffect, useState } from 'react';
 import styles from './ArtBoard.module.css';
-import { Text, Radio, RadioGroup, Stack, SimpleGrid, Tabs, rem } from '@mantine/core';
+import {
+  Text,
+  Radio,
+  RadioGroup,
+  Stack,
+  SimpleGrid,
+  Tabs,
+  rem,
+  Grid,
+  GridCol,
+} from '@mantine/core';
 import { RGBAColor, buildArtwork, generateRandomTokenParams } from '../../src/anglez';
 import { Button, NumberInput, ColorPicker } from '@mantine/core';
 import { mintCustomAnglez, mintRandomAnglez } from '../../src/BlockchainAPI';
@@ -260,6 +270,47 @@ export function ArtBoard() {
             </Tabs.Panel>
             <Tabs.Panel value="custom" pt="xs">
               <div className="panel">
+                <Grid>
+                  <Grid.Col span="3">
+                    <Text ta="left" size="m">
+                      Style
+                    </Text>
+                    <RadioGroup value={style} onChange={setStyle} name="style">
+                      <Radio value="linear" label="linear" />
+                      <Radio value="cyclic" label="cyclic" />
+                    </RadioGroup>
+                    <Text ta="left" size="m">
+                      Structure
+                    </Text>
+                    <RadioGroup value={structure} onChange={setStructure} name="structure">
+                      <Radio value="folded" label="folded" />
+                      <Radio value="chaotic" label="chaotic" />
+                    </RadioGroup>
+                    <Text ta="left" size="m">
+                      Shapes
+                    </Text>
+                    <NumberInput
+                      value={shapeCount}
+                      min={2}
+                      max={20}
+                      onChange={(value) => setShapeCount(Number(value))}
+                    />
+                  </Grid.Col>
+
+                  <Grid.Col span="auto">
+                    <Text ta="left" size="m">
+                      Tint
+                    </Text>
+                    <ColorPicker
+                      size="md"
+                      format="rgba"
+                      value={tintColour}
+                      onChange={setTintColour}
+                    />
+                  </Grid.Col>
+                </Grid>
+              </div>
+              <div className="panel">
                 <div>Random seed: {randomSeed}</div>
                 {isMinting ? (
                   <Loading loadingText="Minting! Waiting for transaction receipt..." />
@@ -277,70 +328,6 @@ export function ArtBoard() {
                   </>
                 )}
               </div>
-
-              <SimpleGrid cols={{ base: 1, xs: 2 }}>
-                <Stack>
-                  <div className="panel">
-                    <Text ta="left" size="m">
-                      Style
-                    </Text>
-                    <RadioGroup value={style} onChange={setStyle} name="style">
-                      {' '}
-                      <Radio value="linear" label="linear" />
-                      <Radio value="cyclic" label="cyclic" />
-                    </RadioGroup>
-                    <Text ta="left" size="m">
-                      Structure
-                    </Text>
-                    <RadioGroup value={structure} onChange={setStructure} name="structure">
-                      {' '}
-                      <Radio value="folded" label="folded" />
-                      <Radio value="chaotic" label="chaotic" />
-                    </RadioGroup>
-                  </div>
-                  <div className="panel">
-                    <Text ta="left" size="m">
-                      Shapes
-                    </Text>
-                    <NumberInput
-                      value={shapeCount}
-                      min={2}
-                      max={20}
-                      onChange={(value) => setShapeCount(Number(value))}
-                    />
-                  </div>
-                </Stack>
-
-                <Stack>
-                  <div className="panel">
-                    <Text ta="left" size="m">
-                      Tint
-                    </Text>
-                    <ColorPicker format="rgba" value={tintColour} onChange={setTintColour} />
-                  </div>
-                </Stack>
-              </SimpleGrid>
-              {/* <Stack>
-                <div className="panel">
-                  <Text ta="left" size="m">
-                    Zoom
-                  </Text>
-                  <Slider
-                    name="Zoom"
-                    value={zoom}
-                    onChange={(value) => setZoom(value)}
-                    color="blue"
-                    min={50}
-                    max={100}
-                    marks={[
-                      { value: 50, label: '50%' },
-                      { value: 75, label: '75%' },
-                      { value: 100, label: '100%' },
-                    ]}
-                  />
-                  {zoom}%
-                </div>
-              </Stack> */}
             </Tabs.Panel>
           </Tabs>
         </div>
