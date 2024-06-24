@@ -271,7 +271,7 @@ export function ArtBoard() {
             <Tabs.Panel value="custom" pt="xs">
               <div className="panel">
                 <Grid>
-                  <Grid.Col span="3">
+                  <Grid.Col span="auto">
                     <Text ta="left" size="m">
                       Style
                     </Text>
