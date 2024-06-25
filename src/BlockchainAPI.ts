@@ -74,7 +74,11 @@ async function getProvider() {
     // }
 
     console.log('Got window.ethereum.. returning browser provider..');
-    provider = new ethers.BrowserProvider(window.ethereum);
+    if (window.ethereum.providers && window.ethereum.providers.length > 0) {
+      provider = new ethers.BrowserProvider(window.ethereum.providers[0]);
+    } else {
+      provider = new ethers.BrowserProvider(window.ethereum);
+    }
   }
 
   console.log('Got provider.. now checking network.');
@@ -322,7 +326,7 @@ export async function mintRandomAnglez(randomSeed: number) {
 }
 
 export async function mintCustomAnglez(tokenParams: TokenParams) {
-  console.log('Minting custom Anglez with params  ' + tokenParams);
+  console.log('Minting custom Anglez with params  ' + JSON.stringify(tokenParams));
 
   const contract = await getReadWriteContract();
   //     function mintCustom(uint24 seed, uint8 shapeCount, uint8 tintRed, uint8 tintGreen, uint8 tintBlue, uint8 tintAlpha, bool isCyclic) public payable {
