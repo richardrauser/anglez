@@ -307,7 +307,7 @@ export function ArtBoard() {
                       Shapes
                     </Text>
 
-                    <SimpleGrid className={styles.numberPicker} cols="3" spacing="0">
+                    <SimpleGrid className={styles.numberPicker} cols={3} spacing="0">
                       <Button className={styles.numberPickerButton} onClick={decrementShapeCount}>
                         -
                       </Button>

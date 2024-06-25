@@ -72,7 +72,7 @@
 
 .numberPicker {
   /* margin: 0 8px !important; */
-  /* width: 110px; */
+  max-width: 128px;
 }
 
 .numberPickerButton {
