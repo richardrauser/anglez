@@ -69,3 +69,16 @@
     }
   }
 }
+
+.numberPicker {
+  /* margin: 0 8px !important; */
+  /* width: 110px; */
+}
+
+.numberPickerButton {
+  width: 28px;
+}
+
+.numberPickerText {
+  margin-top: 12px;
+}

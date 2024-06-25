@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styles from './ArtBoard.module.css';
 import {
   Text,
@@ -11,6 +11,7 @@ import {
   rem,
   Grid,
   GridCol,
+  NumberInputHandlers,
 } from '@mantine/core';
 import { RGBAColor, buildArtwork, generateRandomTokenParams } from '../../src/anglez';
 import { Button, NumberInput, ColorPicker } from '@mantine/core';
@@ -36,6 +37,8 @@ export function ArtBoard() {
   const [tintColour, setTintColour] = useState('');
   const [svg, setSvg] = useState('');
   const [isMinting, setIsMinting] = useState(false);
+
+  const handlersRef = useRef<NumberInputHandlers>(null);
 
   const generateSvgDataUri = () => {
     console.log('Generating svg data URI...');
@@ -108,6 +111,20 @@ export function ArtBoard() {
 
   const generateNewSeed = () => {
     return Math.trunc(Math.random() * 5_000_000);
+  };
+
+  const decrementShapeCount = () => {
+    const maxShapeCount = 2;
+    const newShapeCount = Math.max(shapeCount - 1, maxShapeCount);
+
+    setShapeCount(newShapeCount);
+  };
+
+  const incrementShapeCount = () => {
+    const maxShapeCount = 20;
+    const newShapeCount = Math.min(shapeCount + 1, maxShapeCount);
+
+    setShapeCount(newShapeCount);
   };
 
   const mintRandom = async () => {
@@ -289,13 +306,16 @@ export function ArtBoard() {
                     <Text ta="left" size="m">
                       Shapes
                     </Text>
-                    <NumberInput
-                      size="md"
-                      value={shapeCount}
-                      min={2}
-                      max={20}
-                      onChange={(value) => setShapeCount(Number(value))}
-                    />
+
+                    <SimpleGrid className={styles.numberPicker} cols="3" spacing="0">
+                      <Button className={styles.numberPickerButton} onClick={decrementShapeCount}>
+                        -
+                      </Button>
+                      <Text className={styles.numberPickerText}>{shapeCount}</Text>
+                      <Button className={styles.numberPickerButton} onClick={incrementShapeCount}>
+                        +
+                      </Button>
+                    </SimpleGrid>
                   </Grid.Col>
 
                   <Grid.Col span="auto">
