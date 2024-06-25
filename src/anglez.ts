@@ -236,7 +236,7 @@ function getShapes(
     var polyRotationDelta = 360 / polygonCount; //randomIntFromInterval(randomSeed + 18, 10, 180);
 
     for (var k = 0; k < polygonCount; k++) {
-      polygons += `<polygon points="${points}" transform="rotate(${polyRotation}, 500, 500)" fill="url(#gradient${i})" opacity="${polygonOpacity}%" />`;
+      polygons += `<polygon points="${points}" transform="rotate(${polyRotation}, 500, 500)" fill="url(#gradient${i})" opacity="0.${polygonOpacity}" />`;
       polyRotation += polyRotationDelta;
     }
 
