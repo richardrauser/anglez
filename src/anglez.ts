@@ -253,7 +253,7 @@ function getShapes(
     shapes += `
     <linearGradient id="gradient${i}" gradientTransform="rotate(${gradientRotation})">
       <stop offset="0%" stop-color="${gradientColour1}" />
-      <stop offset="50%" stop-color="${gradientColour2}" stop-opacity="${midStopOpacity}%" />
+      <stop offset="50%" stop-color="${gradientColour2}" stop-opacity="0.${midStopOpacity}" />
       <stop offset="100%" stop-color="${gradientColour3}" />
     </linearGradient>
     ${polygons}
