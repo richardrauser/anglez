@@ -6,12 +6,14 @@ import { MantineProvider, ColorSchemeScript } from '@mantine/core';
 import { theme } from '../theme';
 import { AnglezNavBar } from '@/components/NavBar/NavBar';
 // import { AnglezAppShell } from '../components/AnglezAppShell/AnglezAppShell';
+// import '@coinbase/onchainkit/styles.css';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 
 export const metadata = {
-  title: 'Anglez generative NFT art',
-  description: 'Anglez on-chain, generative NFT art by volstrate.',
+  title: 'Anglez - on-chain, generative NFT art',
+  description:
+    'Anglez is abstract, on-chain, generative NFT art that is user-directed, i.e. the user inputs into the creative process. By volstrate.',
 };
 
 export default function RootLayout({ children }: { children: any }) {
