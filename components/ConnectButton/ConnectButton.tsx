@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import { Identity } from '@coinbase/onchainkit/identity';
+import { Address } from '@coinbase/onchainkit/identity';
+import { Name } from '@coinbase/onchainkit/identity';
 
 import {
   fetchCurrentAccount,
@@ -34,7 +37,7 @@ export default function ConnectButton() {
   const [etherscanUrl, setEtherscanUrl] = useState('');
 
   const { address } = useAccount();
-  const balance = useBalance({ address: address });
+  const balanceResult = useBalance({ address: address });
   const { connectors, connect } = useConnect();
   const { disconnect } = useDisconnect();
 
@@ -110,6 +113,7 @@ export default function ConnectButton() {
   };
 
   const refreshWallet = () => {
+    // TODO: Implement refresh wallet
     // fetchDetails();
   };
 
@@ -222,7 +226,13 @@ export default function ConnectButton() {
                           />
                         }
                       >
-                        {shortenAddress(address)}
+                        <Identity
+                          address={address}
+                          schemaId="0xf8b05c79f090979bf4a80270aba232dff11a10d9ca55c4f88de95317970f0de9"
+                        >
+                          <Name />
+                          <Address />
+                        </Identity>{' '}
                       </Menu.Item>
                       <Menu.Item
                         onClick={navToEtherscan}
@@ -234,7 +244,7 @@ export default function ConnectButton() {
                           />
                         }
                       >
-                        {balance?.symbol} {balance?.value}
+                        {balanceResult.data?.formatted} {balanceResult.data?.symbol}
                       </Menu.Item>
                       <Menu.Item
                         onClick={refreshWallet}

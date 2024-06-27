@@ -7,7 +7,6 @@ import { Container, Grid, SimpleGrid, Tabs, rem } from '@mantine/core';
 import { handleError } from '@/src/ErrorHandler';
 import { IconArtboard, IconHeart } from '@tabler/icons-react';
 import styles from './GalleryPage.module.css';
-import { ContractEventPayload } from 'ethers';
 import { fetchYourTokens } from '@/src/BlockchainAPI';
 import Link from 'next/link';
 

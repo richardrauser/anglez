@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import { Container, Group, Burger, Transition, Paper } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-// import { MantineLogo } from '@mantinex/mantine-logo';
 import classes from './NavBar.module.css';
 import ConnectButton from '../ConnectButton/ConnectButton';
 

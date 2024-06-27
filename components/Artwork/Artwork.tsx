@@ -19,7 +19,7 @@ export default function Artwork(props: { tokenId: number }) {
 
   useEffect(() => {
     fetchData();
-  }, [tokenDetails]);
+  }, []);
 
   return (
     <Card className="basic" withBorder shadow="sm" radius="md">
