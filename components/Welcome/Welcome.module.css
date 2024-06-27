@@ -4,6 +4,7 @@
   font-weight: 900;
   letter-spacing: rem(-2px);
   font-family: 'Tektur', sans-serif;
+  margin-top: 24px!;
 
   @media (max-width: $mantine-breakpoint-md) {
     font-size: rem(50px);
