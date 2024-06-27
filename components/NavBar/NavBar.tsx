@@ -6,7 +6,7 @@ import classes from './NavBar.module.css';
 import ConnectButton from '../ConnectButton/ConnectButton';
 
 const links = [
-  { link: '/', label: 'anglez.xyz v0.3' },
+  { link: '/', label: 'anglez.xyz v0.4' },
   { link: '/create', label: 'create' },
   { link: '/gallery', label: 'gallery' },
   { link: '/about', label: 'about' },
