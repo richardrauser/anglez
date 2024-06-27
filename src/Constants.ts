@@ -1,10 +1,12 @@
 const AnglezLocalhostNetwork = 'localhost';
+const AnglezBaseSepoliaNetwork = 'basesepolia';
 const AnglezSepoliaNetwork = 'sepolia';
 const AnglezMainnetNetwork = 'mainnet';
 
 // Change this to control which environment you're pointing at.
 // const currentNetwork = AnglezLocalhostNetwork;
-const currentNetwork = AnglezSepoliaNetwork;
+const currentNetwork = AnglezBaseSepoliaNetwork;
+// const currentNetwork = AnglezSepoliaNetwork;
 // const currentNetwork = AnglezMainnetNetwork;
 
 const AnglezCurrentNetworkIDKey = 'AnglezCurrentNetworkIDKey';
@@ -34,6 +36,17 @@ function networkConfigFor(currentNetwork: string) {
       AnglezCurrentNetworkRpcUrlKey: 'http://localhost:8545',
       AnglezCurrentNetworkExplorerUrlKey: 'https://www.superbad.com/',
       AnglezContractAddressKey: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
+    };
+  } else if (currentNetwork === AnglezBaseSepoliaNetwork) {
+    return {
+      AnglezCurrentNetworkIDKey: 84532,
+      AnglezCurrentNetworkNameKey: 'Base Sepolia',
+      AnglezCurrentNetworkCurrencySymbolKey: 'ETH',
+      // TODO: Remove API key from RPC URL!
+      AnglezCurrentNetworkRpcUrlKey:
+        'https://api.developer.coinbase.com/rpc/v1/base-sepolia/ikCoAA-DxC0DMH4Y0xAT6tqPNjjMhftE',
+      AnglezCurrentNetworkExplorerUrlKey: 'https://sepolia.basescan.org/',
+      AnglezContractAddressKey: '0x1C079486a5CF1e46fE66f54E0E4ab6CC6e63194E',
     };
   } else if (currentNetwork === AnglezSepoliaNetwork) {
     return {
