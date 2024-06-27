@@ -6803,7 +6803,7 @@ __metadata:
     eslint-plugin-react: "npm:^7.33.2"
     eslint-plugin-react-hooks: "npm:^4.6.0"
     eslint-plugin-testing-library: "npm:^6.1.0"
-    ethers: "npm:^6.13.0"
+    ethers: "npm:^6.13.1"
     jest: "npm:^29.7.0"
     jest-environment-jsdom: "npm:^29.7.0"
     next: "npm:^14.0.1"
@@ -10136,7 +10136,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethers@npm:^6.13.0":
+"ethers@npm:^6.13.1":
   version: 6.13.1
   resolution: "ethers@npm:6.13.1"
   dependencies:
