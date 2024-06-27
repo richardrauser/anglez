@@ -8,6 +8,7 @@ import { AnglezNavBar } from '@/components/NavBar/NavBar';
 // import { AnglezAppShell } from '../components/AnglezAppShell/AnglezAppShell';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
+import { Providers } from './Providers';
 
 export const metadata = {
   title: 'Anglez generative NFT art',
@@ -33,10 +34,12 @@ export default function RootLayout({ children }: { children: any }) {
       </head>
       <body>
         <MantineProvider theme={theme}>
-          {/* <AnglezAppShell>{children}</AnglezAppShell> */}
-          <AnglezNavBar />
-          <ToastContainer />
-          <div className="mainContent">{children}</div>
+          <Providers>
+            {/* <AnglezAppShell>{children}</AnglezAppShell> */}
+            <AnglezNavBar />
+            <ToastContainer />
+            <div className="mainContent">{children}</div>
+          </Providers>
         </MantineProvider>
       </body>
     </html>
