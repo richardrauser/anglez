@@ -188,7 +188,7 @@ export default function ConnectButton() {
                 <>
                   <Menu transitionProps={{ transition: 'pop' }} position="bottom-end" withinPortal>
                     <Menu.Target>
-                      <Button>Connect!</Button>
+                      <Button>Connect Wallet</Button>
                     </Menu.Target>
                     <Menu.Dropdown>
                       {connectors.map((connector) => (
