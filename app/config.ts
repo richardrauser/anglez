@@ -6,7 +6,7 @@ const projectId = 'c9ea9ca2a0aede9f6aca19cb4992b402';
 
 export const config = createConfig({
   chains: [baseSepolia],
-  connectors: [],
+  // connectors: [],
   connectors: [coinbaseWallet()],
   transports: {
     // [base.id]: http(),
