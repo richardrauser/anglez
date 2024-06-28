@@ -10,7 +10,6 @@ import {
   clearCachedAccountDetails,
   hasAccount,
   connectAccount,
-  shortenAddress,
 } from '@/src/BlockchainAPI';
 import classes from '@/styles/SplitButton.module.css';
 import '@/src/BlockchainAPI';
@@ -22,18 +21,16 @@ import { IconChevronDown, IconMoneybag, IconReload, IconWallet } from '@tabler/i
 import { useAccount, useBalance, useDisconnect } from 'wagmi';
 import { Connector, useConnect } from 'wagmi';
 
-declare global {
-  interface Window {
-    ethereum?: any;
-  }
-}
+// declare global {
+//   interface Window {
+//     ethereum?: any;
+//   }
+// }
 
 export default function ConnectButton() {
   const [isLoading, setIsLoading] = React.useState(false);
   // const [isWalletConnected, setIsWalletConnected] = useState(false);
   const [isWalletInstalled, setIsWalletInstalled] = useState(false);
-  const [accountEthAddress, setAccountEthAddress] = useState('');
-  const [accountEthBalance, setAccountEthBalance] = useState('');
   const [etherscanUrl, setEtherscanUrl] = useState('');
 
   const { address } = useAccount();
@@ -47,13 +44,6 @@ export default function ConnectButton() {
 
   const connectWallet = async () => {
     console.log('Attempting to connect wallet..');
-    // const metaMaskUnlocked = (await window.ethereum._metamask.isUnlocked());
-    // console.log("Metamask unlocked? " + metaMaskUnlocked);
-
-    // if (window.ethereum.isMetaMask && !metaMaskUnlocked) {
-    //   console.log("Metamask lockiepooed.");
-    //   showErrorMessage("Please unlock MetaMask.");
-    // } else {
     try {
       const account = await connectAccount();
       const accountDetails = await loadAccountDetails(account);
@@ -62,46 +52,7 @@ export default function ConnectButton() {
       console.log('ERROR: ' + err.message);
       handleError(err);
     }
-    // }
   };
-
-  // const fetchDetails = async () => {
-  //   setIsLoading(true);
-  //   setAccountEthAddress('');
-  //   setAccountEthBalance('');
-  //   setEtherscanUrl('');
-
-  //   try {
-  //     // const connected = await hasAccount();
-  //     // if (!connected) {
-  //     //   console.log('Not connected..');
-  //     //   updateAccountDetails(null);
-  //     //   return;
-  //     // }
-  //     const cachedDetails = fetchCachedAccountDetails();
-  //     if (cachedDetails !== undefined && cachedDetails !== null) {
-  //       console.log('Got cached details: ' + JSON.stringify(cachedDetails));
-  //       updateAccountDetails(cachedDetails);
-  //       return;
-  //     }
-
-  //     const account = await fetchCurrentAccount();
-  //     if (account) {
-  //       const accountDetails = await loadAccountDetails(account);
-  //       updateAccountDetails(accountDetails);
-  //     } else {
-  //       updateAccountDetails(null);
-  //     }
-  //   } catch (error) {
-  //     console.log('Error occurred fetching account details. ' + error);
-  //     setIsLoading(false);
-  //     // only display error if wallet is connected
-  //     if (isWalletConnected == true) {
-  //       handleError(error);
-  //     }
-  //     updateAccountDetails(null);
-  //   }
-  // };
 
   const disconnectWallet = () => {
     console.log('Disconnecting wallet..');
@@ -124,8 +75,6 @@ export default function ConnectButton() {
     if (accountDetails != null && hasWallet) {
       console.log('Has details and wallet.');
       setIsWalletInstalled(true);
-      setAccountEthAddress(accountDetails.shortenedAddress);
-      setAccountEthBalance(accountDetails.displayBalance.toString());
       setEtherscanUrl(AnglezCurrentNetworkExplorerUrl + 'address/' + accountDetails.fullAddress);
 
       console.log('Address: ', accountDetails.shortenedAddress);
@@ -133,8 +82,6 @@ export default function ConnectButton() {
     } else {
       console.log('No details or wallet.');
       setIsWalletInstalled(hasWallet);
-      setAccountEthAddress('');
-      setAccountEthBalance('');
       setEtherscanUrl('');
     }
   };
@@ -145,34 +92,7 @@ export default function ConnectButton() {
     const hasWallet = window.ethereum !== undefined && window.ethereum !== null;
     setIsWalletInstalled(hasWallet);
     console.log('Address: ' + address);
-    // if (window.ethereum != null) {
-    //   window.ethereum.on('accountsChanged', (accounts: any) => {
-    //     console.log('Accounts changed.');
-    //     clearCachedAccountDetails();
-    //     disconnectWallet();
-    //     // Is this causing multiple reloads?!
-    //     // fetchDetails();
-    //   });
-    //   // Is this causing multiple reloads?!
-    //   window.ethereum.on('chainChanged', (chainId: any) => {
-    //     console.log('Chain changed.');
-    //     // Handle the new chain.
-    //     // Correctly handling chain changes can be complicated.
-    //     // We recommend reloading the page unless you have good reason not to.
-    //     clearCachedAccountDetails();
-    //     disconnectWallet();
-    //     // Is this causing multiple reloads?!
-    //     // window.location.reload();
-    //   });
-    // }
-    // fetchDetails();
-    // if (!address) {
   }, [address]);
-
-  // if (typeof window.ethereum === 'undefined') {
-  //     setIsLoading(false);
-  //     setIsWalletInstalled(false);
-  // }
 
   return (
     <div>
