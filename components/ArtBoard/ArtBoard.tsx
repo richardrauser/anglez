@@ -23,6 +23,13 @@ import { toast } from 'react-toastify';
 import { TokenParams } from '../../src/anglez';
 import { IconSparkles, IconTools } from '@tabler/icons-react';
 import Loading from '../Loading/Loading';
+import { useChainId } from 'wagmi';
+import { useSwitchChain } from 'wagmi';
+import { AnglezContractAddress, AnglezCurrentNetworkID } from '@/src/Constants';
+import { type BaseError, useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
+import { abi } from '@/contract/Anglez.json';
+import { showErrorMessage, showInfoMessage } from '@/src/UIUtils';
+import { baseSepolia } from 'viem/chains';
 
 export function ArtBoard() {
   const [loading, setLoading] = useState(true);
@@ -37,8 +44,13 @@ export function ArtBoard() {
   const [tintColour, setTintColour] = useState('');
   const [svg, setSvg] = useState('');
   const [isMinting, setIsMinting] = useState(false);
-
-  const handlersRef = useRef<NumberInputHandlers>(null);
+  const { chains, switchChain } = useSwitchChain();
+  const chainId = useChainId();
+  const { data: hash, error: mintError, isPending, writeContract } = useWriteContract();
+  // const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
+  //   hash,
+  //   confirmations: 1,
+  // });
 
   const generateSvgDataUri = () => {
     console.log('Generating svg data URI...');
@@ -93,6 +105,17 @@ export function ArtBoard() {
   };
 
   useEffect(() => {
+    if (mintError) {
+      showErrorMessage(mintError.cause.message);
+      console.error('Minting error: ', mintError.cause.message);
+    }
+  }, [mintError]);
+
+  // useEffect(() => {
+  //   showInfoMessage('Transaction confirmed: ' + isConfirmed);
+  // }, [isConfirmed]);
+
+  useEffect(() => {
     randomize();
   }, []);
 
@@ -131,16 +154,38 @@ export function ArtBoard() {
     console.log('Minting random...');
 
     try {
-      setIsMinting(true);
-      const mintReceipt = await mintRandomAnglez(randomSeed);
-
-      console.log('Mint tx: ' + mintReceipt.hash);
-
-      if (mintReceipt.status == 1) {
-        toast.success('Your Anglez NFT has successfully minted! Try another?');
-      } else {
-        toast.error('There was an error minting your Anglez NFT. Please try again.');
+      console.log('Chain ID: ' + chainId);
+      if (chainId != undefined && chainId != AnglezCurrentNetworkID) {
+        console.log('On wrong network.  Switching chain..');
+        switchChain({ chainId: baseSepolia.id });
       }
+
+      setIsMinting(true);
+      // const mintReceipt = await mintRandomAnglez(randomSeed);
+
+      writeContract({
+        address: `0x1C079486a5CF1e46fE66f54E0E4ab6CC6e63194E`,
+        abi,
+        chain: baseSepolia,
+        functionName: 'mintRandom',
+        args: [randomSeed],
+        // onSuccess(receipt) {
+        //   console.log('Minting success: ', receipt);
+        //   toast.success('Your Anglez NFT has successfully minted! Try another?');
+        // },
+        // onError(error) {
+        //   showErrorMessage(error.cause.message);
+        //   console.error('Minting error: ', error.cause.message);
+        // },
+      });
+
+      // console.log('Mint tx: ' + mintReceipt.hash);
+
+      // if (mintReceipt.status == 1) {
+      //   toast.success('Your Anglez NFT has successfully minted! Try another?');
+      // } else {
+      //   toast.error('There was an error minting your Anglez NFT. Please try again.');
+      // }
 
       setIsMinting(false);
       // randomize();
@@ -237,37 +282,36 @@ export function ArtBoard() {
             <Tabs.Panel value="random" pt="xs">
               <div className="panel">
                 <Text ta="left" size="sm">
-                  <div>
-                    <b>Shapes:</b> {shapeCount}
-                  </div>
-                  <div>
-                    <b>Style:</b> {style}
-                  </div>
-                  <div>
-                    <b>Structure:</b> {structure}
-                  </div>
-                  <div>
-                    <b>Tint color:</b>{' '}
-                    {'rgb(' +
-                      rgbToObj(tintColour).r +
-                      ', ' +
-                      rgbToObj(tintColour).g +
-                      ', ' +
-                      rgbToObj(tintColour).b +
-                      ')'}{' '}
-                  </div>
-                  <div>
-                    <b>Tint transparency:</b> {Math.round(rgbToObj(tintColour).a * 100)} %
-                  </div>
+                  <b>Shapes:</b> {shapeCount} <br />
+                  <b>Style:</b> {style} <br />
+                  <b>Structure:</b> {structure} <br />
+                  <b>Tint color:</b>
+                  {'rgb(' +
+                    rgbToObj(tintColour).r +
+                    ', ' +
+                    rgbToObj(tintColour).g +
+                    ', ' +
+                    rgbToObj(tintColour).b +
+                    ')'}
+                  <br />
+                  <b>Tint transparency:</b> {Math.round(rgbToObj(tintColour).a * 100)} %
                 </Text>
               </div>
               <div className="panel">
                 <div>Random seed: {randomSeed}</div>
 
-                {isMinting ? (
-                  <Loading loadingText="Minting! Waiting for transaction receipt..." />
+                {/* {isPending || isConfirming ? ( */}
+                {/* <Loading loadingText="Minting! Waiting for transaction receipt..." /> */}
+                {isPending ? (
+                  <Loading loadingText="Minting! Waiting for transaction submission..." />
                 ) : (
                   <>
+                    {/* {hash && <div>Transaction Hash: {hash}</div>}
+                    {isConfirming && <div>Waiting for confirmation...</div>}
+                    {isConfirmed && <div>Transaction confirmed.</div>} */}
+                    {/* {error && (
+                      <div>Error: {(error as BaseError).shortMessage || error.message}</div>
+                    )} */}
                     <Button onClick={randomize}>Randomize</Button>
                     <Button
                       onClick={() => {

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { fetchRecentTokenIds } from '@/src/BlockchainServerAPI';
 import Loading from '@/components/Loading/Loading';
 import Artwork from '@/components/Artwork/Artwork';
-import { Container, Grid, SimpleGrid, Tabs, rem } from '@mantine/core';
+import { Container, Grid, SimpleGrid, Tabs, Text, rem } from '@mantine/core';
 import { handleError } from '@/src/ErrorHandler';
 import { IconArtboard, IconHeart } from '@tabler/icons-react';
 import styles from './GalleryPage.module.css';
@@ -76,12 +76,12 @@ export default function GalleryPage() {
                 </SimpleGrid>
               ) : (
                 <Grid justify="center" align="center">
-                  <p>
+                  <Text>
                     <center>
                       You haven't minted any Anglez yet. <br /> Why not{' '}
                       <Link href={'create'}>get started?</Link>
                     </center>
-                  </p>
+                  </Text>
                 </Grid>
               )}
             </Tabs.Panel>

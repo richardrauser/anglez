@@ -20,7 +20,7 @@ const networkConfig = networkConfigFor(currentNetwork);
 if (networkConfig === undefined) {
   throw new Error('Invalid network');
 }
-const AnglezCurrentNetworkID = BigInt(networkConfig[AnglezCurrentNetworkIDKey]);
+const AnglezCurrentNetworkID = networkConfig[AnglezCurrentNetworkIDKey];
 const AnglezCurrentNetworkName = networkConfig[AnglezCurrentNetworkNameKey];
 const AnglezCurrentNetworkCurrencySymbol = networkConfig[AnglezCurrentNetworkCurrencySymbolKey];
 const AnglezCurrentNetworkRpcUrl = networkConfig[AnglezCurrentNetworkRpcUrlKey];

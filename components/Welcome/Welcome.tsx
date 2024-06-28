@@ -12,7 +12,7 @@ export function Welcome() {
         {/* <Text inherit variant="gradient" component="span" gradient={{ from: 'blue', to: 'orange' }}>
           anglez.xyz
         </Text> */}
-        <Image src="/anglez-main.png" alt="anglez text" width={352} height={84} />
+        <Image src="/anglez-logo-treatment-2.png" alt="anglez text" width={353} height={205} />
       </Title>
       <center>
         <Image src="/anglez-animated-1.gif" alt="anglez animation" width={300} height={300} />

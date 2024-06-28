@@ -11,8 +11,18 @@ import { ToastContainer } from 'react-toastify';
 import { Providers } from './Providers';
 
 export const metadata = {
-  title: 'Anglez generative NFT art',
-  description: 'Anglez on-chain, generative NFT art by volstrate.',
+  title: 'anglez generative NFT art',
+  description: 'anglez - abract, anguluar, on-chain, generative NFT art by volstrate.',
+  'twitter:card': 'anglez - abstract, angular, on-chain art',
+  'twitter:site': '@volstrate',
+  'twitter:title': 'anglez - abstract, angular, on-chain art',
+  'twitter:description': 'anglez - abract, anguluar, on-chain, generative NFT art by volstrate.',
+  'twitter:creator': '@volstrate',
+  'twitter:image': 'https://anglez.xyz/images/anglez-logo-treatment-2.png',
+  'og:title': 'anglez - abstract, angular, on-chain art',
+  'og:url': 'https://anglez.xyz/',
+  'og:image': 'https://anglez.xyz/images/anglez-logo-treatment-2.png',
+  'og:description': 'anglez - abract, anguluar, on-chain, generative NFT art by volstrate.  ',
 };
 
 export default function RootLayout({ children }: { children: any }) {
