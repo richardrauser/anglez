@@ -106,8 +106,8 @@ export function ArtBoard() {
 
   useEffect(() => {
     if (mintError) {
-      showErrorMessage(mintError.cause.message);
-      console.error('Minting error: ', mintError.cause.message);
+      showErrorMessage(mintError?.message);
+      console.error('Minting error: ', mintError?.message);
     }
   }, [mintError]);
 

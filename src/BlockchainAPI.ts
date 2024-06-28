@@ -89,7 +89,7 @@ async function getProvider() {
   console.log('Desired chain ID: ' + AnglezCurrentNetworkID);
   console.log('Current chain ID: ' + network.chainId);
 
-  if (network.chainId != AnglezCurrentNetworkID) {
+  if (network.chainId != BigInt(AnglezCurrentNetworkID)) {
     console.log('Wrong network!');
     throw Error(Errors.NGLZ_WRONG_ETH_NETWORK);
   }
