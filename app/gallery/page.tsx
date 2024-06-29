@@ -1,28 +1,33 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { fetchRecentTokenIds } from '@/src/BlockchainServerAPI';
+import { fetchRecentTokenIds, fetchYourTokens } from '@/src/BlockchainServerAPI';
 import Loading from '@/components/Loading/Loading';
 import Artwork from '@/components/Artwork/Artwork';
 import { Container, Grid, SimpleGrid, Tabs, Text, rem } from '@mantine/core';
 import { handleError } from '@/src/ErrorHandler';
 import { IconArtboard, IconHeart } from '@tabler/icons-react';
 import styles from './GalleryPage.module.css';
-import { fetchYourTokens } from '@/src/BlockchainAPI';
 import Link from 'next/link';
+import { useAccount } from 'wagmi';
 
 export default function GalleryPage() {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<string | null>('recent');
   const [recentTokenIds, setRecentTokenIds] = useState<number[] | null>(null);
   const [yourTokenIds, setYourTokenIds] = useState<number[] | null>(null);
+  const account = useAccount();
 
   const fetchData = async () => {
     try {
       const recentTokens = await fetchRecentTokenIds();
       setRecentTokenIds(recentTokens);
 
-      const yourTokens = await fetchYourTokens();
-      setYourTokenIds(yourTokens);
+      console.log('Fetching your tokens for address: ', account?.address);
+      const address = account?.address as string;
+      if (address) {
+        const yourTokens = await fetchYourTokens(account?.address as string);
+        setYourTokenIds(yourTokens);
+      }
 
       setLoading(false);
     } catch (error) {
@@ -33,6 +38,7 @@ export default function GalleryPage() {
   };
 
   useEffect(() => {
+    console.log('Current account: ', account.address);
     fetchData();
   }, []);
 
@@ -76,12 +82,12 @@ export default function GalleryPage() {
                 </SimpleGrid>
               ) : (
                 <Grid justify="center" align="center">
-                  <Text>
-                    <center>
+                  <center>
+                    <Text>
                       You haven't minted any Anglez yet. <br /> Why not{' '}
                       <Link href={'create'}>get started?</Link>
-                    </center>
-                  </Text>
+                    </Text>
+                  </center>
                 </Grid>
               )}
             </Tabs.Panel>

@@ -36,7 +36,7 @@ export default function RootLayout({ children }: { children: any }) {
           rel="stylesheet"
         />{' '}
         <ColorSchemeScript />
-        <link rel="shortcut icon" href="/favicon.svg" />
+        <link rel="shortcut icon" href="/favicon.ico" />
         <meta
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width, user-scalable=no"

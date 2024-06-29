@@ -30,6 +30,7 @@ import { type BaseError, useWaitForTransactionReceipt, useWriteContract } from '
 import { abi } from '@/contract/Anglez.json';
 import { showErrorMessage, showInfoMessage } from '@/src/UIUtils';
 import { baseSepolia } from 'viem/chains';
+import { Address } from 'viem';
 
 export function ArtBoard() {
   const [loading, setLoading] = useState(true);
@@ -155,16 +156,22 @@ export function ArtBoard() {
 
     try {
       console.log('Chain ID: ' + chainId);
-      if (chainId != undefined && chainId != AnglezCurrentNetworkID) {
-        console.log('On wrong network.  Switching chain..');
-        switchChain({ chainId: baseSepolia.id });
-      }
+      // if (chainId != undefined && chainId != AnglezCurrentNetworkID) {
+      //   console.log('On wrong network.  Switching chain..');
+      //   switchChain({ chainId: baseSepolia.id });
+      // }
+
+      // Always switching networks right now to ensure we end up on the right one
+      // useChainId only works for chains in wagmi config
+      const newChain = baseSepolia;
+      console.log('Switching to chain: ' + newChain.name);
+      switchChain({ chainId: newChain.id });
 
       setIsMinting(true);
       // const mintReceipt = await mintRandomAnglez(randomSeed);
 
       writeContract({
-        address: `0x1C079486a5CF1e46fE66f54E0E4ab6CC6e63194E`,
+        address: AnglezContractAddress as Address,
         abi,
         chain: baseSepolia,
         functionName: 'mintRandom',

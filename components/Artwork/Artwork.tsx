@@ -22,7 +22,7 @@ export default function Artwork(props: { tokenId: number }) {
   }, []);
 
   return (
-    <Card className="basic" withBorder shadow="sm" radius="md">
+    <Card key={props.tokenId} className="basic" withBorder shadow="sm" radius="md">
       <Card.Section withBorder inheritPadding py="xs">
         <Text ta="left" size="xl">
           <Link href={'artwork/' + props.tokenId}>{'Anglez #' + props.tokenId}</Link>
@@ -35,27 +35,19 @@ export default function Artwork(props: { tokenId: number }) {
           <Card.Section inheritPadding mt="lg">
             <SimpleGrid cols={2}>
               <Text ta="left" size="m">
-                <div>
-                  <b>Seed:</b> {tokenDetails?.attributes.seed}
-                </div>
-                <div>
-                  <b>Custom:</b> {tokenDetails?.attributes.isCustom}
-                </div>
-                <div>
-                  <b>Shapes:</b> {tokenDetails?.attributes.shapeCount}
-                </div>
-                <div>
-                  <b>Style:</b> {tokenDetails?.attributes.style}
-                </div>
-                <div>
-                  <b>Structure:</b> {tokenDetails?.attributes.structure}
-                </div>
-                <div>
-                  <b>Tint color:</b> {tokenDetails?.attributes.tintColor}{' '}
-                </div>
-                <div>
-                  <b>Tint transparency:</b> {tokenDetails?.attributes.tintTransparency}{' '}
-                </div>
+                <b>Seed:</b> {tokenDetails?.attributes.seed} <br />
+                <b>Custom:</b> {tokenDetails?.attributes.isCustom}
+                <br />
+                <b>Shapes:</b> {tokenDetails?.attributes.shapeCount}
+                <br />
+                <b>Style:</b> {tokenDetails?.attributes.style}
+                <br />
+                <b>Structure:</b> {tokenDetails?.attributes.structure}
+                <br />
+                <b>Tint color:</b> {tokenDetails?.attributes.tintColor}
+                <br />
+                <b>Tint transparency:</b> {tokenDetails?.attributes.tintTransparency}
+                <br />
               </Text>
               <Link href={'artwork/' + tokenDetails.tokenId}>
                 <img className="artwork" src={tokenDetails.svgDataUri} alt="Artwork" />

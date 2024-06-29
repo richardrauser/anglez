@@ -67,6 +67,21 @@ export async function fetchRecentTokenIds() {
   return tokens;
 }
 
+export async function fetchYourTokens(address: string) {
+  const contract = await getReadOnlyContract();
+
+  // const address = await fetchCurrentAccount();
+
+  if (address === undefined || !address) {
+    return null;
+  }
+
+  const tokens = await contract.tokensOfOwner(address);
+  console.log('fetchYourTokens- tokens: ' + tokens);
+
+  return tokens.toArray().reverse();
+}
+
 export async function fetchTokenDetails(tokenId: number) {
   console.log('Getting metadata for token ID: ' + tokenId);
 
