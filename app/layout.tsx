@@ -47,7 +47,7 @@ export default function RootLayout({ children }: { children: any }) {
           <Providers>
             {/* <AnglezAppShell>{children}</AnglezAppShell> */}
             <AnglezNavBar />
-            <ToastContainer />
+            <ToastContainer position="top-left" />
             <div className="mainContent">{children}</div>
           </Providers>
         </MantineProvider>

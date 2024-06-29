@@ -4,7 +4,13 @@ import { AnglezCurrentNetworkName } from './Constants';
 import { switchToCurrentNetwork } from './BlockchainAPI';
 
 export function handleError(error: any) {
-  console.log('Handling error ' + error.code + ': ' + error.message);
+  console.log('Handling error ' + error.name + ': ' + error.message);
+
+  const reason = error.cause.reason;
+
+  console.log('Error reason: ', reason);
+
+  // console.log('Error object: ', JSON.stringify(error));
 
   if (error.code === 4001) {
     showErrorMessage('You rejected the request. 😢');
@@ -42,6 +48,8 @@ export function handleError(error: any) {
     showErrorMessage(errorMessage, onClose);
     // showErrorMessage(errorMessage);
   } else if (error.message === Errors.NGLZ_SEED_USED) {
+    showErrorMessage('This random seed has already been used! Randomize or refresh and try again.');
+  } else if (reason == 'SEED_USED') {
     showErrorMessage('This random seed has already been used! Randomize or refresh and try again.');
   } else if (error.code != null) {
     showErrorMessage('An error occurred: ' + error.code + '.');

@@ -14,8 +14,7 @@ import {
   NumberInputHandlers,
 } from '@mantine/core';
 import { RGBAColor, buildArtwork, generateRandomTokenParams } from '../../src/anglez';
-import { Button, NumberInput, ColorPicker } from '@mantine/core';
-import { mintCustomAnglez, mintRandomAnglez } from '../../src/BlockchainAPI';
+import { Button, ColorPicker } from '@mantine/core';
 import { fetchCustomMintPrice, fetchRandomMintPrice } from '../../src/BlockchainServerAPI';
 
 import { handleError } from '@/src/ErrorHandler';
@@ -23,14 +22,19 @@ import { toast } from 'react-toastify';
 import { TokenParams } from '../../src/anglez';
 import { IconSparkles, IconTools } from '@tabler/icons-react';
 import Loading from '../Loading/Loading';
-import { useChainId } from 'wagmi';
+import { useAccount } from 'wagmi';
 import { useSwitchChain } from 'wagmi';
-import { AnglezContractAddress, AnglezCurrentNetworkID } from '@/src/Constants';
+import {
+  AnglezContractAddress,
+  AnglezCurrentNetworkID,
+  AnglezCurrentNetworkName,
+} from '@/src/Constants';
 import { type BaseError, useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
 import { abi } from '@/contract/Anglez.json';
 import { showErrorMessage, showInfoMessage } from '@/src/UIUtils';
 import { baseSepolia } from 'viem/chains';
 import { Address } from 'viem';
+import { parseEther } from 'ethers';
 
 export function ArtBoard() {
   const [loading, setLoading] = useState(true);
@@ -46,12 +50,16 @@ export function ArtBoard() {
   const [svg, setSvg] = useState('');
   const [isMinting, setIsMinting] = useState(false);
   const { chains, switchChain } = useSwitchChain();
-  const chainId = useChainId();
   const { data: hash, error: mintError, isPending, writeContract } = useWriteContract();
-  // const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
-  //   hash,
-  //   confirmations: 1,
-  // });
+  const account = useAccount();
+  const {
+    isLoading: isConfirming,
+    error: confirmedError,
+    isSuccess: isConfirmed,
+  } = useWaitForTransactionReceipt({
+    hash,
+    confirmations: 0,
+  });
 
   const generateSvgDataUri = () => {
     console.log('Generating svg data URI...');
@@ -105,12 +113,50 @@ export function ArtBoard() {
     setCustomMintPrice(price);
   };
 
+  // useEffect(() => {
+  //   console.error('Minting error: ', mintError?.message);
+
+  //   if (mintError != undefined && mintError != null) {
+  //     showErrorMessage(mintError?.message);
+  //   }
+  // }, [mintError]);
+
+  // useEffect(() => {
+  //   console.log('Is confirmed: ' + isConfirmed);
+  //   if (confirmedError == undefined) {
+  //     return;
+  //   }
+
+  //   if (!confirmedError) {
+  //     toast.success('Your Anglez NFT has successfully minted! Try another?');
+  //   } else {
+  //     toast.error('There was an error minting your Anglez NFT. Please try again.');
+  //   }
+  // }, [confirmedError]);
+
   useEffect(() => {
-    if (mintError) {
-      showErrorMessage(mintError?.message);
-      console.error('Minting error: ', mintError?.message);
+    console.log('Is pending: ' + isPending);
+    console.log('Is confirming: ' + isConfirming);
+
+    if (isPending || isConfirming) {
+      setIsMinting(true);
+    } else if (isMinting) {
+      if (!isPending && !isConfirming) {
+        // transaction done
+        if (isConfirmed) {
+          toast.success('Your Anglez NFT has successfully minted! Try another?');
+        } else if (mintError) {
+          console.log('Minting error: ', mintError);
+          handleError(mintError);
+          // toast.error('There was an error minting your Anglez NFT. Please try again.');
+        } else if (confirmedError) {
+          console.log('Confirmation error: ', confirmedError);
+          handleError(confirmedError);
+        }
+      }
+      setIsMinting(false);
     }
-  }, [mintError]);
+  }, [isPending, isConfirming]);
 
   // useEffect(() => {
   //   showInfoMessage('Transaction confirmed: ' + isConfirmed);
@@ -155,19 +201,21 @@ export function ArtBoard() {
     console.log('Minting random...');
 
     try {
-      console.log('Chain ID: ' + chainId);
-      // if (chainId != undefined && chainId != AnglezCurrentNetworkID) {
-      //   console.log('On wrong network.  Switching chain..');
-      //   switchChain({ chainId: baseSepolia.id });
-      // }
+      console.log('Minting random for address: ' + account.address);
 
-      // Always switching networks right now to ensure we end up on the right one
-      // useChainId only works for chains in wagmi config
-      const newChain = baseSepolia;
-      console.log('Switching to chain: ' + newChain.name);
-      switchChain({ chainId: newChain.id });
+      const currentChainId = account?.chainId;
+      console.log('Account Chain ID: ' + currentChainId);
+      console.log('Desired Chain ID: ' + AnglezCurrentNetworkID);
+      if (currentChainId != AnglezCurrentNetworkID) {
+        console.log('On wrong network.  Switching chain..');
+        toast.warn(
+          `You're on the wrong chain. Please switch to ${AnglezCurrentNetworkName} before minting.`
+        );
+        switchChain({ chainId: AnglezCurrentNetworkID });
+        return;
+      }
 
-      setIsMinting(true);
+      // setIsMinting(true);
       // const mintReceipt = await mintRandomAnglez(randomSeed);
 
       writeContract({
@@ -176,14 +224,6 @@ export function ArtBoard() {
         chain: baseSepolia,
         functionName: 'mintRandom',
         args: [randomSeed],
-        // onSuccess(receipt) {
-        //   console.log('Minting success: ', receipt);
-        //   toast.success('Your Anglez NFT has successfully minted! Try another?');
-        // },
-        // onError(error) {
-        //   showErrorMessage(error.cause.message);
-        //   console.error('Minting error: ', error.cause.message);
-        // },
       });
 
       // console.log('Mint tx: ' + mintReceipt.hash);
@@ -194,7 +234,7 @@ export function ArtBoard() {
       //   toast.error('There was an error minting your Anglez NFT. Please try again.');
       // }
 
-      setIsMinting(false);
+      // setIsMinting(false);
       // randomize();
     } catch (error: any) {
       console.error('Minting error! ', error);
@@ -204,30 +244,62 @@ export function ArtBoard() {
   };
 
   const mintCustom = async () => {
-    console.log('Minting custom...');
+    console.log('Minting custom for address: ' + account.address);
 
-    const tokenParams: TokenParams = {
-      seed: randomSeed,
-      shapeCount: shapeCount,
-      tintColour: rgbToObj(tintColour),
-      isCyclic: style == 'cyclic',
-      isChaotic: structure == 'chaotic',
-    };
+    const currentChainId = account?.chainId;
+    console.log('Account Chain ID: ' + currentChainId);
+    console.log('Desired Chain ID: ' + AnglezCurrentNetworkID);
+    if (currentChainId != AnglezCurrentNetworkID) {
+      console.log('On wrong network.  Switching chain..');
+      toast.warn(
+        `You're on the wrong chain. Please switch to ${AnglezCurrentNetworkName} before minting.`
+      );
+      switchChain({ chainId: AnglezCurrentNetworkID });
+      return;
+    }
 
-    console.log('Minting with params: ' + JSON.stringify(tokenParams));
-    setIsMinting(true);
+    // const tokenParams: TokenParams = {
+    //   seed: randomSeed,
+    //   shapeCount: shapeCount,
+    //   tintColour: rgbToObj(tintColour),
+    //   isCyclic: style == 'cyclic',
+    //   isChaotic: structure == 'chaotic',
+    // };
+
+    // console.log('Minting with params: ' + JSON.stringify(tokenParams));
+    // setIsMinting(true);
 
     try {
-      //     function mintCustom(uint24 seed, uint8 shapeCount, uint8 zoom, uint8 tintRed, uint8 tintGreen, uint8 tintBlue, uint8 tintAlpha, bool isCyclic) public payable {
-      const mintReceipt = await mintCustomAnglez(tokenParams);
-      console.log('Mint tx: ' + mintReceipt.hash);
-      setIsMinting(false);
+      const colour = rgbToObj(tintColour);
+      const alpha = Math.round(colour.a * 255);
 
-      if (mintReceipt.status == 1) {
-        toast.success('Your Anglez NFT has successfully minted! Try another?');
-      } else {
-        toast.error('There was an error minting your Anglez NFT. Please try again.');
-      }
+      writeContract({
+        address: AnglezContractAddress as Address,
+        abi,
+        chain: baseSepolia,
+        functionName: 'mintCustom',
+        args: [
+          randomSeed,
+          shapeCount,
+          colour.r,
+          colour.g,
+          colour.b,
+          alpha,
+          style == 'cyclic',
+          style == 'chaotic',
+        ],
+        value: parseEther(customMintPrice!),
+      });
+      //     function mintCustom(uint24 seed, uint8 shapeCount, uint8 zoom, uint8 tintRed, uint8 tintGreen, uint8 tintBlue, uint8 tintAlpha, bool isCyclic) public payable {
+      // const mintReceipt = await mintCustomAnglez(tokenParams);
+      // console.log('Mint tx: ' + mintReceipt.hash);
+      // setIsMinting(false);
+
+      // if (mintReceipt.status == 1) {
+      //   toast.success('Your Anglez NFT has successfully minted! Try another?');
+      // } else {
+      //   toast.error('There was an error minting your Anglez NFT. Please try again.');
+      // }
       // randomize();
     } catch (error: any) {
       console.error('Minting error: ', error);
@@ -309,7 +381,7 @@ export function ArtBoard() {
 
                 {/* {isPending || isConfirming ? ( */}
                 {/* <Loading loadingText="Minting! Waiting for transaction receipt..." /> */}
-                {isPending ? (
+                {isMinting ? (
                   <Loading loadingText="Minting! Waiting for transaction submission..." />
                 ) : (
                   <>

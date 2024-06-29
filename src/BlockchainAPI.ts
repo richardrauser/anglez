@@ -329,7 +329,6 @@ export async function mintCustomAnglez(tokenParams: TokenParams) {
   console.log('Minting custom Anglez with params  ' + JSON.stringify(tokenParams));
 
   const contract = await getReadWriteContract();
-  //     function mintCustom(uint24 seed, uint8 shapeCount, uint8 tintRed, uint8 tintGreen, uint8 tintBlue, uint8 tintAlpha, bool isCyclic) public payable {
 
   const isSeedUsed = await contract.isSeedMinted(tokenParams.seed);
   if (isSeedUsed) {
