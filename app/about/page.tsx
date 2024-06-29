@@ -17,7 +17,10 @@ export default function AboutPage() {
         </Text>
         <h2>how do I use this?</h2>
         <Text>
-          First, install a crypto wallet like <a href="https://metamask.io">MetaMask</a> or{' '}
+          From the Connect Wallet button, select the wallet you wish to use. Coinbase Smart Wallet
+          is the easiest option because you won't have to configure anything or even get crypto..
+          transaction fees are sponsorred! First, install a crypto wallet like{' '}
+          <a href="https://metamask.io">MetaMask</a> or{' '}
           <a href="https://www.coinbase.com/wallet">Coinbase Wallet</a>.
         </Text>
         <Text>
