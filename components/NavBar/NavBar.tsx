@@ -6,7 +6,7 @@ import classes from './NavBar.module.css';
 import ConnectButton from '../ConnectButton/ConnectButton';
 
 const links = [
-  { link: '/', label: 'anglez.xyz v0.6' },
+  { link: '/', label: 'anglez.xyz v0.7' },
   { link: '/create', label: 'create' },
   { link: '/gallery', label: 'gallery' },
   { link: '/about', label: 'about' },
@@ -35,7 +35,6 @@ export function AnglezNavBar() {
     </a>
   ));
 
-  // TODO: Burger for mobile
   return (
     <header className={classes.header}>
       <Container size="md" className={classes.inner}>
