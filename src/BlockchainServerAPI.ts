@@ -15,7 +15,6 @@ import { formatEther } from 'ethers';
 
 export async function getAlchemyProvider() {
   console.log('Returning Alchemy provider');
-  console.log(process.env.ALCHEMY_API_KEY);
   // TODO: read key from environment variable
   return new ethers.AlchemyProvider(AnglezCurrentNetworkID, process.env.ALCHEMY_API_KEY);
 }
