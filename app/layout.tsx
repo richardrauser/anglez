@@ -15,25 +15,22 @@ import { getFrameMetadata } from '@coinbase/onchainkit/frame';
 const frameMetadata = getFrameMetadata({
   buttons: [
     {
-      label: 'randomize',
+      label: 'generate anglez',
     },
-    {
-      label: 'customize',
-    },
-    {
-      action: 'tx',
-      label: 'mint!',
-      target: `${NEXT_PUBLIC_URL}/api/tx`,
-      postUrl: `${NEXT_PUBLIC_URL}/api/tx-success`,
-    },
+    // {
+    //   label: 'customize',
+    // },
+    // {
+    //   action: 'tx',
+    //   label: 'mint!',
+    //   target: `${NEXT_PUBLIC_URL}/api/tx`,
+    //   postUrl: `${NEXT_PUBLIC_URL}/api/tx-success`,
+    // },
   ],
   image: {
     src: `${NEXT_PUBLIC_URL}/anglez-square.png`,
     aspectRatio: '1:1',
   },
-  // input: {
-  //   text: 'Tell me a story',
-  // },
   postUrl: `${NEXT_PUBLIC_URL}/api/frame`,
 });
 

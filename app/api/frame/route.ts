@@ -7,49 +7,61 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
 
   const body: FrameRequest = await req.json();
 
-  console.log('NEYNAR: ' + process.env.NEYNAR_API_KEY);
-  const { isValid, message } = await getFrameMessage(body, {
-    neynarApiKey: process.env.NEYNAR_API_KEY,
-  });
+  // console.log('NEYNAR: ' + process.env.NEYNAR_API_KEY);
+  // const { isValid, message } = await getFrameMessage(body, {
+  //   neynarApiKey: process.env.NEYNAR_API_KEY,
+  // });
+  // const { message } = await getFrameMessage(body);
 
-  console.log('Message: ' + JSON.stringify(message));
-  if (!isValid) {
-    return new NextResponse('Oh dear! Message not valid', { status: 500 });
-  }
+  // console.log('Message: ' + JSON.stringify(message));
+  // if (!isValid) {
+  //   return new NextResponse('Oh dear! Message not valid', { status: 500 });
+  // }
 
-  const text = message.input || '';
-  let state = {
-    page: 0,
-  };
-  try {
-    state = JSON.parse(decodeURIComponent(message.state?.serialized));
-  } catch (e) {
-    console.error(e);
-  }
+  // const text = message.input || '';
+  // let state = {
+  //   page: 0,
+  // };
+  // try {
+  //   state = JSON.parse(decodeURIComponent(message.state?.serialized));
+  // } catch (e) {
+  //   console.error(e);
+  // }
 
   // customize button
-  if (message?.button === 2) {
-    return NextResponse.redirect('https://anglez.xyz/create', { status: 302 });
-  }
+  // if (message?.button === 2) {
+  //   return NextResponse.redirect('https://anglez.xyz/create', { status: 302 });
+  // }
+
+  const state = null;
+
+  const randomSeed = Math.trunc(Math.random() * 5_000_000);
 
   return new NextResponse(
     getFrameHtmlResponse({
       buttons: [
         {
-          label: `State: ${state?.page || 0}`,
+          label: `generate anglez`,
+        },
+        {
+          action: 'tx',
+          label: 'mint!',
+          target: `${NEXT_PUBLIC_URL}/api/tx`,
+          postUrl: `${NEXT_PUBLIC_URL}/api/tx-success`,
         },
         {
           action: 'link',
-          label: 'OnchainKit',
-          target: 'https://onchainkit.xyz',
+          label: 'anglez.xyz',
+          target: 'https://anglez.xyz',
         },
-        {
-          action: 'post_redirect',
-          label: 'Dog pictures',
-        },
+        // {
+        //   action: 'post_redirect',
+        //   label: 'Dog pictures',
+        // },
       ],
       image: {
-        src: `${NEXT_PUBLIC_URL}/park-1.png`,
+        src: `${NEXT_PUBLIC_URL}/api/random/${randomSeed}`,
+        aspectRatio: '1:1',
       },
       postUrl: `${NEXT_PUBLIC_URL}/api/frame`,
       state: {
