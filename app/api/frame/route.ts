@@ -33,8 +33,6 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
   //   return NextResponse.redirect('https://anglez.xyz/create', { status: 302 });
   // }
 
-  const state = null;
-
   const randomSeed = Math.trunc(Math.random() * 5_000_000);
 
   return new NextResponse(
@@ -65,7 +63,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
       },
       postUrl: `${NEXT_PUBLIC_URL}/api/frame`,
       state: {
-        page: state?.page + 1,
+        // page: state?.page + 1,
         time: new Date().toISOString(),
       },
     })
