@@ -6,7 +6,7 @@ import { switchToCurrentNetwork } from './BlockchainAPI';
 export function handleError(error: any) {
   console.log('Handling error ' + error.name + ': ' + error.message);
 
-  const reason = error.cause.reason;
+  const reason = error.cause?.reason;
 
   console.log('Error reason: ', reason);
 
