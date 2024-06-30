@@ -9,6 +9,33 @@ import { AnglezNavBar } from '@/components/NavBar/NavBar';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import { Providers } from './Providers';
+import { NEXT_PUBLIC_URL } from '@/src/Constants';
+import { getFrameMetadata } from '@coinbase/onchainkit/frame';
+
+const frameMetadata = getFrameMetadata({
+  buttons: [
+    {
+      label: 'randomize',
+    },
+    {
+      label: 'customize',
+    },
+    {
+      action: 'tx',
+      label: 'mint!',
+      target: `${NEXT_PUBLIC_URL}/api/tx`,
+      postUrl: `${NEXT_PUBLIC_URL}/api/tx-success`,
+    },
+  ],
+  image: {
+    src: `${NEXT_PUBLIC_URL}/anglez-square.png`,
+    aspectRatio: '1:1',
+  },
+  // input: {
+  //   text: 'Tell me a story',
+  // },
+  postUrl: `${NEXT_PUBLIC_URL}/api/frame`,
+});
 
 export const metadata = {
   title: 'anglez generative NFT art',
@@ -18,11 +45,18 @@ export const metadata = {
   'twitter:title': 'anglez - abstract, angular, on-chain art',
   'twitter:description': 'anglez - abract, anguluar, on-chain, generative NFT art by volstrate.',
   'twitter:creator': '@volstrate',
-  'twitter:image': 'https://anglez.xyz/images/anglez-logo-treatment-2.png',
-  'og:title': 'anglez - abstract, angular, on-chain art',
-  'og:url': 'https://anglez.xyz/',
-  'og:image': 'https://anglez.xyz/images/anglez-logo-treatment-2.png',
-  'og:description': 'anglez - abract, anguluar, on-chain, generative NFT art by volstrate.  ',
+  'twitter:image': `${NEXT_PUBLIC_URL}/anglez-square.png`,
+  'og:image': `${NEXT_PUBLIC_URL}/anglez-square.png`,
+  openGraph: {
+    title: 'anglez - abstract, angular, on-chain art',
+    url: 'https://anglez.xyz/',
+    description: 'anglez - abract, anguluar, on-chain, generative NFT art by volstrate.  ',
+    images: [{ url: `https://www/amgle/anglez-square.png` }],
+    // images: [`${NEXT_PUBLIC_URL}/park-1.png`],
+  },
+  other: {
+    ...frameMetadata,
+  },
 };
 
 export default function RootLayout({ children }: { children: any }) {
