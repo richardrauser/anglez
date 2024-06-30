@@ -42,14 +42,13 @@ export const metadata = {
   'twitter:title': 'anglez - abstract, angular, on-chain art',
   'twitter:description': 'anglez - abract, anguluar, on-chain, generative NFT art by volstrate.',
   'twitter:creator': '@volstrate',
-  'twitter:image': `${NEXT_PUBLIC_URL}/anglez-square.png`,
-  'og:image': `${NEXT_PUBLIC_URL}/anglez-square.png`,
+  'twitter:image': `${NEXT_PUBLIC_URL}/anglez-quadrants.png`,
+  'og:image': `${NEXT_PUBLIC_URL}/anglez-quadrants.png`,
   openGraph: {
     title: 'anglez - abstract, angular, on-chain art',
     url: 'https://anglez.xyz/',
     description: 'anglez - abract, anguluar, on-chain, generative NFT art by volstrate.  ',
-    images: [{ url: `https://www/amgle/anglez-square.png` }],
-    // images: [`${NEXT_PUBLIC_URL}/park-1.png`],
+    images: [{ url: `https://www/amgle/anglez-quadrants.png` }],
   },
   other: {
     ...frameMetadata,

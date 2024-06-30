@@ -373,7 +373,7 @@ export function ArtBoard() {
                     rgbToObj(tintColour).b +
                     ')'}
                   <br />
-                  <b>Tint transparency:</b> {Math.round(rgbToObj(tintColour).a * 100)} %
+                  <b>Tint opacity:</b> {Math.round(rgbToObj(tintColour).a * 100)}%
                 </Text>
               </div>
               <div className="panel">

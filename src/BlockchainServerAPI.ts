@@ -135,8 +135,8 @@ export async function fetchTokenDetails(tokenId: number) {
   // let tintGreen = metadataObject.attributes.filter(
   //   (attribute) => attribute.trait_type == 'tintGreen'
   // )[0].value;
-  let tintTransparency = metadataObject.attributes.filter(
-    (attribute: Attribute) => attribute.trait_type == 'tint transparency'
+  let tintOpacity = metadataObject.attributes.filter(
+    (attribute: Attribute) => attribute.trait_type == 'tint opacity'
   )[0].value;
   // TODO: words from contract instead of true/false!
   let style = metadataObject.attributes.filter(
@@ -163,7 +163,7 @@ export async function fetchTokenDetails(tokenId: number) {
       seed,
       shapeCount,
       tintColor,
-      tintTransparency,
+      tintOpacity: tintOpacity,
       style,
       structure,
       isCustom,

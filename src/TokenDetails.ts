@@ -6,7 +6,7 @@ export interface TokenDetails {
     seed: number;
     shapeCount: number;
     tintColor: string;
-    tintTransparency: string;
+    tintOpacity: string;
     style: string;
     structure: string;
     isCustom: string;

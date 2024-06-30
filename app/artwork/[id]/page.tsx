@@ -71,7 +71,7 @@ export default function ArtworkPage({ params }: { params: { id: number } }) {
                 <b>Tint color:</b> {tokenDetails?.attributes.tintColor}{' '}
               </div>
               <div>
-                <b>Tint transparency:</b> {tokenDetails?.attributes.tintTransparency}{' '}
+                <b>Tint opacity:</b> {tokenDetails?.attributes.tintOpacity}{' '}
               </div>
               <div>
                 <b>Owner:</b> <i>coming soon...</i>{' '}

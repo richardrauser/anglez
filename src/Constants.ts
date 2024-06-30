@@ -1,13 +1,13 @@
 const AnglezLocalhostNetwork = 'localhost';
 const AnglezBaseSepoliaNetwork = 'basesepolia';
 const AnglezSepoliaNetwork = 'sepolia';
-const AnglezMainnetNetwork = 'mainnet';
+const AnglezBaseMainnetNetwork = 'mainnet';
 
 // Change this to control which environment you're pointing at.
 // const currentNetwork = AnglezLocalhostNetwork;
-const currentNetwork = AnglezBaseSepoliaNetwork;
+// const currentNetwork = AnglezBaseSepoliaNetwork;
 // const currentNetwork = AnglezSepoliaNetwork;
-// const currentNetwork = AnglezMainnetNetwork;
+const currentNetwork = AnglezBaseMainnetNetwork;
 
 const AnglezCurrentNetworkIDKey = 'AnglezCurrentNetworkIDKey';
 const AnglezCurrentNetworkNameKey = 'AnglezCurrentNetworkNameKey';
@@ -46,7 +46,7 @@ function networkConfigFor(currentNetwork: string) {
       AnglezCurrentNetworkRpcUrlKey:
         'https://api.developer.coinbase.com/rpc/v1/base-sepolia/ikCoAA-DxC0DMH4Y0xAT6tqPNjjMhftE',
       AnglezCurrentNetworkExplorerUrlKey: 'https://sepolia.basescan.org/',
-      AnglezContractAddressKey: '0x1C079486a5CF1e46fE66f54E0E4ab6CC6e63194E',
+      AnglezContractAddressKey: '0xa4a554D505EF30e1F9E9c8Df591813CB08374e64',
     };
   } else if (currentNetwork === AnglezSepoliaNetwork) {
     return {
@@ -58,15 +58,16 @@ function networkConfigFor(currentNetwork: string) {
       AnglezCurrentNetworkExplorerUrlKey: 'https://sepolia.etherscan.io/',
       AnglezContractAddressKey: '0x77f91D9B25fbB443F4CA3f07AC217600503566d1',
     };
-  } else if (currentNetwork === AnglezMainnetNetwork) {
+  } else if (currentNetwork === AnglezBaseMainnetNetwork) {
     return {
-      AnglezCurrentNetworkIDKey: 1,
-      AnglezCurrentNetworkNameKey: 'Ethereum Mainnet',
+      AnglezCurrentNetworkIDKey: 8453,
+      AnglezCurrentNetworkNameKey: 'Base Mainnet',
       AnglezCurrentNetworkCurrencySymbolKey: 'ETH',
       // TODO: RPC URL
-      AnglezCurrentNetworkRpcUrlKey: 'https://mainnet.infura.io/v3/',
-      AnglezCurrentNetworkExplorerUrlKey: 'https://www.etherscan.io/',
-      AnglezContractAddressKey: '',
+      AnglezCurrentNetworkRpcUrlKey:
+        'https://api.developer.coinbase.com/rpc/v1/base-sepolia/ikCoAA-DxC0DMH4Y0xAT6tqPNjjMhftE',
+      AnglezCurrentNetworkExplorerUrlKey: 'https://www.basescan.org/',
+      AnglezContractAddressKey: '0x2F8c2A675962ecb07505684EeA496D02d5a9124A',
     };
   }
 }
