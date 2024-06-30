@@ -28,7 +28,7 @@ const frameMetadata = getFrameMetadata({
     // },
   ],
   image: {
-    src: `${NEXT_PUBLIC_URL}/anglez-square.png`,
+    src: `${NEXT_PUBLIC_URL}/anglez-quadrants-square-bgfff.png`,
     aspectRatio: '1:1',
   },
   postUrl: `${NEXT_PUBLIC_URL}/api/frame`,
@@ -48,7 +48,7 @@ export const metadata = {
     title: 'anglez - abstract, angular, on-chain art',
     url: 'https://anglez.xyz/',
     description: 'anglez - abract, anguluar, on-chain, generative NFT art by volstrate.  ',
-    images: [{ url: `https://www/amgle/anglez-quadrants.png` }],
+    images: [{ url: `${NEXT_PUBLIC_URL}/anglez-quadrants.png` }],
   },
   other: {
     ...frameMetadata,
