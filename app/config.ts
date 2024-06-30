@@ -14,6 +14,7 @@ export const config = createConfig({
     }),
   ],
   transports: {
+    [mainnet.id]: http(),
     [base.id]: http(),
     [sepolia.id]: http(),
     [baseSepolia.id]: http(),
