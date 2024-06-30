@@ -31,7 +31,7 @@ const frameMetadata = getFrameMetadata({
     src: `${NEXT_PUBLIC_URL}/anglez-quadrants-square-bgfff.png`,
     aspectRatio: '1:1',
   },
-  postUrl: `${NEXT_PUBLIC_URL}/api/frame`,
+  postUrl: `https://www.anglez.xyz/api/frame`,
 });
 
 export const metadata = {
