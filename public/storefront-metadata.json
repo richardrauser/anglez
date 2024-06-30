@@ -2,5 +2,7 @@
   "name": "anglez",
   "description": "anglez is generative, on-chain NFT art. 100% on-chain, zero backend. 😎",
   "image": "https://www.dynastripes.xyz/opensea-storefront.png",
-  "external_link": "https://www.angelz.xyz"
+  "external_link": "https://www.anglz.xyz",
+  "seller_fee_basis_points": 1000,
+  "fee_recipient": "0xBC10a3aE909B1b94f4C3E3960x7645Bedd8dd18799779b9E3362A444599Ea63D9C07aD19D386dCe32a"
 }

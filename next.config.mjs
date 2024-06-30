@@ -12,4 +12,11 @@ export default withBundleAnalyzer({
   experimental: {
     optimizePackageImports: ['@mantine/core', '@mantine/hooks'],
   },
+  redirects: async () => [
+    {
+      source: '/storefront-metadata',
+      destination: '/storefront-metadata.json',
+      permanent: true,
+    },
+  ],
 });
