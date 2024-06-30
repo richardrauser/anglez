@@ -5,7 +5,7 @@ import { coinbaseWallet, injected, metaMask, walletConnect } from 'wagmi/connect
 const projectId = 'c9ea9ca2a0aede9f6aca19cb4992b402';
 
 export const config = createConfig({
-  chains: [mainnet, sepolia, base, baseSepolia],
+  chains: [base, baseSepolia],
   // connectors: [],
   connectors: [
     coinbaseWallet({
@@ -14,9 +14,9 @@ export const config = createConfig({
     }),
   ],
   transports: {
-    [mainnet.id]: http(),
+    // [mainnet.id]: http(),
     [base.id]: http(),
-    [sepolia.id]: http(),
+    // [sepolia.id]: http(),
     [baseSepolia.id]: http(),
   },
 });

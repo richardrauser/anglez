@@ -30,7 +30,7 @@ import {
   AnglezCurrentNetworkName,
 } from '@/src/Constants';
 import { type BaseError, useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
-import { abi } from '@/contract/Anglez.json';
+import abi from '@/contract/Anglez.json';
 import { showErrorMessage, showInfoMessage } from '@/src/UIUtils';
 import { baseSepolia } from 'viem/chains';
 import { Address } from 'viem';
