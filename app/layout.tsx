@@ -37,18 +37,17 @@ const frameMetadata = getFrameMetadata({
 export const metadata = {
   title: 'anglez generative NFT art',
   description: 'anglez - abract, anguluar, on-chain, generative NFT art by volstrate.',
-  'twitter:card': 'anglez - abstract, angular, on-chain art',
+  'twitter:card': 'sunmmary_large_image',
   'twitter:site': '@volstrate',
   'twitter:title': 'anglez - abstract, angular, on-chain art',
   'twitter:description': 'anglez - abract, anguluar, on-chain, generative NFT art by volstrate.',
   'twitter:creator': '@volstrate',
-  'twitter:image': `${NEXT_PUBLIC_URL}/anglez-quadrants.png`,
-  'og:image': `${NEXT_PUBLIC_URL}/anglez-quadrants.png`,
+  'og:image': `https://anglez.xyz/anglez-quadrants.png`,
   openGraph: {
     title: 'anglez - abstract, angular, on-chain art',
     url: 'https://anglez.xyz/',
     description: 'anglez - abract, anguluar, on-chain, generative NFT art by volstrate.  ',
-    images: [{ url: `${NEXT_PUBLIC_URL}/anglez-quadrants.png` }],
+    images: [{ url: `https://anglez.xyz/anglez-quadrants.png` }],
   },
   other: {
     ...frameMetadata,
