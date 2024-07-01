@@ -50,8 +50,11 @@ async function getResponse(
   return NextResponse.json(txData);
 }
 
-export async function POST(req: NextRequest): Promise<Response> {
-  return getResponse(req);
+export async function POST(
+  req: NextRequest,
+  { params }: { params: { seed: number } }
+): Promise<Response> {
+  return getResponse(req, { params });
 }
 
 export const dynamic = 'force-dynamic';
