@@ -6,7 +6,11 @@ import abi from '@/contract/Anglez.json';
 import type { FrameTransactionResponse } from '@coinbase/onchainkit/frame';
 import { AnglezContractAddress } from '@/src/Constants';
 
-async function getResponse(req: NextRequest): Promise<NextResponse | Response> {
+async function getResponse(
+  req: NextRequest,
+  { params }: { params: { seed: number } }
+): Promise<NextResponse | Response> {
+  const randomSeed = params.seed;
   const body: FrameRequest = await req.json();
   // Remember to replace 'NEYNAR_ONCHAIN_KIT' with your own Neynar API key
   const { isValid, message } = await getFrameMessage(body, {
@@ -17,15 +21,16 @@ async function getResponse(req: NextRequest): Promise<NextResponse | Response> {
     return new NextResponse('Message not valid', { status: 500 });
   }
 
-  var state;
+  // var state;
 
-  try {
-    state = JSON.parse(decodeURIComponent(message.state?.serialized));
-  } catch (e) {
-    console.error(e);
-  }
+  // try {
+  //   state = JSON.parse(decodeURIComponent(message.state?.serialized));
+  // } catch (e) {
+  //   console.error(e);
+  // }
 
-  const randomSeed = state.seed;
+  // const randomSeed = state.seed;
+  console.log('Farcaster mint route - random seed: ' + randomSeed);
   const data = encodeFunctionData({
     abi: abi.abi,
     functionName: 'mintRandom',

@@ -42,8 +42,8 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
         },
         {
           action: 'tx',
-          label: 'mint!',
-          target: `${NEXT_PUBLIC_URL}/api/tx`,
+          label: 'mint #' + randomSeed,
+          target: `${NEXT_PUBLIC_URL}/api/tx/${randomSeed}`,
           postUrl: `${NEXT_PUBLIC_URL}/api/tx-success`,
         },
         {

@@ -17,13 +17,11 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
         //   label: `Tx: ${body?.untrustedData?.transactionId || '--'}`,
         // },
         {
-          action: 'post_redirect',
           label: 'All done! Mint another?',
         },
       ],
-
       image: {
-        src: `${NEXT_PUBLIC_URL}/check.jpg`,
+        src: `${NEXT_PUBLIC_URL}/anglez-square.png`,
         aspectRatio: '1:1',
       },
     })
