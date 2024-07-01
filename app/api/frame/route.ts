@@ -11,7 +11,6 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
   const { isValid, message } = await getFrameMessage(body, {
     neynarApiKey: process.env.NEYNAR_API_KEY,
   });
-  // const { message } = await getFrameMessage(body);
 
   console.log('Message: ' + JSON.stringify(message));
   if (!isValid) {
@@ -49,8 +48,8 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
         },
         {
           action: 'link',
-          label: 'anglez.xyz',
-          target: 'https://anglez.xyz',
+          label: 'customize!',
+          target: 'https://anglez.xyz/create',
         },
         // {
         //   action: 'post_redirect',
@@ -63,7 +62,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
       },
       postUrl: `https://www.anglez.xyz/api/frame`,
       state: {
-        // page: state?.page + 1,
+        seed: randomSeed,
         time: new Date().toISOString(),
       },
     })

@@ -9,16 +9,27 @@ import { AnglezContractAddress } from '@/src/Constants';
 async function getResponse(req: NextRequest): Promise<NextResponse | Response> {
   const body: FrameRequest = await req.json();
   // Remember to replace 'NEYNAR_ONCHAIN_KIT' with your own Neynar API key
-  const { isValid } = await getFrameMessage(body, { neynarApiKey: process.env.NEYNAR_API_KEY });
+  const { isValid, message } = await getFrameMessage(body, {
+    neynarApiKey: process.env.NEYNAR_API_KEY,
+  });
 
   if (!isValid) {
     return new NextResponse('Message not valid', { status: 500 });
   }
 
+  var state;
+
+  try {
+    state = JSON.parse(decodeURIComponent(message.state?.serialized));
+  } catch (e) {
+    console.error(e);
+  }
+
+  const randomSeed = state.seed;
   const data = encodeFunctionData({
     abi: abi.abi,
     functionName: 'mintRandom',
-    args: [1234],
+    args: [randomSeed],
   });
 
   const txData: FrameTransactionResponse = {
