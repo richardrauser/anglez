@@ -61,7 +61,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
         src: `${NEXT_PUBLIC_URL}/api/random/${randomSeed}`,
         aspectRatio: '1:1',
       },
-      postUrl: `${NEXT_PUBLIC_URL}/api/frame`,
+      postUrl: `https://www.anglez.xyz/api/frame`,
       state: {
         // page: state?.page + 1,
         time: new Date().toISOString(),
