@@ -72,6 +72,8 @@ export default function ConnectButton() {
     // const hasWallet = window.ethereum !== undefined && window.ethereum !== null;
     console.log('Address: ' + address);
 
+    setEtherscanUrl(AnglezCurrentNetworkExplorerUrl + '/address/' + address);
+
     // console.log('Current chain ID: ' + chainId);
 
     // if (chainId != undefined && chainId != AnglezCurrentNetworkID) {
