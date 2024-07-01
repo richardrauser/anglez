@@ -26,9 +26,7 @@ export default function ArtworkPage({ params }: { params: { id: number } }) {
   }, []);
 
   const handleViewOnOpenSea = async () => {
-    const url = `https://testnets.opensea.io/assets/${AnglezCurrentNetworkName.toLocaleLowerCase()}/${AnglezContractAddress}?a=${
-      params.id
-    }`;
+    const url = `https://opensea.io/assets/base/${AnglezContractAddress}/${params.id}`;
     window.open(url, '_blank');
   };
 

@@ -4,7 +4,7 @@ import {
   AnglezCurrentNetworkExplorerUrl,
   AnglezCurrentNetworkName,
 } from '@/src/Constants';
-import { Text } from '@mantine/core';
+import { List, Text } from '@mantine/core';
 
 export default function AboutPage() {
   return (
@@ -15,6 +15,16 @@ export default function AboutPage() {
           anglez is colourful, abstract, on-chain generative NFT art. Each piece is completely
           unique, and can be generated at random or customized.
         </Text>
+        <br />
+        <Text>
+          Although under development for several months, anglez was launched as a sumbmission for
+          the Base{' '}
+          <a target="_blank" href="https://www.base.org/onchainsummer">
+            Onchain Summer Buildathon
+          </a>{' '}
+          on June 30, 2024!
+        </Text>
+
         <h2>how do I use this?</h2>
         <Text>
           From the Connect Wallet button, select the wallet you wish to use. Coinbase Smart Wallet
@@ -24,6 +34,9 @@ export default function AboutPage() {
           <a href="https://www.coinbase.com/wallet">Coinbase Wallet</a>, however you will need to
           setup and fund the wallet yourself.
         </Text>
+        <br />
+
+        <Text>Once that's done, visit the create page and get started minting anglez!</Text>
         {/* <Text>
           Next, you need Seploia ETH in order to mint anglez. You can get Sepolia ETH by using a
           Sepolia faucet. <br />
@@ -55,6 +68,14 @@ export default function AboutPage() {
           <li>OnchainKit</li>
           <li>Coinbase Smart Wallet</li>
         </ul> */}
+        <h2>source code</h2>
+        <a target="_blank" href="https://github.com/richardrauser/anglez-contract">
+          anglez-contract
+        </a>
+        <br />
+        <a target="_blank" href="https://github.com/richardrauser/anglez">
+          anglez dApp
+        </a>
         <h2>who made this?</h2>
         <Text>
           I did! 😝 It's{` `}
@@ -67,6 +88,8 @@ export default function AboutPage() {
           </a>
           .<br />
         </Text>
+        <h2>version</h2>
+        <Text>1.0.1</Text>
       </div>
     </>
   );

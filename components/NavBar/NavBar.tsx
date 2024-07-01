@@ -6,14 +6,14 @@ import classes from './NavBar.module.css';
 import ConnectButton from '../ConnectButton/ConnectButton';
 
 const links = [
-  { link: '/', label: 'anglez.xyz v1.0' },
+  { link: '/', label: 'anglez.xyz' },
   { link: '/create', label: 'create' },
   { link: '/gallery', label: 'gallery' },
   { link: '/about', label: 'about' },
-  {
-    link: 'https://docs.google.com/forms/d/e/1FAIpQLSfo2pZQHuzXXJHYt4nuneb9ww8XtbqEvOKYM5vPJ8M_IPQ88w/viewform',
-    label: 'feedback',
-  },
+  // {
+  //   link: 'https://docs.google.com/forms/d/e/1FAIpQLSfo2pZQHuzXXJHYt4nuneb9ww8XtbqEvOKYM5vPJ8M_IPQ88w/viewform',
+  //   label: 'feedback',
+  // },
 ];
 
 export function AnglezNavBar() {
