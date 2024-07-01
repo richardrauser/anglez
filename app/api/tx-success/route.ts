@@ -24,6 +24,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
         src: `${NEXT_PUBLIC_URL}/anglez-square.png`,
         aspectRatio: '1:1',
       },
+      postUrl: `https://www.anglez.xyz/api/frame`,
     })
   );
 }

@@ -21,16 +21,16 @@ export async function GET(request: Request, { params }: { params: { seed: string
   // Response.sendFile(anglezSvg, 'anglez.svg', { headers: { 'Content-Type': 'image/svg+xml' } });
   // return Response.json({ seed: anglezPng });
 
-  return new Response(anglezSvg, {
-    status: 200,
-    headers: {
-      'Content-Type': 'image/svg+xml',
-    },
-  });
-  // return new Response(anglezPng, {
+  // return new Response(anglezSvg, {
   //   status: 200,
   //   headers: {
-  //     'Content-Type': 'image/png',
+  //     'Content-Type': 'image/svg+xml',
   //   },
   // });
+  return new Response(anglezPng, {
+    status: 200,
+    headers: {
+      'Content-Type': 'image/png',
+    },
+  });
 }
