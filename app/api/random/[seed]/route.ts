@@ -2,12 +2,12 @@ import { buildArtwork, generateRandomTokenParams } from '@/src/anglez';
 // const sharp = require('sharp');
 import sharp from 'sharp';
 
-export async function GET(request: Request, { params }: { params: { seed: number } }) {
+export async function GET(request: Request, { params }: { params: { seed: string } }) {
   const seed = params.seed;
 
   console.log('SEED:', seed);
 
-  const tokenParams = generateRandomTokenParams(seed);
+  const tokenParams = generateRandomTokenParams(parseInt(seed));
   const anglezSvg = buildArtwork(tokenParams);
 
   console.log('ANGLEZ:', anglezSvg);
@@ -21,10 +21,16 @@ export async function GET(request: Request, { params }: { params: { seed: number
   // Response.sendFile(anglezSvg, 'anglez.svg', { headers: { 'Content-Type': 'image/svg+xml' } });
   // return Response.json({ seed: anglezPng });
 
-  return new Response(anglezPng, {
+  return new Response(anglezSvg, {
     status: 200,
     headers: {
-      'Content-Type': 'image/png',
+      'Content-Type': 'image/svg+xml',
     },
   });
+  // return new Response(anglezPng, {
+  //   status: 200,
+  //   headers: {
+  //     'Content-Type': 'image/png',
+  //   },
+  // });
 }
