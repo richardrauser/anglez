@@ -1,7 +1,7 @@
 import { FrameRequest, getFrameMessage } from '@coinbase/onchainkit/frame';
 import { NextRequest, NextResponse } from 'next/server';
 import { Address, encodeFunctionData, parseEther } from 'viem';
-import { baseSepolia } from 'viem/chains';
+import { base, baseSepolia } from 'viem/chains';
 import abi from '@/contract/Anglez.json';
 import type { FrameTransactionResponse } from '@coinbase/onchainkit/frame';
 import { AnglezContractAddress } from '@/src/Constants';
@@ -22,13 +22,13 @@ async function getResponse(req: NextRequest): Promise<NextResponse | Response> {
   });
 
   const txData: FrameTransactionResponse = {
-    chainId: `eip155:${baseSepolia.id}`,
+    chainId: `eip155:${base.id}`,
     method: 'eth_sendTransaction',
     params: {
       abi: [],
       data,
       to: AnglezContractAddress as Address,
-      value: parseEther('0.00004').toString(), // 0.00004 ETH
+      value: parseEther('0').toString(), // 0 ETH
     },
   };
   return NextResponse.json(txData);
