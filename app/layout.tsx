@@ -37,7 +37,7 @@ const frameMetadata = getFrameMetadata({
 export const metadata = {
   title: 'anglez generative NFT art',
   description: 'anglez - abract, anguluar, on-chain, generative NFT art by volstrate.',
-  'twitter:card': 'sunmmary_large_image',
+  'twitter:card': 'summary',
   'twitter:site': '@volstrate',
   'twitter:title': 'anglez - abstract, angular, on-chain art',
   'twitter:description': 'anglez - abract, anguluar, on-chain, generative NFT art by volstrate.',
