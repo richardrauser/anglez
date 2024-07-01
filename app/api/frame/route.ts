@@ -7,16 +7,16 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
 
   const body: FrameRequest = await req.json();
 
-  // console.log('NEYNAR: ' + process.env.NEYNAR_API_KEY);
-  // const { isValid, message } = await getFrameMessage(body, {
-  //   neynarApiKey: process.env.NEYNAR_API_KEY,
-  // });
+  console.log('NEYNAR: ' + process.env.NEYNAR_API_KEY);
+  const { isValid, message } = await getFrameMessage(body, {
+    neynarApiKey: process.env.NEYNAR_API_KEY,
+  });
   // const { message } = await getFrameMessage(body);
 
-  // console.log('Message: ' + JSON.stringify(message));
-  // if (!isValid) {
-  //   return new NextResponse('Oh dear! Message not valid', { status: 500 });
-  // }
+  console.log('Message: ' + JSON.stringify(message));
+  if (!isValid) {
+    return new NextResponse('Oh dear! Message not valid', { status: 500 });
+  }
 
   // const text = message.input || '';
   // let state = {
