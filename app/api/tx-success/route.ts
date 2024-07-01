@@ -13,12 +13,18 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
   return new NextResponse(
     getFrameHtmlResponse({
       buttons: [
+        // {
+        //   label: `Tx: ${body?.untrustedData?.transactionId || '--'}`,
+        // },
         {
-          label: `Tx: ${body?.untrustedData?.transactionId || '--'}`,
+          action: 'post_redirect',
+          label: 'All done! Mint another?',
         },
       ],
+
       image: {
         src: `${NEXT_PUBLIC_URL}/check.jpg`,
+        aspectRatio: '1:1',
       },
     })
   );
