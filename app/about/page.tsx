@@ -5,6 +5,7 @@ import {
   AnglezCurrentNetworkName,
 } from '@/src/Constants';
 import { List, Text } from '@mantine/core';
+import Link from 'next/link';
 
 export default function AboutPage() {
   return (
@@ -36,7 +37,10 @@ export default function AboutPage() {
         </Text>
         <br />
 
-        <Text>Once that's done, visit the create page and get started minting anglez!</Text>
+        <Text>
+          Once that's done, visit the <Link href="/create">create page</Link> and get started
+          minting anglez!
+        </Text>
         {/* <Text>
           Next, you need Seploia ETH in order to mint anglez. You can get Sepolia ETH by using a
           Sepolia faucet. <br />

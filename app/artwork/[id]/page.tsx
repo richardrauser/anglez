@@ -11,6 +11,7 @@ import {
   AnglezCurrentNetworkExplorerUrl,
   AnglezCurrentNetworkName,
 } from '@/src/Constants';
+import { shortenAddress } from '@/src/BlockchainAPI';
 
 export default function ArtworkPage({ params }: { params: { id: number } }) {
   const [tokenDetails, setTokenDetails] = useState<TokenDetails | null>(null);
@@ -72,7 +73,7 @@ export default function ArtworkPage({ params }: { params: { id: number } }) {
                 <b>Tint opacity:</b> {tokenDetails?.attributes.tintOpacity}{' '}
               </div>
               <div>
-                <b>Owner:</b> <i>coming soon...</i>{' '}
+                <b>Owner:</b> {shortenAddress(tokenDetails.owner)}
               </div>
             </Text>
             <Button onClick={handleViewOnOpenSea} color="blue" size="lg">

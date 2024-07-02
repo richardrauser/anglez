@@ -89,6 +89,7 @@ export async function fetchTokenDetails(tokenId: number) {
     return null;
   }
   const contract = await getReadOnlyContract();
+  const owner = await contract.ownerOf(tokenId);
   const metadataDataUri = await contract.tokenURI(tokenId);
   var metadataJson = '';
 
@@ -156,13 +157,14 @@ export async function fetchTokenDetails(tokenId: number) {
 
   const tokenDetails: TokenDetails = {
     tokenId,
+    owner,
     svg,
     svgDataUri,
     attributes: {
       seed,
       shapeCount,
       tintColor,
-      tintOpacity: tintOpacity,
+      tintOpacity,
       style,
       structure,
       isCustom,
