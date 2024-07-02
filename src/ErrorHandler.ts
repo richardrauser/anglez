@@ -8,34 +8,34 @@ export function handleError(error: any) {
 
   const reason = error.cause?.reason;
 
+  console.log('Error code: ', error.code);
   console.log('Error reason: ', reason);
 
-  // console.log('Error object: ', JSON.stringify(error));
+  console.log('Error object: ', JSON.stringify(error));
 
-  if (error.code === 4001) {
+  const code = error.code != undefined ? error.code : error.cause.code;
+
+  if (code === 4001) {
     showErrorMessage('You rejected the request. 😢');
-  } else if (error.code === 'INSUFFICIENT_FUNDS') {
+  } else if (code === 'INSUFFICIENT_FUNDS') {
     showErrorMessage(
       'Insufficient funds to pay for this transation. Please add more funds to your crypto wallet.'
     );
-  } else if (error.code === -32002) {
+  } else if (code === -32002) {
     // -32002: already requesting accounts
     showErrorMessage('Already requesting accounts. Please open your crypto wallet to confirm.');
-  } else if (error.code === -32603) {
+  } else if (code === -32603) {
     // Internal JSON RPC error
     if (error.data != null && error.data.message != null) {
       showErrorMessage('Oops, an error ocurred. ' + error.data.message);
     } else {
       showErrorMessage('Oops, an Internal JSON RPC error occurred. ');
     }
-  } else if (error.code === 'ACTION_REJECTED') {
+  } else if (code === 'ACTION_REJECTED') {
     showErrorMessage('You rejected the request. 😢');
   } else if (error.message === Errors.NGLZ_NO_ETH_WALLET) {
     showErrorMessage('No crypto wallet detected. Please install MetaMask or Coinbase Wallet.');
-  } else if (
-    error.code === 'UNSUPPORTED_OPERATION' &&
-    error.message.startsWith('unknown account')
-  ) {
+  } else if (code === 'UNSUPPORTED_OPERATION' && error.message.startsWith('unknown account')) {
     showErrorMessage('You need to connect an Ethereum wallet like MetaMask or Coinbase Wallet.');
   } else if (error.message === Errors.NGLZ_NO_ETH_ACCOUNT) {
     showErrorMessage(

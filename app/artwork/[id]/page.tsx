@@ -70,7 +70,7 @@ export default function ArtworkPage({ params }: { params: { id: number } }) {
                 <b>Tint color:</b> {tokenDetails?.attributes.tintColor}{' '}
               </div>
               <div>
-                <b>Tint opacity:</b> {tokenDetails?.attributes.tintOpacity}{' '}
+                <b>Tint opacity:</b> {+tokenDetails?.attributes.tintOpacity * 100}%
               </div>
               <div>
                 <b>Owner:</b> {shortenAddress(tokenDetails.owner)}

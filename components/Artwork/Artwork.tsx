@@ -46,7 +46,7 @@ export default function Artwork(props: { tokenId: number }) {
                 <br />
                 <b>Tint color:</b> {tokenDetails?.attributes.tintColor}
                 <br />
-                <b>Tint opacity:</b> {tokenDetails?.attributes.tint}
+                <b>Tint opacity:</b> {+tokenDetails?.attributes.tintOpacity * 100}%
                 <br />
               </Text>
               <Link href={'artwork/' + tokenDetails.tokenId}>

@@ -6,6 +6,7 @@ import {
 } from '@/src/Constants';
 import { List, Text } from '@mantine/core';
 import Link from 'next/link';
+import { version } from '@/package.json';
 
 export default function AboutPage() {
   return (
@@ -93,7 +94,7 @@ export default function AboutPage() {
           .<br />
         </Text>
         <h2>version</h2>
-        <Text>1.0.1</Text>
+        <Text>{version}</Text>
       </div>
     </>
   );
