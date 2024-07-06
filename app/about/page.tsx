@@ -56,10 +56,10 @@ export default function AboutPage() {
         {/* <Text>Failing that, contact RR and I'll send you some Sepolia ETH to get you started.</Text>  */}
         <h2>smart contract</h2>
         <Text>
-          aadrg The anglez smart contract address on{' '}
+          The anglez smart contract address on{' '}
           <a target="_blank" href="https://www.base.org/">
             Base
-          </a>
+          </a>{' '}
           is:{' '}
           <a href={AnglezCurrentNetworkExplorerUrl + 'address/' + AnglezContractAddress}>
             {shortenAddress(AnglezContractAddress)}
