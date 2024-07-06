@@ -4056,6 +4056,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@shield3/react-sdk@npm:^0.2.2":
+  version: 0.2.2
+  resolution: "@shield3/react-sdk@npm:0.2.2"
+  dependencies:
+    ethers: "npm:^6.11.1"
+    react-dom: "npm:^18.3.0"
+    typescript: "npm:5.4.2"
+  peerDependencies:
+    react: ^18.3.0
+  checksum: 10c0/2f7a060fcff2a2183ba52df8a222403129cb301283a9c242523c91490f1339b276b3c3e171156f5e6bd2e0c5cd31bc6c2023b5384b5a99538aaf9d41ef63fba9
+  languageName: node
+  linkType: hard
+
 "@sinclair/typebox@npm:^0.27.8":
   version: 0.27.8
   resolution: "@sinclair/typebox@npm:0.27.8"
@@ -7026,6 +7039,7 @@ __metadata:
     "@mantine/hooks": "npm:^7.5.1"
     "@next/bundle-analyzer": "npm:^14.0.1"
     "@next/eslint-plugin-next": "npm:^14.0.1"
+    "@shield3/react-sdk": "npm:^0.2.2"
     "@storybook/addon-essentials": "npm:^7.5.2"
     "@storybook/addon-styling-webpack": "npm:^0.0.5"
     "@storybook/blocks": "npm:^7.5.2"
@@ -10387,7 +10401,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethers@npm:^6.13.1":
+"ethers@npm:^6.11.1, ethers@npm:^6.13.1":
   version: 6.13.1
   resolution: "ethers@npm:6.13.1"
   dependencies:
@@ -15913,7 +15927,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:^18.2.0":
+"react-dom@npm:^18.2.0, react-dom@npm:^18.3.0":
   version: 18.3.1
   resolution: "react-dom@npm:18.3.1"
   dependencies:
@@ -18421,6 +18435,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"typescript@npm:5.4.2":
+  version: 5.4.2
+  resolution: "typescript@npm:5.4.2"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10c0/583ff68cafb0c076695f72d61df6feee71689568179fb0d3a4834dac343df6b6ed7cf7b6f6c801fa52d43cd1d324e2f2d8ae4497b09f9e6cfe3d80a6d6c9ca52
+  languageName: node
+  linkType: hard
+
 "typescript@patch:typescript@npm%3A5.2.2#optional!builtin<compat/typescript>":
   version: 5.2.2
   resolution: "typescript@patch:typescript@npm%3A5.2.2#optional!builtin<compat/typescript>::version=5.2.2&hash=f3b441"
@@ -18428,6 +18452,16 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 10c0/062c1cee1990e6b9419ce8a55162b8dc917eb87f807e4de0327dbc1c2fa4e5f61bc0dd4e034d38ff541d1ed0479b53bcee8e4de3a4075c51a1724eb6216cb6f5
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@npm%3A5.4.2#optional!builtin<compat/typescript>":
+  version: 5.4.2
+  resolution: "typescript@patch:typescript@npm%3A5.4.2#optional!builtin<compat/typescript>::version=5.4.2&hash=5adc0c"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10c0/fcf6658073d07283910d9a0e04b1d5d0ebc822c04dbb7abdd74c3151c7aa92fcddbac7d799404e358197222006ccdc4c0db219d223d2ee4ccd9e2b01333b49be
   languageName: node
   linkType: hard
 

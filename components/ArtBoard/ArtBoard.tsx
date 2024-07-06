@@ -35,6 +35,7 @@ import { showErrorMessage, showInfoMessage } from '@/src/UIUtils';
 import { baseSepolia } from 'viem/chains';
 import { Address } from 'viem';
 import { parseEther } from 'ethers';
+import { useShield3Context } from '@shield3/react-sdk';
 
 export function ArtBoard() {
   const [loading, setLoading] = useState(true);
@@ -52,6 +53,7 @@ export function ArtBoard() {
   const { chains, switchChain } = useSwitchChain();
   const { data: hash, error: mintError, isPending, writeContract } = useWriteContract();
   const account = useAccount();
+  const { shield3Client } = useShield3Context();
   const {
     isLoading: isConfirming,
     error: confirmedError,
@@ -217,6 +219,36 @@ export function ArtBoard() {
 
       // setIsMinting(true);
       // const mintReceipt = await mintRandomAnglez(randomSeed);
+
+      // check if the transaction violates policy
+
+      const transaction = {
+        // from: account.address,
+        to: AnglezContractAddress,
+        chainId: baseSepolia.id,
+        // value: '0.0',
+        // data: '0x...',
+        // Other transaction fields
+      };
+
+      var policyResults = await shield3Client.getPolicyResults(
+        transaction,
+        account.address as Address
+      );
+
+      console.log('Policy results: ', policyResults);
+
+      if (!policyResults) {
+        console.log('No policy results found.');
+        var err = Error('No policy results found.');
+        err.cause = { code: 'NO_POLICY_RESULTS' };
+        throw err;
+      } else if (policyResults.decision != 'Allow') {
+        console.log('Policy results found. Transaction blocked.');
+        var err = Error('Transaction blocked by policy.');
+        err.cause = { code: 'POLICY_BLOCKED' };
+        throw err;
+      }
 
       writeContract({
         address: AnglezContractAddress as Address,

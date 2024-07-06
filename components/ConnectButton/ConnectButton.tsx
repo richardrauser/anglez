@@ -92,7 +92,11 @@ export default function ConnectButton() {
         </Menu.Target>
         <Menu.Dropdown>
           {connectors.map((connector) => (
-            <Menu.Item key={connector.id} onClick={() => connect({ connector })}>
+            <Menu.Item
+              className={styles.shimmer}
+              key={connector.id}
+              onClick={() => connect({ connector })}
+            >
               {/* <IconStar style={{ width: rem(16), height: rem(16) }} stroke={1.5} /> */}
               {connector.id != 'coinbaseWalletSDK' ? connector.name : 'Coinbase Smart Wallet ⭐️'}
             </Menu.Item>
