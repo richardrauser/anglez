@@ -74,7 +74,7 @@ export default function AboutPage() {
           for interacting with the{' '}
           <a target="_blank" href="https://www.base.org/">
             Base
-          </a>
+          </a>{' '}
           layer 2 chain, loading account details, supporting{' '}
           <a target="_blank" href="https://www.farcaster.xyz/">
             Farcaster
