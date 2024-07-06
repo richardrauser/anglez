@@ -1,5 +1,10 @@
 import { ArtBoard } from '@/components/ArtBoard/ArtBoard';
+import { Suspense } from 'react';
 
 export default function CreatePage() {
-  return <ArtBoard />;
+  return (
+    <Suspense>
+      <ArtBoard />
+    </Suspense>
+  );
 }

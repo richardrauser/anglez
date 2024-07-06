@@ -389,156 +389,154 @@ export function ArtBoard() {
   };
 
   return (
-    <Suspense>
-      <div>
-        <div className="artboard">
-          {loading ? <> </> : <img className="artboardImage" src={svg}></img>}
-        </div>
+    <div>
+      <div className="artboard">
+        {loading ? <> </> : <img className="artboardImage" src={svg}></img>}
+      </div>
 
-        {loading ? (
-          <Loading />
-        ) : (
-          <div className={styles.artboardControls}>
-            <Tabs
-              variant="unstyled"
-              defaultValue="settings"
-              classNames={styles}
-              value={activeTab}
-              onChange={setActiveTab}
-            >
-              <Tabs.List grow>
-                <Tabs.Tab
-                  value="random"
-                  leftSection={<IconSparkles style={{ width: rem(16), height: rem(16) }} />}
-                >
-                  Random
-                </Tabs.Tab>
-                <Tabs.Tab
-                  value="custom"
-                  leftSection={<IconTools style={{ width: rem(16), height: rem(16) }} />}
-                >
-                  Custom
-                </Tabs.Tab>
-              </Tabs.List>
-              <Tabs.Panel value="random" pt="xs">
-                <div className="panel">
-                  <Text ta="left" size="sm">
-                    <b>Shapes:</b> {shapeCount} <br />
-                    <b>Style:</b> {style} <br />
-                    <b>Structure:</b> {structure} <br />
-                    <b>Tint color:</b>
-                    {'rgb(' +
-                      rgbToObj(tintColour).r +
-                      ', ' +
-                      rgbToObj(tintColour).g +
-                      ', ' +
-                      rgbToObj(tintColour).b +
-                      ')'}
-                    <br />
-                    <b>Tint opacity:</b> {Math.round(rgbToObj(tintColour).a * 100)}%
-                  </Text>
-                </div>
-                <div className="panel">
-                  <div>Random seed: {randomSeed}</div>
+      {loading ? (
+        <Loading />
+      ) : (
+        <div className={styles.artboardControls}>
+          <Tabs
+            variant="unstyled"
+            defaultValue="settings"
+            classNames={styles}
+            value={activeTab}
+            onChange={setActiveTab}
+          >
+            <Tabs.List grow>
+              <Tabs.Tab
+                value="random"
+                leftSection={<IconSparkles style={{ width: rem(16), height: rem(16) }} />}
+              >
+                Random
+              </Tabs.Tab>
+              <Tabs.Tab
+                value="custom"
+                leftSection={<IconTools style={{ width: rem(16), height: rem(16) }} />}
+              >
+                Custom
+              </Tabs.Tab>
+            </Tabs.List>
+            <Tabs.Panel value="random" pt="xs">
+              <div className="panel">
+                <Text ta="left" size="sm">
+                  <b>Shapes:</b> {shapeCount} <br />
+                  <b>Style:</b> {style} <br />
+                  <b>Structure:</b> {structure} <br />
+                  <b>Tint color:</b>
+                  {'rgb(' +
+                    rgbToObj(tintColour).r +
+                    ', ' +
+                    rgbToObj(tintColour).g +
+                    ', ' +
+                    rgbToObj(tintColour).b +
+                    ')'}
+                  <br />
+                  <b>Tint opacity:</b> {Math.round(rgbToObj(tintColour).a * 100)}%
+                </Text>
+              </div>
+              <div className="panel">
+                <div>Random seed: {randomSeed}</div>
 
-                  {/* {isPending || isConfirming ? ( */}
-                  {/* <Loading loadingText="Minting! Waiting for transaction receipt..." /> */}
-                  {isMinting ? (
-                    <Loading loadingText="Minting! Waiting for transaction submission..." />
-                  ) : (
-                    <>
-                      {/* {hash && <div>Transaction Hash: {hash}</div>}
+                {/* {isPending || isConfirming ? ( */}
+                {/* <Loading loadingText="Minting! Waiting for transaction receipt..." /> */}
+                {isMinting ? (
+                  <Loading loadingText="Minting! Waiting for transaction submission..." />
+                ) : (
+                  <>
+                    {/* {hash && <div>Transaction Hash: {hash}</div>}
                     {isConfirming && <div>Waiting for confirmation...</div>}
                     {isConfirmed && <div>Transaction confirmed.</div>} */}
-                      {/* {error && (
+                    {/* {error && (
                       <div>Error: {(error as BaseError).shortMessage || error.message}</div>
                     )} */}
-                      <Button onClick={randomizeTapped}>Randomize</Button>
-                      <Button
-                        onClick={() => {
-                          setActiveTab('custom');
-                        }}
-                      >
-                        Customize
-                      </Button>
-                      {/* {randomMintCost != null && ( */}
-                      <Button className={styles.mintButton} onClick={mintRandom}>
-                        Mint! ({randomMintPrice} ETH)
-                      </Button>
-                      {/* )} */}
-                    </>
-                  )}
-                </div>
-              </Tabs.Panel>
-              <Tabs.Panel value="custom" pt="xs">
-                <div className="panel">
-                  <Grid>
-                    <Grid.Col span="auto">
-                      <Text ta="left" size="m">
-                        Style
-                      </Text>
-                      <RadioGroup value={style} onChange={setStyle} name="style">
-                        <Radio value="linear" label="linear" />
-                        <Radio value="cyclic" label="cyclic" />
-                      </RadioGroup>
-                      <Text ta="left" size="m">
-                        Structure
-                      </Text>
-                      <RadioGroup value={structure} onChange={setStructure} name="structure">
-                        <Radio value="folded" label="folded" />
-                        <Radio value="chaotic" label="chaotic" />
-                      </RadioGroup>
-                      <Text ta="left" size="m">
-                        Shapes
-                      </Text>
+                    <Button onClick={randomizeTapped}>Randomize</Button>
+                    <Button
+                      onClick={() => {
+                        setActiveTab('custom');
+                      }}
+                    >
+                      Customize
+                    </Button>
+                    {/* {randomMintCost != null && ( */}
+                    <Button className={styles.mintButton} onClick={mintRandom}>
+                      Mint! ({randomMintPrice} ETH)
+                    </Button>
+                    {/* )} */}
+                  </>
+                )}
+              </div>
+            </Tabs.Panel>
+            <Tabs.Panel value="custom" pt="xs">
+              <div className="panel">
+                <Grid>
+                  <Grid.Col span="auto">
+                    <Text ta="left" size="m">
+                      Style
+                    </Text>
+                    <RadioGroup value={style} onChange={setStyle} name="style">
+                      <Radio value="linear" label="linear" />
+                      <Radio value="cyclic" label="cyclic" />
+                    </RadioGroup>
+                    <Text ta="left" size="m">
+                      Structure
+                    </Text>
+                    <RadioGroup value={structure} onChange={setStructure} name="structure">
+                      <Radio value="folded" label="folded" />
+                      <Radio value="chaotic" label="chaotic" />
+                    </RadioGroup>
+                    <Text ta="left" size="m">
+                      Shapes
+                    </Text>
 
-                      <SimpleGrid className={styles.numberPicker} cols={3} spacing="0">
-                        <Button className={styles.numberPickerButton} onClick={decrementShapeCount}>
-                          -
-                        </Button>
-                        <Text className={styles.numberPickerText}>{shapeCount}</Text>
-                        <Button className={styles.numberPickerButton} onClick={incrementShapeCount}>
-                          +
-                        </Button>
-                      </SimpleGrid>
-                    </Grid.Col>
-
-                    <Grid.Col span="auto">
-                      <Text ta="left" size="m">
-                        Tint
-                      </Text>
-                      <ColorPicker
-                        size="md"
-                        format="rgba"
-                        value={tintColour}
-                        onChange={setTintColour}
-                      />
-                    </Grid.Col>
-                  </Grid>
-                </div>
-                <div className="panel">
-                  <div>Random seed: {randomSeed}</div>
-                  {isMinting ? (
-                    <Loading loadingText="Minting! Waiting for transaction receipt..." />
-                  ) : (
-                    <>
-                      <Button onClick={randomizeTapped}>Randomize</Button>
-                      <Button onClick={newSeedPressed}>New Seed</Button>
-                      <Button className={styles.mintButton} onClick={mintCustom}>
-                        Mint! ({customMintPrice + ' ETH'})
+                    <SimpleGrid className={styles.numberPicker} cols={3} spacing="0">
+                      <Button className={styles.numberPickerButton} onClick={decrementShapeCount}>
+                        -
                       </Button>
-                      <Text size="sm">
-                        <b>Randomize</b> randomizes everything, while <b>New Seed</b> randomizes the
-                        seed value, but preserves your custom values.
-                      </Text>
-                    </>
-                  )}
-                </div>
-              </Tabs.Panel>
-            </Tabs>
-          </div>
-        )}
-      </div>
-    </Suspense>
+                      <Text className={styles.numberPickerText}>{shapeCount}</Text>
+                      <Button className={styles.numberPickerButton} onClick={incrementShapeCount}>
+                        +
+                      </Button>
+                    </SimpleGrid>
+                  </Grid.Col>
+
+                  <Grid.Col span="auto">
+                    <Text ta="left" size="m">
+                      Tint
+                    </Text>
+                    <ColorPicker
+                      size="md"
+                      format="rgba"
+                      value={tintColour}
+                      onChange={setTintColour}
+                    />
+                  </Grid.Col>
+                </Grid>
+              </div>
+              <div className="panel">
+                <div>Random seed: {randomSeed}</div>
+                {isMinting ? (
+                  <Loading loadingText="Minting! Waiting for transaction receipt..." />
+                ) : (
+                  <>
+                    <Button onClick={randomizeTapped}>Randomize</Button>
+                    <Button onClick={newSeedPressed}>New Seed</Button>
+                    <Button className={styles.mintButton} onClick={mintCustom}>
+                      Mint! ({customMintPrice + ' ETH'})
+                    </Button>
+                    <Text size="sm">
+                      <b>Randomize</b> randomizes everything, while <b>New Seed</b> randomizes the
+                      seed value, but preserves your custom values.
+                    </Text>
+                  </>
+                )}
+              </div>
+            </Tabs.Panel>
+          </Tabs>
+        </div>
+      )}
+    </div>
   );
 }
