@@ -56,9 +56,13 @@ export default function AboutPage() {
           </a>
         </Text> */}
         {/* <Text>Failing that, contact RR and I'll send you some Sepolia ETH to get you started.</Text>  */}
-        <h2>contract</h2>
+        <h2>smart contract</h2>
         <Text>
-          The anglez smart contract address on {AnglezCurrentNetworkName} is:{' '}
+          The anglez smart contract address on{' '}
+          <a target="_blank" href="https://www.base.org/">
+            Base
+          </a>
+          is:{' '}
           <a href={AnglezCurrentNetworkExplorerUrl + 'address/' + AnglezContractAddress}>
             {shortenAddress(AnglezContractAddress)}
           </a>
@@ -66,8 +70,57 @@ export default function AboutPage() {
         </Text>
         <h2>what tech is anglez built on?</h2>
         <Text>
-          OnchainKit, Coinbase Smart Wallet, Next.js 14, Vercel, Farcaster Frames, Mantine, React.
-          ethers.js, hardhat
+          <a target="_blank" href="https://onchainkit.xyz/">
+            OnchainKit
+          </a>{' '}
+          for interacting with the{' '}
+          <a target="_blank" href="https://www.base.org/">
+            Base
+          </a>
+          , loading account details, supporting{' '}
+          <a target="_blank" href="https://www.farcaster.xyz/">
+            Farcaster
+          </a>{' '}
+          Frames. <br />
+          <a target="_blank" href="https://www.coinbase.com/en-gb/wallet/smart-wallet">
+            Coinbase Smart Wallet
+          </a>{' '}
+          for wallet connectivity, account abstraction, bundler and paymaster support.
+          <br />
+          <a target="_blank" href="https://nextjs.org/">
+            Next.js 14
+          </a>
+          ,{' '}
+          <a target="_blank" href="https://mantine.dev/">
+            Mantine
+          </a>
+          ,{' '}
+          <a target="_blank" href="https://react.dev/">
+            React
+          </a>{' '}
+          and{' '}
+          <a target="_blank" href="https://vercel.com/">
+            Vercel
+          </a>{' '}
+          for the dApp.
+          <br />
+          <a target="_blank" href="https://www.farcaster.xyz/">
+            Farcaster
+          </a>{' '}
+          Frames to make anglez social. <br />
+          <a target="_blank" href="https://www.shield3.com/">
+            Shield3
+          </a>{' '}
+          for verifying transaction safety and preventing abuse.
+          <br />
+          <a target="_blank" href="https://docs.ethers.org/">
+            ethers.js
+          </a>{' '}
+          and{' '}
+          <a target="_blank" href="https://hardhat.org/">
+            hardhat
+          </a>{' '}
+          for development support. <br />
         </Text>
         {/* <ul>
           <li>OnchainKit</li>
