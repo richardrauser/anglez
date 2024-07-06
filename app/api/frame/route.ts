@@ -49,7 +49,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
         {
           action: 'link',
           label: 'customize!',
-          target: 'https://anglez.xyz/create?tab=custom&seed=' + randomSeed,
+          target: 'https://anglez.xyz/create',
         },
         // {
         //   action: 'post_redirect',
