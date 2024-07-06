@@ -40,7 +40,7 @@ function randomIntFromInterval(randomSeed: number, min: number, max: number) {
   if (max <= min) {
     return min;
   }
-  // console.log('Random seed: ' + randomSeed);
+  console.log('Random seed: ' + randomSeed);
   const abiCodedSeed = AbiCoder.defaultAbiCoder().encode(['uint'], [randomSeed]);
   const hash = ethers.keccak256(abiCodedSeed);
   const seed = toBigInt(hash);

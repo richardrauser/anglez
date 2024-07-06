@@ -36,6 +36,7 @@ import { baseSepolia } from 'viem/chains';
 import { Address } from 'viem';
 import { parseEther } from 'ethers';
 import { useShield3Context } from '@shield3/react-sdk';
+import { useSearchParams } from 'next/navigation';
 
 export function ArtBoard() {
   const [loading, setLoading] = useState(true);
@@ -62,6 +63,7 @@ export function ArtBoard() {
     hash,
     confirmations: 0,
   });
+  const searchParams = useSearchParams();
 
   const generateSvgDataUri = () => {
     console.log('Generating svg data URI...');
@@ -86,8 +88,11 @@ export function ArtBoard() {
     setLoading(false);
   };
 
-  const randomize = () => {
-    const newSeed = generateNewSeed();
+  const randomize = (newSeed?: number) => {
+    console.log('newSeed in randomize: ' + JSON.stringify(newSeed));
+    if (newSeed === undefined || newSeed == null) {
+      newSeed = generateNewSeed();
+    }
     console.log('Generating random anglez with seed: ' + newSeed);
 
     const tokenParams = generateRandomTokenParams(newSeed);
@@ -102,6 +107,10 @@ export function ArtBoard() {
     setStyle(tokenParams.isCyclic ? 'cyclic' : 'linear');
     setStructure(tokenParams.isChaotic ? 'chaotic' : 'folded');
     setLoading(false);
+  };
+
+  const randomizeTapped = () => {
+    randomize();
   };
 
   const getRandomMintPrice = async () => {
@@ -165,7 +174,17 @@ export function ArtBoard() {
   // }, [isConfirmed]);
 
   useEffect(() => {
-    randomize();
+    const tab = searchParams.get('tab');
+    const seed = searchParams.get('seed');
+    if (tab != null && tab == 'custom') {
+      setActiveTab('custom');
+    }
+    if (seed != undefined && seed != null) {
+      console.log('Got seed from query string: ' + seed);
+      randomize(parseInt(seed));
+    } else {
+      randomize();
+    }
   }, []);
 
   useEffect(() => {
@@ -199,6 +218,36 @@ export function ArtBoard() {
     setShapeCount(newShapeCount);
   };
 
+  const validateTransaction = async () => {
+    const transaction = {
+      // from: account.address,
+      to: AnglezContractAddress,
+      chainId: baseSepolia.id,
+      // value: '0.0',
+      // data: '0x...',
+      // Other transaction fields
+    };
+
+    var policyResults = await shield3Client.getPolicyResults(
+      transaction,
+      account.address as Address
+    );
+
+    console.log('Policy results: ', policyResults);
+
+    if (!policyResults) {
+      console.log('No policy results found.');
+      var err = Error('No policy results found.');
+      err.cause = { code: 'NO_POLICY_RESULTS' };
+      throw err;
+    } else if (policyResults.decision != 'Allow') {
+      console.log('Policy results found. Transaction blocked.');
+      var err = Error('Transaction blocked by policy.');
+      err.cause = { code: 'POLICY_BLOCKED' };
+      throw err;
+    }
+  };
+
   const mintRandom = async () => {
     console.log('Minting random...');
 
@@ -221,34 +270,7 @@ export function ArtBoard() {
       // const mintReceipt = await mintRandomAnglez(randomSeed);
 
       // check if the transaction violates policy
-
-      const transaction = {
-        // from: account.address,
-        to: AnglezContractAddress,
-        chainId: baseSepolia.id,
-        // value: '0.0',
-        // data: '0x...',
-        // Other transaction fields
-      };
-
-      var policyResults = await shield3Client.getPolicyResults(
-        transaction,
-        account.address as Address
-      );
-
-      console.log('Policy results: ', policyResults);
-
-      if (!policyResults) {
-        console.log('No policy results found.');
-        var err = Error('No policy results found.');
-        err.cause = { code: 'NO_POLICY_RESULTS' };
-        throw err;
-      } else if (policyResults.decision != 'Allow') {
-        console.log('Policy results found. Transaction blocked.');
-        var err = Error('Transaction blocked by policy.');
-        err.cause = { code: 'POLICY_BLOCKED' };
-        throw err;
-      }
+      validateTransaction();
 
       writeContract({
         address: AnglezContractAddress as Address,
@@ -302,6 +324,8 @@ export function ArtBoard() {
     // setIsMinting(true);
 
     try {
+      validateTransaction();
+
       const colour = rgbToObj(tintColour);
       const alpha = Math.round(colour.a * 255);
 
@@ -423,7 +447,7 @@ export function ArtBoard() {
                     {/* {error && (
                       <div>Error: {(error as BaseError).shortMessage || error.message}</div>
                     )} */}
-                    <Button onClick={randomize}>Randomize</Button>
+                    <Button onClick={randomizeTapped}>Randomize</Button>
                     <Button
                       onClick={() => {
                         setActiveTab('custom');
@@ -492,7 +516,7 @@ export function ArtBoard() {
                   <Loading loadingText="Minting! Waiting for transaction receipt..." />
                 ) : (
                   <>
-                    <Button onClick={randomize}>Randomize</Button>
+                    <Button onClick={randomizeTapped}>Randomize</Button>
                     <Button onClick={newSeedPressed}>New Seed</Button>
                     <Button className={styles.mintButton} onClick={mintCustom}>
                       Mint! ({customMintPrice + ' ETH'})
