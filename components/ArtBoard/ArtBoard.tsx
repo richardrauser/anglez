@@ -51,6 +51,7 @@ export function ArtBoard() {
   const [tintColour, setTintColour] = useState('');
   const [svg, setSvg] = useState('');
   const [isMinting, setIsMinting] = useState(false);
+  const [isValidating, setIsValidating] = useState(false);
   const { chains, switchChain } = useSwitchChain();
   const { data: hash, error: mintError, isPending, writeContract } = useWriteContract();
   const account = useAccount();
@@ -149,7 +150,7 @@ export function ArtBoard() {
     console.log('Is pending: ' + isPending);
     console.log('Is confirming: ' + isConfirming);
 
-    if (isPending || isConfirming) {
+    if (isValidating || isPending || isConfirming) {
       setIsMinting(true);
     } else if (isMinting) {
       if (!isPending && !isConfirming) {
@@ -167,7 +168,7 @@ export function ArtBoard() {
       }
       setIsMinting(false);
     }
-  }, [isPending, isConfirming]);
+  }, [isValidating, isPending, isConfirming]);
 
   // useEffect(() => {
   //   showInfoMessage('Transaction confirmed: ' + isConfirmed);
@@ -219,6 +220,7 @@ export function ArtBoard() {
   };
 
   const validateTransaction = async () => {
+    setIsValidating(true);
     const transaction = {
       // from: account.address,
       to: AnglezContractAddress,
@@ -237,15 +239,18 @@ export function ArtBoard() {
 
     if (!policyResults) {
       console.log('No policy results found.');
+      setIsValidating(false);
       var err = Error('No policy results found.');
       err.cause = { code: 'NO_POLICY_RESULTS' };
       throw err;
     } else if (policyResults.decision != 'Allow') {
       console.log('Policy results found. Transaction blocked.');
+      setIsValidating(false);
       var err = Error('Transaction blocked by policy.');
       err.cause = { code: 'POLICY_BLOCKED' };
       throw err;
     }
+    setIsValidating(false);
   };
 
   const mintRandom = async () => {
