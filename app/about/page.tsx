@@ -26,7 +26,6 @@ export default function AboutPage() {
           </a>{' '}
           on June 30, 2024!
         </Text>
-
         <h2>how do I use this?</h2>
         <Text>
           From the Connect Wallet button, select the wallet you wish to use. Coinbase Smart Wallet
@@ -37,7 +36,6 @@ export default function AboutPage() {
           setup and fund the wallet yourself.
         </Text>
         <br />
-
         <Text>
           Once that's done, visit the <Link href="/create">create page</Link> and get started
           minting anglez!
@@ -58,7 +56,7 @@ export default function AboutPage() {
         {/* <Text>Failing that, contact RR and I'll send you some Sepolia ETH to get you started.</Text>  */}
         <h2>smart contract</h2>
         <Text>
-          The anglez smart contract address on{' '}
+          aadrg The anglez smart contract address on{' '}
           <a target="_blank" href="https://www.base.org/">
             Base
           </a>
@@ -77,7 +75,7 @@ export default function AboutPage() {
           <a target="_blank" href="https://www.base.org/">
             Base
           </a>
-          , loading account details, supporting{' '}
+          layer 2 chain, loading account details, supporting{' '}
           <a target="_blank" href="https://www.farcaster.xyz/">
             Farcaster
           </a>{' '}
@@ -127,12 +125,14 @@ export default function AboutPage() {
           <li>Coinbase Smart Wallet</li>
         </ul> */}
         <h2>source code</h2>
+        smart contract:{' '}
         <a target="_blank" href="https://github.com/richardrauser/anglez-contract">
           anglez-contract
         </a>
         <br />
+        dApp:{' '}
         <a target="_blank" href="https://github.com/richardrauser/anglez">
-          anglez dApp
+          anglez
         </a>
         <h2>who made this?</h2>
         <Text>
