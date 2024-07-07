@@ -29,9 +29,13 @@ export default function AboutPage() {
         </Text>
         <h2>how do I use anglez?</h2>
         <Text>
-          From the Connect Wallet button, select the wallet you wish to use. Coinbase Smart Wallet
-          is the easiest option because you won't have to configure anything or buy crypto..
-          transaction fees are sponsorred! You can alternatively install a crypto wallet like{' '}
+          From the Connect Wallet button at top right, select the wallet you wish to use. Coinbase
+          Smart Wallet is the easiest option because you won't have to configure anything or buy
+          crypto.. transaction fees are sponsorred!
+        </Text>
+        <br />
+        <Text>
+          You can alternatively install a crypto wallet like{' '}
           <a href="https://metamask.io">MetaMask</a> or{' '}
           <a href="https://www.coinbase.com/wallet">Coinbase Wallet</a>, however you will need to
           setup and fund the wallet yourself on the{' '}
