@@ -275,7 +275,7 @@ export function ArtBoard() {
       // const mintReceipt = await mintRandomAnglez(randomSeed);
 
       // check if the transaction violates policy
-      validateTransaction();
+      await validateTransaction();
 
       writeContract({
         address: AnglezContractAddress as Address,
@@ -329,7 +329,7 @@ export function ArtBoard() {
     // setIsMinting(true);
 
     try {
-      validateTransaction();
+      await validateTransaction();
 
       const colour = rgbToObj(tintColour);
       const alpha = Math.round(colour.a * 255);
@@ -443,7 +443,12 @@ export function ArtBoard() {
                 {/* {isPending || isConfirming ? ( */}
                 {/* <Loading loadingText="Minting! Waiting for transaction receipt..." /> */}
                 {isMinting ? (
-                  <Loading loadingText="Minting! Waiting for transaction submission..." />
+                  <>
+                    <Loading loadingText="Minting in progress!" />
+                    {isValidating && <div>Validating transaction...</div>}
+                    {isPending && <div>Transaction pending...</div>}
+                    {isConfirming && <div>Waiting for confirmation...</div>}
+                  </>
                 ) : (
                   <>
                     {/* {hash && <div>Transaction Hash: {hash}</div>}
@@ -518,7 +523,12 @@ export function ArtBoard() {
               <div className="panel">
                 <div>Random seed: {randomSeed}</div>
                 {isMinting ? (
-                  <Loading loadingText="Minting! Waiting for transaction receipt..." />
+                  <>
+                    <Loading loadingText="Minting in progress!" />
+                    {isValidating && <div>Validating transaction...</div>}
+                    {isPending && <div>Transaction pending...</div>}
+                    {isConfirming && <div>Waiting for confirmation...</div>}
+                  </>
                 ) : (
                   <>
                     <Button onClick={randomizeTapped}>Randomize</Button>
