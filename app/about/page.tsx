@@ -42,7 +42,8 @@ export default function AboutPage() {
           <a target="_blank" href="https://www.base.org/">
             Base
           </a>{' '}
-          layer 2 chain. You can do this from directly within the wallet app.
+          layer 2 chain. You can do this from directly within most wallet apps. Look for a Buy
+          button.
         </Text>
         <br />
         <Text>
