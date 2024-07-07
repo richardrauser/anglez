@@ -13,6 +13,7 @@ export default function AboutPage() {
     <>
       <h1>About</h1>
       <div className="panel">
+        <h2>what is anglez?</h2>
         <Text>
           anglez is colourful, abstract, on-chain generative NFT art. Each piece is completely
           unique, and can be generated at random or customized.
@@ -26,14 +27,18 @@ export default function AboutPage() {
           </a>{' '}
           on June 30, 2024!
         </Text>
-        <h2>how do I use this?</h2>
+        <h2>how do I use anglez?</h2>
         <Text>
           From the Connect Wallet button, select the wallet you wish to use. Coinbase Smart Wallet
           is the easiest option because you won't have to configure anything or buy crypto..
           transaction fees are sponsorred! You can alternatively install a crypto wallet like{' '}
           <a href="https://metamask.io">MetaMask</a> or{' '}
           <a href="https://www.coinbase.com/wallet">Coinbase Wallet</a>, however you will need to
-          setup and fund the wallet yourself.
+          setup and fund the wallet yourself on the{' '}
+          <a target="_blank" href="https://www.base.org/">
+            Base
+          </a>{' '}
+          layer 2 chain. You can do this from directly within the wallet app.
         </Text>
         <br />
         <Text>
@@ -54,7 +59,7 @@ export default function AboutPage() {
           </a>
         </Text> */}
         {/* <Text>Failing that, contact RR and I'll send you some Sepolia ETH to get you started.</Text>  */}
-        <h2>smart contract</h2>
+        <h2>anglez smart contract</h2>
         <Text>
           The anglez smart contract address on{' '}
           <a target="_blank" href="https://www.base.org/">
