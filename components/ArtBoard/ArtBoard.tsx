@@ -257,6 +257,13 @@ export function ArtBoard() {
     console.log('Minting random...');
 
     try {
+      if (!account.isConnected) {
+        toast.warn(
+          `anglez is not connected to a crypto wallet. Tap the Connect Wallet button at top right.`
+        );
+        return;
+      }
+
       console.log('Minting random for address: ' + account.address);
 
       const currentChainId = account?.chainId;
@@ -303,6 +310,13 @@ export function ArtBoard() {
   };
 
   const mintCustom = async () => {
+    if (!account.isConnected) {
+      toast.warn(
+        `anglez is not connected to a crypto wallet. Tap the Connect Wallet button at top right.`
+      );
+      return;
+    }
+
     console.log('Minting custom for address: ' + account.address);
 
     const currentChainId = account?.chainId;
