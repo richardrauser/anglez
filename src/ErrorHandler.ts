@@ -15,6 +15,8 @@ export function handleError(error: any) {
 
   const code = error.code != undefined ? error.code : error.cause?.code;
 
+  console.log('Error code: ', code);
+
   if (code === 4001) {
     showErrorMessage('You rejected the request. 😢');
   } else if (code === 'INSUFFICIENT_FUNDS') {
@@ -28,6 +30,9 @@ export function handleError(error: any) {
     // Internal JSON RPC error
     if (error.data != null && error.data.message != null) {
       showErrorMessage('Oops, an error ocurred. ' + error.data.message);
+    } else if (error.details != null) {
+      var errorMessage = 'Oops, an error occurred: ' + error.details;
+      showErrorMessage(errorMessage);
     } else {
       showErrorMessage('Oops, an Internal JSON RPC error occurred. ');
     }
