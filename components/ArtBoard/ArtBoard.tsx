@@ -290,6 +290,7 @@ export function ArtBoard() {
         chain: baseSepolia,
         functionName: 'mintRandom',
         args: [randomSeed],
+        value: parseEther(randomMintPrice!),
       });
 
       // console.log('Mint tx: ' + mintReceipt.hash);
