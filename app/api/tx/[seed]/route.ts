@@ -44,7 +44,7 @@ async function getResponse(
       abi: [],
       data,
       to: AnglezContractAddress as Address,
-      value: parseEther('0').toString(), // 0 ETH
+      value: parseEther('0.001').toString(), // 0 ETH
     },
   };
   return NextResponse.json(txData);
