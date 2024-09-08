@@ -282,7 +282,7 @@ export function ArtBoard() {
       // const mintReceipt = await mintRandomAnglez(randomSeed);
 
       // check if the transaction violates policy
-      await validateTransaction();
+      // await validateTransaction();
 
       writeContract({
         address: AnglezContractAddress as Address,
@@ -344,7 +344,7 @@ export function ArtBoard() {
     // setIsMinting(true);
 
     try {
-      await validateTransaction();
+      // await validateTransaction();
 
       const colour = rgbToObj(tintColour);
       const alpha = Math.round(colour.a * 255);
