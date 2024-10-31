@@ -11,6 +11,7 @@ import { ToastContainer } from 'react-toastify';
 import { Providers } from './Providers';
 import { NEXT_PUBLIC_URL } from '@/src/Constants';
 import { getFrameMetadata } from '@coinbase/onchainkit/frame';
+import { Analytics } from '@vercel/analytics/react';
 
 const frameMetadata = getFrameMetadata({
   buttons: [
@@ -80,6 +81,7 @@ export default function RootLayout({ children }: { children: any }) {
             <div className="mainContent">{children}</div>
           </Providers>
         </MantineProvider>
+        <Analytics />
       </body>
     </html>
   );
