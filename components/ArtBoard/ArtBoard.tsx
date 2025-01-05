@@ -30,8 +30,7 @@ import {
   AnglezCurrentNetworkName,
 } from '@/src/Constants';
 import { type BaseError, useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
-import { abi } from '@/contract/Anglez.json';
-import { showErrorMessage, showInfoMessage } from '@/src/UIUtils';
+import contract from '@/contract/Anglez.json';
 import { baseSepolia } from 'viem/chains';
 import { Address } from 'viem';
 import { parseEther } from 'ethers';
@@ -43,7 +42,7 @@ export function ArtBoard() {
   const [activeTab, setActiveTab] = useState<string | null>('random');
   const [randomMintPrice, setRandomMintPrice] = useState<string | null>(null);
   const [customMintPrice, setCustomMintPrice] = useState<string | null>(null);
-  const [randomSeed, setRandomSeed] = useState(0);
+  const [randomSeed, setRandomSeed] = useState<number | null>(null);
   const [style, setStyle] = useState('cyclic');
   const [structure, setStructure] = useState('folded');
   const [shapeCount, setShapeCount] = useState(5);
@@ -65,9 +64,17 @@ export function ArtBoard() {
     confirmations: 0,
   });
   const searchParams = useSearchParams();
+  const { abi } = contract;
 
   const generateSvgDataUri = () => {
-    console.log('Generating svg data URI...');
+    console.log('Generating svg data URI with random seed: ' + randomSeed);
+
+    if (randomSeed == null) {
+      console.log('Random seed is null!');
+      return null;
+    }
+
+    const seed = randomSeed as number;
 
     var tokenParams: TokenParams;
     if (activeTab == 'random') {
@@ -86,7 +93,6 @@ export function ArtBoard() {
     // console.log('SVG STRING: ' + svgString);
     const encodedSvgString = encodeURIComponent(svgString);
     return `data:image/svg+xml,${encodedSvgString}`;
-    setLoading(false);
   };
 
   const randomize = (newSeed?: number) => {
@@ -116,12 +122,12 @@ export function ArtBoard() {
 
   const getRandomMintPrice = async () => {
     const price = await fetchRandomMintPrice();
-    console.log('RANDOM MINT PRICE: ', price.toString());
+    // console.log('RANDOM MINT PRICE: ', price.toString());
     setRandomMintPrice(price);
   };
   const getCustomMintPrice = async () => {
     const price = await fetchCustomMintPrice();
-    console.log('CUSTOM MINT PRICE: ', price.toString());
+    // console.log('CUSTOM MINT PRICE: ', price.toString());
     setCustomMintPrice(price);
   };
 
@@ -186,14 +192,20 @@ export function ArtBoard() {
     } else {
       randomize();
     }
+
+    getRandomMintPrice();
+    getCustomMintPrice();
   }, []);
 
   useEffect(() => {
-    getRandomMintPrice();
-    getCustomMintPrice();
+    if (randomSeed == null) {
+      return;
+    }
 
     const svg = generateSvgDataUri();
-    setSvg(svg);
+    if (svg != null) {
+      setSvg(svg);
+    }
   }, [activeTab, randomSeed, style, structure, shapeCount, tintColour]);
 
   const newSeedPressed = () => {

@@ -16,16 +16,30 @@ export default function AboutPage() {
         <h2>what is anglez?</h2>
         <Text>
           anglez is colourful, abstract, on-chain generative NFT art. Each piece is completely
-          unique, and can be generated at random or customized.
+          unique, and can be generated at random or customized. A maximum of 512 pieces can ever be
+          minted.
         </Text>
         <br />
         <Text>
-          Although under development for several months, anglez was launched as a sumbmission for
+          anglez launched on June 30, 2024 after several months of development. It went on to{' '}
+          <a
+            target="_blank"
+            href="https://base.mirror.xyz/p_A3ZxaBUEcpWwTf9_Yg-jnlOro8m8Ypc8LEDnA_ZRk"
+          >
+            win
+          </a>{' '}
           the Base{' '}
           <a target="_blank" href="https://www.base.org/onchainsummer">
             Onchain Summer Buildathon
           </a>{' '}
-          on June 30, 2024!
+          in the{' '}
+          <a
+            target="_blank"
+            href="https://base.mirror.xyz/p_A3ZxaBUEcpWwTf9_Yg-jnlOro8m8Ypc8LEDnA_ZRk"
+          >
+            Creator category
+          </a>
+          !
         </Text>
         <h2>how do I use anglez?</h2>
         <Text>

@@ -40,7 +40,7 @@ function randomIntFromInterval(randomSeed: number, min: number, max: number) {
   if (max <= min) {
     return min;
   }
-  console.log('Random seed: ' + randomSeed);
+  // console.log('Random seed: ' + randomSeed);
   const abiCodedSeed = AbiCoder.defaultAbiCoder().encode(['uint'], [randomSeed]);
   const hash = ethers.keccak256(abiCodedSeed);
   const seed = toBigInt(hash);
@@ -114,7 +114,7 @@ function safeTint(colourComponent: number, tintComponent: number, alpha: number)
 }
 
 export function generateRandomTokenParams(seed: number): TokenParams {
-  console.log('SEED: ' + seed);
+  // console.log('SEED: ' + seed);
   const shapeCount = randomIntFromInterval(seed + 5, 5, 8);
 
   const red = randomIntFromInterval(seed + 6, 0, 255);
@@ -212,9 +212,9 @@ function getShapes(
       }
     }
 
-    console.log('points');
-    console.log(i);
-    console.log(points);
+    // console.log('points');
+    // console.log(i);
+    // console.log(points);
 
     let polygonOpacity;
     let midStopOpacity;
@@ -275,18 +275,18 @@ function getShapes(
     // console.log(randomSeed);
   }
 
-  console.log('minX: ' + minX);
-  console.log('maxX: ' + maxX);
-  console.log('minY: ' + minY);
-  console.log('maxY: ' + maxY);
+  // console.log('minX: ' + minX);
+  // console.log('maxX: ' + maxX);
+  // console.log('minY: ' + minY);
+  // console.log('maxY: ' + maxY);
 
   const structureWidth = maxX - minX;
   const structureHeight = maxY - minY;
 
-  console.log('structureWidth: ' + structureWidth);
-  console.log('structureHeight: ' + structureHeight);
+  // console.log('structureWidth: ' + structureWidth);
+  // console.log('structureHeight: ' + structureHeight);
 
-  console.log('maxPolyRepeat: ' + maxPolyRepeat);
+  // console.log('maxPolyRepeat: ' + maxPolyRepeat);
 
   var width: number;
   var height: number;
@@ -306,14 +306,14 @@ function getShapes(
     const margin = Math.min(minX, 1000 - maxX, minY, 1000 - maxY) + 10;
     const artboardWidthHeight = 1000 - 2 * margin;
 
-    console.log('artboardWidthHeight: ' + artboardWidthHeight);
+    // console.log('artboardWidthHeight: ' + artboardWidthHeight);
 
     const temp = 2 * Math.pow(artboardWidthHeight, 2);
-    console.log('temp: ' + temp);
+    // console.log('temp: ' + temp);
     // so we get an even number
     const widthHeight = Math.floor((Math.floor(sqrt(temp)) + 1) / 2) * 2;
 
-    console.log('widthHeight: ' + widthHeight);
+    // console.log('widthHeight: ' + widthHeight);
 
     const offset = (1000 - widthHeight) / 2;
 
@@ -330,7 +330,7 @@ function getShapes(
   const viewBox = xOffset + ' ' + yOffset + ' ' + width + ' ' + height;
   // const viewBox = '-100 -100 1200 1200';
 
-  console.log('viewBox:' + viewBox);
+  // console.log('viewBox:' + viewBox);
 
   return [shapes, viewBox];
 }

@@ -5,7 +5,7 @@ import sharp from 'sharp';
 export async function GET(request: Request, { params }: { params: { seed: string } }) {
   const seed = params.seed;
 
-  console.log('SEED:', seed);
+  // console.log('SEED:', seed);
 
   const tokenParams = generateRandomTokenParams(parseInt(seed));
   const anglezSvg = buildArtwork(tokenParams);
