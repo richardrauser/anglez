@@ -572,6 +572,9 @@ export function ArtBoard() {
               </div>
             </Tabs.Panel>
           </Tabs>
+          <Text mb="lg" c="dimmed" ta="center" size="lg" maw={580} mx="auto" mt="lg">
+            Only 512 anglez can ever be minted.
+          </Text>
         </div>
       )}
     </div>

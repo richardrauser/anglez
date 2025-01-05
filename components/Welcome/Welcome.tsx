@@ -37,13 +37,13 @@ export function Welcome() {
           <br></br>
         </Text>
 
-        <Text c="dimmed" ta="center" size="lg" maw={580} mx="auto" mt="lg">
-          Only 512 anglez can ever be minted.
-        </Text>
-
         <Button mt="lg" component="a" href="/create" rightSection={<IconArrowRight size={14} />}>
           Get started creating anglez!
         </Button>
+
+        <Text mb="lg" c="dimmed" ta="center" size="lg" maw={580} mx="auto" mt="lg">
+          Only 512 anglez can ever be minted.
+        </Text>
       </center>
     </>
   );
