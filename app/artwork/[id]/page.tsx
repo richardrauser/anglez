@@ -74,7 +74,10 @@ export default function ArtworkPage({ params }: { params: { id: number } }) {
                 {Math.round(Number(tokenDetails?.attributes.tintOpacity) * 100)}%
               </div>
               <div>
-                <b>Owner:</b> {shortenAddress(tokenDetails.owner)}
+                <b>Owner:</b>{' '}
+                <a href={AnglezCurrentNetworkExplorerUrl + 'address/' + tokenDetails.owner}>
+                  {shortenAddress(tokenDetails.owner)}
+                </a>
               </div>
             </Text>
             <Button onClick={handleViewOnOpenSea} color="blue" size="lg">
