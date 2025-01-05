@@ -29,7 +29,10 @@ export default function AboutPage() {
             win
           </a>{' '}
           the Base{' '}
-          <a target="_blank" href="https://www.base.org/onchainsummer">
+          <a
+            target="_blank"
+            href="https://base.mirror.xyz/p_A3ZxaBUEcpWwTf9_Yg-jnlOro8m8Ypc8LEDnA_ZRk"
+          >
             Onchain Summer Buildathon
           </a>{' '}
           in the{' '}
@@ -37,7 +40,7 @@ export default function AboutPage() {
             target="_blank"
             href="https://base.mirror.xyz/p_A3ZxaBUEcpWwTf9_Yg-jnlOro8m8Ypc8LEDnA_ZRk"
           >
-            Creator category
+            Creator track
           </a>
           !
         </Text>

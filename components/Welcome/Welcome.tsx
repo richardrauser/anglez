@@ -7,6 +7,17 @@ import { IconArrowRight } from '@tabler/icons-react';
 export function Welcome() {
   return (
     <>
+      <Text c="dimmed" ta="center" size="lg" maw={580} mx="auto" mt="lg">
+        🥇 Winner of the Base{' '}
+        <a
+          target="_blank"
+          href="https://base.mirror.xyz/p_A3ZxaBUEcpWwTf9_Yg-jnlOro8m8Ypc8LEDnA_ZRk"
+        >
+          Onchain Summer Buildathon
+        </a>
+        ! 🥇
+      </Text>
+
       <Title className={classes.title} ta="center" mt="lg" mb="lg">
         {/* This is{' '} */}
         {/* <Text inherit variant="gradient" component="span" gradient={{ from: 'blue', to: 'orange' }}>
