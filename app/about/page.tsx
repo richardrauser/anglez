@@ -160,7 +160,7 @@ export default function AboutPage() {
           .<br />
         </Text>
         <h2>version</h2>
-        <Text>{version}</Text>
+        <Text>v{version}</Text>
       </div>
     </>
   );

@@ -12,15 +12,26 @@ import {
   AnglezCurrentNetworkName,
 } from '@/src/Constants';
 import { shortenAddress } from '@/src/BlockchainAPI';
+import Link from 'next/link';
 
 export default function ArtworkPage({ params }: { params: { id: number } }) {
   const [tokenDetails, setTokenDetails] = useState<TokenDetails | null>(null);
+  const [pngFileName, setPngFileName] = useState<string>('');
+  const [svgFileName, setSvgFileName] = useState<string>('');
+
+  const [pngData, setPngData] = useState<string>('');
 
   useEffect(() => {
     const fetchData = async () => {
       console.log('Fetching data for token ID: ', params.id);
       const tokenDetails = await fetchTokenDetails(params.id);
-      console.log(tokenDetails);
+
+      if (tokenDetails) {
+        setPngFileName(`anglez-#${tokenDetails.tokenId}.png`);
+        setSvgFileName(`anglez-#${tokenDetails.tokenId}.svg`);
+      }
+
+      console.log('Setting token details: ', tokenDetails);
       setTokenDetails(tokenDetails);
     };
     fetchData();
@@ -45,8 +56,24 @@ export default function ArtworkPage({ params }: { params: { id: number } }) {
         <>
           <div className="artboard">
             <img
+              id="anglezImage"
               className="artboardImage"
               src={`data:image/svg+xml,${encodeURIComponent(tokenDetails.svg)}`}
+              onLoad={() => {
+                var canvas = document.createElement('canvas');
+                canvas.width = 1000;
+                canvas.height = 1000;
+                var ctx = canvas.getContext('2d');
+                if (!ctx) {
+                  return;
+                }
+
+                var anglezImage = document.getElementById('anglezImage') as HTMLImageElement;
+                ctx.drawImage(anglezImage, 0, 0);
+
+                setPngData(canvas.toDataURL('image/png'));
+                console.log('END GOT IT');
+              }}
             ></img>
           </div>
           <div className="panel">
@@ -86,6 +113,13 @@ export default function ArtworkPage({ params }: { params: { id: number } }) {
             <Button onClick={handleViewOnBlockExplorer} color="blue" size="lg">
               View on Block Explorer
             </Button>
+            <br />
+            <a href={tokenDetails.svgDataUri} download={svgFileName}>
+              <Button>⬇ SVG</Button>
+            </a>
+            <a href={pngData} download={pngFileName}>
+              <Button>⬇ PNG</Button>
+            </a>
           </div>
         </>
       )}
