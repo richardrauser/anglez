@@ -1,0 +1,81 @@
+import type { Metadata } from 'next';
+import React from 'react';
+import { NEXT_PUBLIC_URL } from '@/src/Constants';
+import { fetchTokenDetails } from '@/src/BlockchainServerAPI';
+
+type Props = { params: { id: string } };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const id = parseInt(params.id, 10);
+  const url = `${NEXT_PUBLIC_URL}/artwork/${params.id}`;
+  const imageUrl = `${NEXT_PUBLIC_URL}/artwork/anglez-${params.id}.png`;
+
+  try {
+    const token = await fetchTokenDetails(id);
+    const title = `anglez #${params.id}`;
+    const description = token
+      ? `anglez #${params.id} · ${token.attributes.shapeCount} shapes · ${token.attributes.style} · ${token.attributes.structure}`
+      : `anglez #${params.id}`;
+
+    return {
+      title,
+      description,
+      alternates: { canonical: url },
+      openGraph: {
+        title,
+        description,
+        url,
+        type: 'website',
+        images: [
+          {
+            url: imageUrl,
+            width: 1200,
+            height: 1200,
+            alt: `anglez #${params.id}`,
+          },
+        ],
+      },
+      twitter: {
+        card: 'summary_large_image',
+        site: '@volstrate',
+        creator: '@volstrate',
+        title,
+        description,
+        images: [imageUrl],
+      },
+    } satisfies Metadata;
+  } catch {
+    const title = `anglez #${params.id}`;
+    return {
+      title,
+      description: title,
+      alternates: { canonical: url },
+      openGraph: {
+        title,
+        description: title,
+        url,
+        type: 'website',
+        images: [
+          {
+            url: imageUrl,
+            width: 1200,
+            height: 1200,
+            alt: `anglez #${params.id}`,
+          },
+        ],
+      },
+      twitter: {
+        card: 'summary_large_image',
+        site: '@volstrate',
+        creator: '@volstrate',
+        title,
+        description: title,
+        images: [imageUrl],
+      },
+    } satisfies Metadata;
+  }
+}
+
+export default function ArtworkLayout({ children }: { children: React.ReactNode }) {
+  return <>{children}</>;
+}
