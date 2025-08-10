@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import React from 'react';
 import { NEXT_PUBLIC_URL } from '@/src/Constants';
 import { fetchTokenDetails } from '@/src/BlockchainServerAPI';
+import { getCachedArtworkPng } from '@/src/ImageCache';
 
 type Props = { params: { id: string } };
 
@@ -11,6 +12,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const imageUrl = `${NEXT_PUBLIC_URL}/artwork/anglez-${params.id}.png`;
 
   try {
+    // Warm the image cache so crawlers/social shares don't have to pay chain fetch/render cost
+    await getCachedArtworkPng(id);
+
     const token = await fetchTokenDetails(id);
     const title = token
       ? `anglez #${params.id} · ${token.attributes.shapeCount} shapes · ${token.attributes.style} · ${token.attributes.structure}`

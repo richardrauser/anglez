@@ -1,5 +1,4 @@
-import sharp from 'sharp';
-import { fetchTokenDetails } from '@/src/BlockchainServerAPI';
+import { getCachedArtworkPng } from '@/src/ImageCache';
 
 export const runtime = 'nodejs';
 export const revalidate = 3600; // cache for 1 hour
@@ -11,18 +10,14 @@ export async function GET(_req: Request, { params }: { params: { id: string } })
   }
 
   try {
-    const token = await fetchTokenDetails(id);
-    if (!token?.svg) {
-      return new Response('Not found', { status: 404 });
-    }
-
-    const png = await sharp(Buffer.from(token.svg), { density: 300 })
-      // .resize(1200, 1200, { fit: 'contain', background: { r: 255, g: 255, b: 255, alpha: 1 } })
-      .png()
-      .toBuffer();
-
-    const uint8 = new Uint8Array(png);
-    return new Response(uint8, {
+    const uint8 = await getCachedArtworkPng(id);
+    const stream = new ReadableStream({
+      start(controller) {
+        controller.enqueue(uint8);
+        controller.close();
+      },
+    });
+    return new Response(stream, {
       status: 200,
       headers: {
         'Content-Type': 'image/png',
