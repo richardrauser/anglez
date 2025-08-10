@@ -1,0 +1,33 @@
+import { put, head } from '@vercel/blob';
+import sharp from 'sharp';
+import { fetchTokenDetails } from './BlockchainServerAPI';
+
+const BUCKET_PREFIX = 'images/';
+
+export async function fetchArtworkImageUrl(tokenId: number): Promise<string> {
+  if (!Number.isFinite(tokenId) || tokenId < 0) throw new Error('Invalid token id');
+  const key = `${BUCKET_PREFIX}anglez-${tokenId}.png`;
+
+  // If exists, return URL
+  try {
+    const meta = await head(key);
+    if (meta?.url) return meta.url;
+  } catch {}
+
+  // Generate PNG
+  const token = await fetchTokenDetails(tokenId);
+  if (!token?.svg) throw new Error('Token SVG not found');
+  const png = await sharp(Buffer.from(token.svg), { density: 300 })
+    // .resize(1200, 1200, { fit: 'contain', background: { r: 255, g: 255, b: 255, alpha: 1 } })
+    .png()
+    .toBuffer();
+
+  // Upload publicly readable
+  const res = await put(key, png, {
+    access: 'public',
+    addRandomSuffix: false,
+    contentType: 'image/png',
+    cacheControlMaxAge: 60 * 60 * 24 * 30,
+  });
+  return res.url;
+}
