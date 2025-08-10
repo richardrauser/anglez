@@ -72,7 +72,8 @@ function networkConfigFor(currentNetwork: string) {
   }
 }
 export const NEXT_PUBLIC_URL =
-  process.env.NODE_ENV == 'development' ? 'http://localhost:3000' : 'https://anglez.xyz';
+  process.env.NEXT_PUBLIC_URL ??
+  (process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://www.anglez.xyz');
 export {
   AnglezCurrentNetworkID,
   AnglezCurrentNetworkName,
