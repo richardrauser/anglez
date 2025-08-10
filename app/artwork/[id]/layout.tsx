@@ -13,7 +13,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   try {
     // Warm the image cache so crawlers/social shares don't have to pay chain fetch/render cost
-    await getCachedArtworkPng(id);
+    // don't await...
+    getCachedArtworkPng(id);
 
     const token = await fetchTokenDetails(id);
     const title = token
