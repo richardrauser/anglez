@@ -72,7 +72,6 @@ export default function ArtworkPage({ params }: { params: { id: number } }) {
                 ctx.drawImage(anglezImage, 0, 0);
 
                 setPngData(canvas.toDataURL('image/png'));
-                console.log('END GOT IT');
               }}
             ></img>
           </div>

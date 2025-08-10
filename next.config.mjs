@@ -12,12 +12,6 @@ export default withBundleAnalyzer({
   experimental: {
     optimizePackageImports: ['@mantine/core', '@mantine/hooks'],
   },
-  rewrites: async () => [
-    {
-      source: '/artwork/anglez-:id.png',
-      destination: '/api/artwork/:id/image',
-    },
-  ],
   redirects: async () => [
     {
       source: '/storefront-metadata',
