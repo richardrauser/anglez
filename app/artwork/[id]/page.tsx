@@ -1,7 +1,7 @@
 'use client';
 import Loading from '@/components/Loading/Loading';
 import { TokenDetails } from '@/src/TokenDetails';
-import fetchTokenDetails from '@/src/TokenDetailsFetcher';
+import fetchTokenDetailsClient from '@/src/TokenDetailsFetcher';
 import { Button, Text } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import { AnglezContractAddress, AnglezCurrentNetworkExplorerUrl } from '@/src/Constants';
@@ -18,7 +18,7 @@ export default function ArtworkPage({ params }: { params: { id: number } }) {
   useEffect(() => {
     const fetchData = async () => {
       console.log('Fetching data for token ID: ', params.id);
-      const tokenDetails = await fetchTokenDetails(params.id);
+      const tokenDetails = await fetchTokenDetailsClient(params.id);
 
       if (tokenDetails) {
         setPngFileName(`anglez-#${tokenDetails.tokenId}.png`);

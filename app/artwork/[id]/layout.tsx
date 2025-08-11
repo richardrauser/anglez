@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import React from 'react';
 import { NEXT_PUBLIC_URL } from '@/src/Constants';
-import fetchTokenDetails from '@/src/TokenDetailsFetcher';
+import fetchTokenDetailsClient from '@/src/TokenDetailsFetcher';
 import { fetchArtworkImageUrl } from '@/src/ArtworkImageFetcher';
 
 type Props = { params: { id: string } };
@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // Build title/description first
   let tokenTitle = `anglez #${params.id}`;
   try {
-    const token = await fetchTokenDetails(id);
+    const token = await fetchTokenDetailsClient(id);
     if (token) {
       tokenTitle = `anglez #${params.id} · ${token.attributes.shapeCount} shapes · ${token.attributes.style} · ${token.attributes.structure}`;
     }

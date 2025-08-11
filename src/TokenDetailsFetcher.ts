@@ -4,13 +4,41 @@ import { fetchTokenDetails as fetchTokenDetailsOnChain } from './BlockchainServe
 
 const BUCKET_PREFIX = 'details/';
 
+export async function fetchTokenDetailsClient(tokenId: number): Promise<TokenDetails | null> {
+  if (!Number.isFinite(tokenId) || tokenId < 0) {
+    console.error('[TokenDetailsFetcher.fetchTokenDetailsClient] Invalid token id');
+    return null;
+  }
+
+  try {
+    const res = await fetch(`/api/token-details/${tokenId}`, {
+      method: 'GET',
+      headers: { Accept: 'application/json' },
+      cache: 'no-store',
+    });
+
+    if (!res.ok) {
+      console.error(
+        `[TokenDetailsFetcher.fetchTokenDetailsClient] API returned ${res.status}: ${res.statusText}`
+      );
+      return null;
+    }
+
+    const json = (await res.json()) as TokenDetails;
+    return json ?? null;
+  } catch (err) {
+    console.error('[TokenDetailsFetcher.fetchTokenDetailsClient] Request failed:', err);
+    return null;
+  }
+}
+
 /**
  * Fetch and cache TokenDetails in Vercel Blob (JSON), similar to ArtworkImageFetcher.
  * - On cache hit: read JSON from Blob and return the parsed TokenDetails.
  * - On miss: fetch from chain, upload JSON to Blob (public, immutable-ish), and return it.
  * - If BLOB_READ_WRITE_TOKEN is not set, just fetch from chain with no caching.
  */
-export async function fetchTokenDetails(tokenId: number): Promise<TokenDetails | null> {
+export async function fetchTokenDetailsServer(tokenId: number): Promise<TokenDetails | null> {
   if (!Number.isFinite(tokenId) || tokenId < 0) {
     throw new Error('Invalid token id');
   }
@@ -60,4 +88,4 @@ export async function fetchTokenDetails(tokenId: number): Promise<TokenDetails |
   return tokenDetails;
 }
 
-export default fetchTokenDetails;
+export default fetchTokenDetailsServer;

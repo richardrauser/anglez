@@ -1,6 +1,6 @@
 import { put, head } from '@vercel/blob';
 import sharp from 'sharp';
-import fetchTokenDetails from './TokenDetailsFetcher';
+import fetchTokenDetailsClient from './TokenDetailsFetcher';
 
 const BUCKET_PREFIX = 'images/';
 
@@ -36,7 +36,7 @@ export async function fetchArtworkImageUrl(tokenId: number): Promise<string | nu
 
   // Generate PNG
   console.log(`[fetchArtworkImageUrl] Generating PNG for anglez #${tokenId}...`);
-  const token = await fetchTokenDetails(tokenId);
+  const token = await fetchTokenDetailsClient(tokenId);
   if (!token?.svg) {
     throw new Error('fetchArtworkImageUrl Token SVG not found');
   }

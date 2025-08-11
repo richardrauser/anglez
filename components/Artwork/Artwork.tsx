@@ -1,6 +1,6 @@
 import { Card, SimpleGrid, Text } from '@mantine/core';
 import { useEffect } from 'react';
-import fetchTokenDetails from '@/src/TokenDetailsFetcher';
+import fetchTokenDetailsClient from '@/src/TokenDetailsFetcher';
 import { useState } from 'react';
 import Loading from '../Loading/Loading';
 import Link from 'next/link';
@@ -10,7 +10,7 @@ export default function Artwork(props: { tokenId: number }) {
   const [tokenDetails, setTokenDetails] = useState<any | null>(null);
 
   const fetchData = async () => {
-    const details = await fetchTokenDetails(props.tokenId);
+    const details = await fetchTokenDetailsClient(props.tokenId);
     // console.log('Details: ' + JSON.stringify(details));
     setTokenDetails(details);
     setLoading(false);
