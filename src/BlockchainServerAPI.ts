@@ -51,7 +51,6 @@ export async function fetchRecentTokenIds() {
   // because tokenCount is a BigInt
   const tokenCountInt = Number(tokenCount);
   for (var i = tokenCountInt - 1; i >= 0 && i >= tokenCountInt - maxToDisplay; i--) {
-    console.log(i);
     // const tokenId = await contract.tokenByIndex(i);
     tokens.push(i);
   }

@@ -10,6 +10,10 @@ export async function fetchTokenDetailsClient(tokenId: number): Promise<TokenDet
     return null;
   }
 
+  console.log(
+    `[TokenDetailsFetcher.fetchTokenDetailsClient] Fetching details for token ${tokenId}`
+  );
+
   try {
     const res = await fetch(`/api/token-details/${tokenId}`, {
       method: 'GET',
@@ -64,8 +68,8 @@ export async function fetchTokenDetailsServer(tokenId: number): Promise<TokenDet
       }
     }
   } catch (err) {
-    console.error(
-      '[TokenDetialsFetcher.fetchTokenDetailsServer] Cache read failed; will refetch:',
+    console.log(
+      '[TokenDetailsFetcher.fetchTokenDetailsServer] Cache read failed. will refetch:',
       err
     );
   }
