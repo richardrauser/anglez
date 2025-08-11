@@ -14,7 +14,7 @@ export async function fetchArtworkImageUrl(tokenId: number): Promise<string | nu
     throw new Error('Invalid token id');
   }
 
-  console.log('[fetchArtworkImageUrl] Fetching artwork image URL for token', tokenId);
+  console.log(`[fetchArtworkImageUrl] Fetching artwork image URL for tokenId: ${tokenId}...`);
 
   const key = `${BUCKET_PREFIX}anglez-${tokenId}.png`;
 
@@ -31,6 +31,9 @@ export async function fetchArtworkImageUrl(tokenId: number): Promise<string | nu
   if (!token?.svg) {
     throw new Error('fetchArtworkImageUrl Token SVG not found');
   }
+
+  console.log(`[fetchArtworkImageUrl] Generating PNG for tokenId: ${tokenId}...`);
+
   const png = await sharp(Buffer.from(token.svg), { density: 300 })
     // .resize(1000, 1000, { fit: 'contain', background: { r: 255, g: 255, b: 255, alpha: 1 } })
     .png()
@@ -43,5 +46,7 @@ export async function fetchArtworkImageUrl(tokenId: number): Promise<string | nu
     contentType: 'image/png',
     cacheControlMaxAge: 60 * 60 * 24 * 30,
   });
+
+  console.log(`[fetchArtworkImageUrl] Uploaded PNG for tokenId: ${tokenId}. URL: ${res.url}`);
   return res.url;
 }
