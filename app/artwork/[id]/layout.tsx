@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 import React from 'react';
 import { NEXT_PUBLIC_URL } from '@/src/Constants';
-import { fetchTokenDetailsClient } from '@/src/TokenDetailsFetcher';
+import { fetchTokenDetailsServer } from '@/src/TokenDetailsFetcher';
 import { fetchArtworkImageUrl } from '@/src/ArtworkImageFetcher';
+import { TokenDetails } from '@/src/TokenDetails';
 
 type Props = { params: { id: string } };
 
@@ -12,12 +13,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const url = `${NEXT_PUBLIC_URL}/artwork/${params.id}`;
   // Build title/description first
   let tokenTitle = `anglez #${params.id}`;
+  let tokenDetails: TokenDetails | null;
   try {
-    const token = await fetchTokenDetailsClient(id);
-    if (token) {
-      tokenTitle = `anglez #${params.id} · ${token.attributes.shapeCount} shapes · ${token.attributes.style} · ${token.attributes.structure}`;
+    tokenDetails = await fetchTokenDetailsServer(id);
+    if (tokenDetails) {
+      tokenTitle += ` · ${tokenDetails.attributes.shapeCount} shapes · ${tokenDetails.attributes.style} · ${tokenDetails.attributes.structure}`;
     }
-  } catch {}
+  } catch {
+    tokenDetails = null;
+  }
 
   const pageMetadata: Metadata = {
     title: tokenTitle,
@@ -38,9 +42,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
   };
 
+  if (!tokenDetails) {
+    return pageMetadata;
+  }
+
   // Only attempt Blob image generation when a token is configured locally
   console.log(`[generateMetadata] Checking for Blob image generation for anglez #${params.id}`);
-  const artworkImageUrl = await fetchArtworkImageUrl(id);
+  const artworkImageUrl = await fetchArtworkImageUrl(tokenDetails);
 
   if (artworkImageUrl) {
     (pageMetadata.openGraph as any).images = [
