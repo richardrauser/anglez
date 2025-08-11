@@ -32,7 +32,7 @@ export async function fetchArtworkImageUrl(tokenId: number): Promise<string | nu
     throw new Error('fetchArtworkImageUrl Token SVG not found');
   }
   const png = await sharp(Buffer.from(token.svg), { density: 300 })
-    // .resize(1200, 1200, { fit: 'contain', background: { r: 255, g: 255, b: 255, alpha: 1 } })
+    // .resize(1000, 1000, { fit: 'contain', background: { r: 255, g: 255, b: 255, alpha: 1 } })
     .png()
     .toBuffer();
 
