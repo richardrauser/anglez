@@ -4,7 +4,12 @@ import { fetchTokenDetails } from './BlockchainServerAPI';
 
 const BUCKET_PREFIX = 'images/';
 
-export async function fetchArtworkImageUrl(tokenId: number): Promise<string> {
+export async function fetchArtworkImageUrl(tokenId: number): Promise<string | null> {
+  if (!process?.env?.BLOB_READ_WRITE_TOKEN) {
+    console.error('[fetchArtworkImageUrl] Blob read-write token is not configured');
+    return null;
+  }
+
   if (!Number.isFinite(tokenId) || tokenId < 0) {
     throw new Error('Invalid token id');
   }
@@ -16,7 +21,9 @@ export async function fetchArtworkImageUrl(tokenId: number): Promise<string> {
   // If exists, return URL
   try {
     const meta = await head(key);
-    if (meta?.url) return meta.url;
+    if (meta?.url) {
+      return meta.url;
+    }
   } catch {}
 
   // Generate PNG
