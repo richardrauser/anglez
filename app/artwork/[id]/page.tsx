@@ -6,7 +6,6 @@ import { Button, Text } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import { AnglezContractAddress, AnglezCurrentNetworkExplorerUrl } from '@/src/Constants';
 import { shortenAddress } from '@/src/BlockchainAPI';
-import Link from 'next/link';
 
 export default function ArtworkPage({ params }: { params: { id: number } }) {
   const [tokenDetails, setTokenDetails] = useState<TokenDetails | null>(null);
@@ -25,7 +24,7 @@ export default function ArtworkPage({ params }: { params: { id: number } }) {
         setSvgFileName(`anglez-#${tokenDetails.tokenId}.svg`);
       }
 
-      console.log('[ArtworkPage.fetchData] Setting token details: ', tokenDetails);
+      console.log(`[ArtworkPage.fetchData] Setting token details: ${tokenDetails}`);
       setTokenDetails(tokenDetails);
     };
     fetchData();
