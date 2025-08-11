@@ -5,8 +5,8 @@ import { fetchTokenDetails as fetchTokenDetailsOnChain } from './BlockchainServe
 const BUCKET_PREFIX = 'details/';
 
 export async function fetchTokenDetailsClient(tokenId: number): Promise<TokenDetails | null> {
-  if (!Number.isFinite(tokenId) || tokenId < 0) {
-    console.error('[TokenDetailsFetcher.fetchTokenDetailsClient] Invalid token id');
+  if (!Number.isFinite(tokenId) || tokenId < 0 || tokenId > 512) {
+    console.error(`[TokenDetailsFetcher.fetchTokenDetailsClient] Invalid token id: ${tokenId}`);
     return null;
   }
 

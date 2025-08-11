@@ -17,7 +17,7 @@ export default function ArtworkPage({ params }: { params: { id: number } }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log('Fetching data for token ID: ', params.id);
+      console.log(`[ArtworkPage.fetchData] Fetching data for token ID: ${params.id}`);
       const tokenDetails = await fetchTokenDetailsClient(params.id);
 
       if (tokenDetails) {
@@ -25,7 +25,7 @@ export default function ArtworkPage({ params }: { params: { id: number } }) {
         setSvgFileName(`anglez-#${tokenDetails.tokenId}.svg`);
       }
 
-      console.log('Setting token details: ', tokenDetails);
+      console.log('[ArtworkPage.fetchData] Setting token details: ', tokenDetails);
       setTokenDetails(tokenDetails);
     };
     fetchData();
