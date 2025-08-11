@@ -1,7 +1,7 @@
 'use client';
 import Loading from '@/components/Loading/Loading';
 import { TokenDetails } from '@/src/TokenDetails';
-import fetchTokenDetailsClient from '@/src/TokenDetailsFetcher';
+import { fetchTokenDetailsClient } from '@/src/TokenDetailsFetcher';
 import { Button, Text } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import { AnglezContractAddress, AnglezCurrentNetworkExplorerUrl } from '@/src/Constants';

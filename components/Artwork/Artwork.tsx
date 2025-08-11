@@ -1,6 +1,6 @@
 import { Card, SimpleGrid, Text } from '@mantine/core';
 import { useEffect } from 'react';
-import fetchTokenDetailsClient from '@/src/TokenDetailsFetcher';
+import { fetchTokenDetailsClient } from '@/src/TokenDetailsFetcher';
 import { useState } from 'react';
 import Loading from '../Loading/Loading';
 import Link from 'next/link';

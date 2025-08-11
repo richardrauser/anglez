@@ -90,5 +90,3 @@ export async function fetchTokenDetailsServer(tokenId: number): Promise<TokenDet
 
   return tokenDetails;
 }
-
-export default fetchTokenDetailsServer;
