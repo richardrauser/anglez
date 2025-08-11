@@ -5,7 +5,12 @@ import { fetchTokenDetails } from './BlockchainServerAPI';
 const BUCKET_PREFIX = 'images/';
 
 export async function fetchArtworkImageUrl(tokenId: number): Promise<string> {
-  if (!Number.isFinite(tokenId) || tokenId < 0) throw new Error('Invalid token id');
+  if (!Number.isFinite(tokenId) || tokenId < 0) {
+    throw new Error('Invalid token id');
+  }
+
+  console.log('[fetchArtworkImageUrl] Fetching artwork image URL for token', tokenId);
+
   const key = `${BUCKET_PREFIX}anglez-${tokenId}.png`;
 
   // If exists, return URL
@@ -16,7 +21,9 @@ export async function fetchArtworkImageUrl(tokenId: number): Promise<string> {
 
   // Generate PNG
   const token = await fetchTokenDetails(tokenId);
-  if (!token?.svg) throw new Error('Token SVG not found');
+  if (!token?.svg) {
+    throw new Error('fetchArtworkImageUrl Token SVG not found');
+  }
   const png = await sharp(Buffer.from(token.svg), { density: 300 })
     // .resize(1200, 1200, { fit: 'contain', background: { r: 255, g: 255, b: 255, alpha: 1 } })
     .png()

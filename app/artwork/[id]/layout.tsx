@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import React from 'react';
 import { NEXT_PUBLIC_URL } from '@/src/Constants';
 import { fetchTokenDetails } from '@/src/BlockchainServerAPI';
-import { fetchArtworkImageUrl } from '@/src/BlobImageCache';
+import { fetchArtworkImageUrl } from '@/src/ArtworkImageFetcher';
 
 type Props = { params: { id: string } };
 
@@ -40,12 +40,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // Only attempt Blob image generation when a token is configured locally
   if (typeof process !== 'undefined' && process.env.BLOB_READ_WRITE_TOKEN) {
     try {
-      const resolvedImageUrl = await fetchArtworkImageUrl(id);
+      const artworkImageUrl = await fetchArtworkImageUrl(id);
       (baseMetadata.openGraph as any).images = [
-        { url: resolvedImageUrl, width: 1200, height: 1200, alt: `anglez #${params.id}` },
+        { url: artworkImageUrl, width: 1200, height: 1200, alt: `anglez #${params.id}` },
       ];
-      (baseMetadata.twitter as any).images = [resolvedImageUrl];
-    } catch {}
+      (baseMetadata.twitter as any).images = [artworkImageUrl];
+    } catch (error) {
+      console.error('Error generating metadata:', error);
+    }
+  } else {
+    console.error('Blob read-write token is not configured');
   }
 
   return baseMetadata;
