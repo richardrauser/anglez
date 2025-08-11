@@ -10,10 +10,6 @@ export async function fetchArtworkImageUrl(tokenId: number): Promise<string | nu
     return null;
   }
 
-  if (!Number.isFinite(tokenId) || tokenId < 0) {
-    throw new Error('Invalid token id');
-  }
-
   console.log(`[fetchArtworkImageUrl] Fetching artwork image URL for anglez #${tokenId}...`);
 
   const key = `${BUCKET_PREFIX}anglez-${tokenId}.png`;

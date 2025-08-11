@@ -5,11 +5,6 @@ import { fetchTokenDetails as fetchTokenDetailsOnChain } from './BlockchainServe
 const BUCKET_PREFIX = 'details/';
 
 export async function fetchTokenDetailsClient(tokenId: number): Promise<TokenDetails | null> {
-  if (!Number.isFinite(tokenId) || tokenId < 0 || tokenId > 512) {
-    console.error(`[TokenDetailsFetcher.fetchTokenDetailsClient] Invalid token id: ${tokenId}`);
-    return null;
-  }
-
   console.log(
     `[TokenDetailsFetcher.fetchTokenDetailsClient] Fetching details for token ${tokenId}`
   );
@@ -43,10 +38,6 @@ export async function fetchTokenDetailsClient(tokenId: number): Promise<TokenDet
  * - If BLOB_READ_WRITE_TOKEN is not set, just fetch from chain with no caching.
  */
 export async function fetchTokenDetailsServer(tokenId: number): Promise<TokenDetails | null> {
-  if (!Number.isFinite(tokenId) || tokenId < 0) {
-    throw new Error('Invalid token id');
-  }
-
   // If Blob token isn't configured (e.g., local dev), bypass caching.
   if (!process?.env?.BLOB_READ_WRITE_TOKEN) {
     console.error(
