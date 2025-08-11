@@ -46,7 +46,7 @@ export async function fetchTokenDetailsServer(tokenId: number): Promise<TokenDet
   // If Blob token isn't configured (e.g., local dev), bypass caching.
   if (!process?.env?.BLOB_READ_WRITE_TOKEN) {
     console.error(
-      '[TokenDetailsFetcher.fetchTokenDetails] Blob token not configured; bypassing cache'
+      '[TokenDetailsFetcher.fetchTokenDetailsServer] Blob token not configured; bypassing cache'
     );
     return fetchTokenDetailsOnChain(tokenId);
   }
@@ -64,7 +64,10 @@ export async function fetchTokenDetailsServer(tokenId: number): Promise<TokenDet
       }
     }
   } catch (err) {
-    console.error('[TokenDetialsFetcher.fetchTokenDetails] Cache read failed; will refetch:', err);
+    console.error(
+      '[TokenDetialsFetcher.fetchTokenDetailsServer] Cache read failed; will refetch:',
+      err
+    );
   }
 
   // Cache miss → fetch from chain and upload
@@ -82,7 +85,7 @@ export async function fetchTokenDetailsServer(tokenId: number): Promise<TokenDet
       cacheControlMaxAge: 60 * 60 * 24 * 30, // 30 days
     });
   } catch (err) {
-    console.error('[TokenDetailsFetcher.fetchTokenDetails] Cache write failed:', err);
+    console.error('[TokenDetailsFetcher.fetchTokenDetailsServer] Cache write failed:', err);
   }
 
   return tokenDetails;

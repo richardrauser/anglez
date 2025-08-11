@@ -1,14 +1,7 @@
 'use server';
 
-import { ethers, JsonRpcProvider } from 'ethers';
-import {
-  AnglezContractAddress,
-  AnglezCurrentNetworkID,
-  AnglezCurrentNetworkName,
-  AnglezCurrentNetworkCurrencySymbol,
-  AnglezCurrentNetworkRpcUrl,
-  AnglezCurrentNetworkExplorerUrl,
-} from './Constants';
+import { ethers } from 'ethers';
+import { AnglezContractAddress, AnglezCurrentNetworkID } from './Constants';
 import Anglez from '../contract/Anglez.json';
 import { TokenDetails } from './TokenDetails';
 import { formatEther } from 'ethers';
