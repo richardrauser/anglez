@@ -14,19 +14,28 @@ export async function fetchArtworkImageUrl(tokenId: number): Promise<string | nu
     throw new Error('Invalid token id');
   }
 
-  console.log(`[fetchArtworkImageUrl] Fetching artwork image URL for tokenId: ${tokenId}...`);
+  console.log(`[fetchArtworkImageUrl] Fetching artwork image URL for anglez #${tokenId}...`);
 
   const key = `${BUCKET_PREFIX}anglez-${tokenId}.png`;
 
   // If exists, return URL
   try {
     const meta = await head(key);
+    console.log(
+      `[fetchArtworkImageUrl] Found existing image for anglez #${tokenId}. URL: ${meta.url}`
+    );
     if (meta?.url) {
       return meta.url;
     }
-  } catch {}
+  } catch (error) {
+    console.error(
+      `[fetchArtworkImageUrl] Error fetching existing image for anglez #${tokenId}:`,
+      error
+    );
+  }
 
   // Generate PNG
+  console.log(`[fetchArtworkImageUrl] Generating PNG for anglez #${tokenId}...`);
   const token = await fetchTokenDetails(tokenId);
   if (!token?.svg) {
     throw new Error('fetchArtworkImageUrl Token SVG not found');
