@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import React from 'react';
 import { NEXT_PUBLIC_URL } from '@/src/Constants';
-import { fetchTokenDetails } from '@/src/BlockchainServerAPI';
+import fetchTokenDetails from '@/src/TokenDetailsFetcher';
 import { fetchArtworkImageUrl } from '@/src/ArtworkImageFetcher';
 
 type Props = { params: { id: string } };

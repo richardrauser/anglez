@@ -1,16 +1,10 @@
 'use client';
 import Loading from '@/components/Loading/Loading';
 import { TokenDetails } from '@/src/TokenDetails';
-import { fetchTokenDetails } from '@/src/BlockchainServerAPI';
+import fetchTokenDetails from '@/src/TokenDetailsFetcher';
 import { Button, Text } from '@mantine/core';
-import { ethers } from 'ethers';
 import { useEffect, useState } from 'react';
-import ethereumIcon from '@/images/ethereum-white.png';
-import {
-  AnglezContractAddress,
-  AnglezCurrentNetworkExplorerUrl,
-  AnglezCurrentNetworkName,
-} from '@/src/Constants';
+import { AnglezContractAddress, AnglezCurrentNetworkExplorerUrl } from '@/src/Constants';
 import { shortenAddress } from '@/src/BlockchainAPI';
 import Link from 'next/link';
 

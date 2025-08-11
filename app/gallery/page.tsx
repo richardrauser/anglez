@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { fetchRecentTokenIds, fetchYourTokens } from '@/src/BlockchainServerAPI';
 import Loading from '@/components/Loading/Loading';
 import Artwork from '@/components/Artwork/Artwork';
-import { Container, Grid, SimpleGrid, Tabs, Text, rem } from '@mantine/core';
+import { Grid, SimpleGrid, Tabs, Text, rem } from '@mantine/core';
 import { handleError } from '@/src/ErrorHandler';
 import { IconArtboard, IconHeart } from '@tabler/icons-react';
 import styles from './GalleryPage.module.css';

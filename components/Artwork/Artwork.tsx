@@ -1,10 +1,9 @@
 import { Card, SimpleGrid, Text } from '@mantine/core';
 import { useEffect } from 'react';
-import { fetchTokenDetails } from '@/src/BlockchainServerAPI';
+import fetchTokenDetails from '@/src/TokenDetailsFetcher';
 import { useState } from 'react';
 import Loading from '../Loading/Loading';
 import Link from 'next/link';
-import styles from './Artwork.module.css';
 
 export default function Artwork(props: { tokenId: number }) {
   const [loading, setLoading] = useState(true);
