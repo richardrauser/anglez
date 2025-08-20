@@ -44,13 +44,14 @@ export async function fetchRecentTokenIds() {
   const tokenCount = await contract.totalSupply();
   console.log('Token count: ' + tokenCount);
 
-  const maxToDisplay = 10;
+  // const maxToDisplay = 10;
 
   var tokens: number[] = [];
 
   // because tokenCount is a BigInt
   const tokenCountInt = Number(tokenCount);
-  for (var i = tokenCountInt - 1; i >= 0 && i >= tokenCountInt - maxToDisplay; i--) {
+  for (var i = tokenCountInt - 1; i >= 0; i--) {
+    // for (var i = tokenCountInt - 1; i >= 0 && i >= tokenCountInt - maxToDisplay; i--) {
     // const tokenId = await contract.tokenByIndex(i);
     tokens.push(i);
   }
