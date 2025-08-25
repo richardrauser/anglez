@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
+import PageNavigator from './PageNavigator';
 import { fetchRecentTokenIds, fetchYourTokens } from '@/src/BlockchainServerAPI';
 import Loading from '@/components/Loading/Loading';
 import Artwork from '@/components/Artwork/Artwork';
@@ -9,45 +10,6 @@ import { IconArtboard, IconHeart } from '@tabler/icons-react';
 import styles from './GalleryPage.module.css';
 import Link from 'next/link';
 import { useAccount } from 'wagmi';
-
-function PageNavigator({
-  page,
-  totalPages,
-  setPage,
-}: {
-  page: number;
-  totalPages: number;
-  setPage: (fn: (p: number) => number) => void;
-}) {
-  return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        marginTop: '0.75rem',
-        marginBottom: '0.75rem',
-      }}
-    >
-      <button
-        onClick={() => setPage((p) => Math.max(0, p - 1))}
-        disabled={page === 0}
-        style={{ marginRight: '1rem', width: '120px', minWidth: '120px' }}
-      >
-        Previous
-      </button>
-      <span>
-        Page {page + 1} of {totalPages}
-      </span>
-      <button
-        onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
-        disabled={page >= totalPages - 1}
-        style={{ marginLeft: '1rem', width: '120px', minWidth: '120px' }}
-      >
-        Next
-      </button>
-    </div>
-  );
-}
 
 export default function GalleryPage() {
   const [loading, setLoading] = useState(true);
@@ -117,7 +79,7 @@ export default function GalleryPage() {
                 Yours
               </Tabs.Tab>
             </Tabs.List>
-            <Tabs.Panel value="recent" pt="xs">
+            <Tabs.Panel className={styles.recentTab} value="recent" pt="xs">
               <PageNavigator page={page} totalPages={totalPages} setPage={setPage} />
               <SimpleGrid cols={1} spacing="lg">
                 {paginatedRecentTokenIds.map((tokenId) => (
