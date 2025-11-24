@@ -65,7 +65,6 @@ export default function RootLayout({ children }: { children: any }) {
           href="https://fonts.googleapis.com/css2?family=Bungee+Hairline&family=Tektur:wght@400..900&display=swap"
           rel="stylesheet"
         />
-        <ColorSchemeScript />
         <link rel="shortcut icon" href="/favicon.ico" />
         <meta
           name="viewport"
@@ -73,7 +72,7 @@ export default function RootLayout({ children }: { children: any }) {
         />
       </head>
       <body>
-        <MantineProvider theme={theme}>
+        <MantineProvider theme={theme} forceColorScheme="light">
           <Providers>
             {/* <AnglezAppShell>{children}</AnglezAppShell> */}
             <AnglezNavBar />
