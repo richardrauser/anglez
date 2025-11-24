@@ -1,18 +1,7 @@
 'use client';
-import { Suspense, useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './ArtBoard.module.css';
-import {
-  Text,
-  Radio,
-  RadioGroup,
-  Stack,
-  SimpleGrid,
-  Tabs,
-  rem,
-  Grid,
-  GridCol,
-  NumberInputHandlers,
-} from '@mantine/core';
+import { Text, Radio, RadioGroup, SimpleGrid, Tabs, rem, Grid } from '@mantine/core';
 import { RGBAColor, buildArtwork, generateRandomTokenParams } from '../../src/anglez';
 import { Button, ColorPicker } from '@mantine/core';
 import { fetchCustomMintPrice, fetchRandomMintPrice } from '../../src/BlockchainServerAPI';
@@ -23,13 +12,15 @@ import { TokenParams } from '../../src/anglez';
 import { IconSparkles, IconTools } from '@tabler/icons-react';
 import Loading from '../Loading/Loading';
 import { useAccount } from 'wagmi';
+import { useBalance } from 'wagmi';
 import { useSwitchChain } from 'wagmi';
 import {
   AnglezContractAddress,
+  AnglezCurrentNetworkCurrencySymbol,
   AnglezCurrentNetworkID,
   AnglezCurrentNetworkName,
 } from '@/src/Constants';
-import { type BaseError, useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
+import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
 import contract from '@/contract/Anglez.json';
 import { baseSepolia } from 'viem/chains';
 import { Address } from 'viem';
@@ -51,9 +42,10 @@ export function ArtBoard() {
   const [svg, setSvg] = useState('');
   const [isMinting, setIsMinting] = useState(false);
   const [isValidating, setIsValidating] = useState(false);
-  const { chains, switchChain } = useSwitchChain();
+  const { switchChain } = useSwitchChain();
   const { data: hash, error: mintError, isPending, writeContract } = useWriteContract();
   const account = useAccount();
+  const accountBalance = useBalance({ address: account.address as Address });
   const { shield3Client } = useShield3Context();
   const {
     isLoading: isConfirming,
@@ -284,7 +276,7 @@ export function ArtBoard() {
       if (currentChainId != AnglezCurrentNetworkID) {
         console.log('On wrong network.  Switching chain..');
         toast.warn(
-          `You're on the wrong chain. Please switch to ${AnglezCurrentNetworkName} before minting.`
+          `You're on the wrong chain. Switching to ${AnglezCurrentNetworkName}... Try again!`
         );
         switchChain({ chainId: AnglezCurrentNetworkID });
         return;
@@ -295,6 +287,13 @@ export function ArtBoard() {
 
       // check if the transaction violates policy
       // await validateTransaction();
+
+      if (accountBalance.data && accountBalance.data.value < parseEther(randomMintPrice!)) {
+        toast.warn(
+          `You don't have enough ${AnglezCurrentNetworkCurrencySymbol} to mint on ${AnglezCurrentNetworkName}. Please top up your balance.`
+        );
+        return;
+      }
 
       writeContract({
         address: AnglezContractAddress as Address,
@@ -338,9 +337,16 @@ export function ArtBoard() {
     if (currentChainId != AnglezCurrentNetworkID) {
       console.log('On wrong network.  Switching chain..');
       toast.warn(
-        `You're on the wrong chain. Please switch to ${AnglezCurrentNetworkName} before minting.`
+        `You're on the wrong chain. Switching to ${AnglezCurrentNetworkName}... Try again!`
       );
       switchChain({ chainId: AnglezCurrentNetworkID });
+      return;
+    }
+
+    if (accountBalance.data && accountBalance.data.value < parseEther(customMintPrice!)) {
+      toast.warn(
+        `You don't have enough ${AnglezCurrentNetworkCurrencySymbol} to mint on ${AnglezCurrentNetworkName}. Please top up your balance.`
+      );
       return;
     }
 
