@@ -26,7 +26,7 @@ import { baseSepolia } from 'viem/chains';
 import { Address } from 'viem';
 import { parseEther } from 'ethers';
 import { useShield3Context } from '@shield3/react-sdk';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 
 export function ArtBoard() {
   const [loading, setLoading] = useState(true);
@@ -56,6 +56,7 @@ export function ArtBoard() {
     confirmations: 0,
   });
   const searchParams = useSearchParams();
+  const router = useRouter();
   const { abi } = contract;
 
   const generateSvgDataUri = () => {
@@ -199,6 +200,29 @@ export function ArtBoard() {
       setSvg(svg);
     }
   }, [activeTab, randomSeed, style, structure, shapeCount, tintColour]);
+
+  // Update URL query string when seed changes
+  useEffect(() => {
+    if (randomSeed != null) {
+      const existing = new URLSearchParams(searchParams.toString());
+      // Remove to control order explicitly
+      existing.delete('tab');
+      existing.delete('seed');
+
+      const ordered = new URLSearchParams();
+      if (activeTab) {
+        ordered.append('tab', activeTab);
+      }
+      ordered.append('seed', randomSeed.toString());
+
+      // Append remaining params preserving their current order
+      existing.forEach((value, key) => {
+        ordered.append(key, value);
+      });
+
+      router.replace(`/create?${ordered.toString()}`, { scroll: false });
+    }
+  }, [randomSeed, activeTab]);
 
   const newSeedPressed = () => {
     const newSeed = generateNewSeed();
