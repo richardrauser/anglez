@@ -10,7 +10,7 @@ import { Shield3Provider } from '@shield3/react-sdk';
 const queryClient = new QueryClient();
 
 export function Providers({ children }: { children: any }) {
-  const chain = baseSepolia;
+  const chain = base;
 
   return (
     <WagmiProvider config={config}>
