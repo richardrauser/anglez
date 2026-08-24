@@ -19,8 +19,8 @@
   "dependencies": {
     "@farcaster/miniapp-sdk": "^0.3.0",
     "@farcaster/miniapp-wagmi-connector": "^2.0.0",
-    "@mantine/core": "^8.3.18",
-    "@mantine/hooks": "^8.3.18",
+    "@mantine/core": "^9",
+    "@mantine/hooks": "^9",
     "@next/bundle-analyzer": "^16.3.2",
     "@tabler/icons-react": "^3.46.0",
     "@tanstack/react-query": "^5.102.2",
