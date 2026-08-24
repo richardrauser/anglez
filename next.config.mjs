@@ -1,4 +1,6 @@
 import bundleAnalyzer from '@next/bundle-analyzer';
+import { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
@@ -6,6 +8,11 @@ const withBundleAnalyzer = bundleAnalyzer({
 
 export default withBundleAnalyzer({
   reactStrictMode: false,
+  // Pin the file-tracing root to this project. Next infers it from the outermost
+  // lockfile it can find, which picks up any stray lockfile above the repo (e.g. one
+  // sitting in $HOME) and traces from there - bloating or breaking the serverless
+  // bundle. Pinning it keeps builds identical on every machine and in CI.
+  outputFileTracingRoot: dirname(fileURLToPath(import.meta.url)),
   eslint: {
     ignoreDuringBuilds: true,
   },

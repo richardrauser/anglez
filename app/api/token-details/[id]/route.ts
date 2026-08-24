@@ -3,8 +3,9 @@ import { fetchTokenDetailsServer } from '@/src/TokenDetailsFetcher';
 export const runtime = 'nodejs';
 export const revalidate = 60; // 1 minute
 
-export async function GET(_req: Request, { params }: { params: { id: string } }) {
-  const id = Number.parseInt(params.id, 10);
+export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id: idParam } = await params;
+  const id = Number.parseInt(idParam, 10);
   if (!Number.isFinite(id) || id < 0) {
     return new Response(JSON.stringify({ error: 'Invalid token id' }), {
       status: 400,

@@ -2,8 +2,8 @@ import { buildArtwork, generateRandomTokenParams } from '@/src/anglez';
 // const sharp = require('sharp');
 import sharp from 'sharp';
 
-export async function GET(request: Request, { params }: { params: { seed: string } }) {
-  const seed = params.seed;
+export async function GET(request: Request, { params }: { params: Promise<{ seed: string }> }) {
+  const { seed } = await params;
 
   // console.log('SEED:', seed);
 

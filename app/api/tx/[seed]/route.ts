@@ -8,9 +8,9 @@ import { AnglezContractAddress } from '@/src/Constants';
 
 async function getResponse(
   req: NextRequest,
-  { params }: { params: { seed: number } }
+  { params }: { params: Promise<{ seed: string }> }
 ): Promise<NextResponse | Response> {
-  const randomSeed = params.seed;
+  const { seed: randomSeed } = await params;
   const body: FrameRequest = await req.json();
   // Remember to replace 'NEYNAR_ONCHAIN_KIT' with your own Neynar API key
   const { isValid, message } = await getFrameMessage(body, {
@@ -52,7 +52,7 @@ async function getResponse(
 
 export async function POST(
   req: NextRequest,
-  { params }: { params: { seed: number } }
+  { params }: { params: Promise<{ seed: string }> }
 ): Promise<Response> {
   return getResponse(req, { params });
 }
