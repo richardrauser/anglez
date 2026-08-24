@@ -3,7 +3,6 @@ import '../styles/global.css';
 
 import React from 'react';
 import { MantineProvider } from '@mantine/core';
-import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import { Analytics } from '@vercel/analytics/react';
 import { AnglezNavBar } from '@/components/NavBar/NavBar';
