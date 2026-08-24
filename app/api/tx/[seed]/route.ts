@@ -1,9 +1,9 @@
-import { FrameRequest, getFrameMessage } from '@coinbase/onchainkit/frame';
+import { FrameRequest, getFrameMessage } from '@/src/farcaster/framesV1';
 import { NextRequest, NextResponse } from 'next/server';
 import { Address, encodeFunctionData, parseEther } from 'viem';
 import { base, baseSepolia } from 'viem/chains';
 import abi from '@/contract/Anglez.json';
-import type { FrameTransactionResponse } from '@coinbase/onchainkit/frame';
+import type { FrameTransactionResponse } from '@/src/farcaster/framesV1';
 import { AnglezContractAddress } from '@/src/Constants';
 
 async function getResponse(

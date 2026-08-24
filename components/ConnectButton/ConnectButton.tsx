@@ -1,9 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Identity } from '@coinbase/onchainkit/identity';
-import { Address } from '@coinbase/onchainkit/identity';
-import { Name } from '@coinbase/onchainkit/identity';
+import { useOnchainName, shortenAddress } from '@/src/useOnchainName';
 import classes from '@/styles/SplitButton.module.css';
 import '@/src/BlockchainAPI';
 import { handleError } from '@/src/ErrorHandler';
@@ -34,6 +32,7 @@ export default function ConnectButton() {
   const { connectors, connect } = useConnect();
   const { disconnect } = useDisconnect();
   const { chains, switchChain } = useSwitchChain();
+  const { name: onchainName } = useOnchainName(address);
   // const chainId = useChainId();
 
   // This only tracks whether we've hydrated - it is deliberately NOT a copy of the
@@ -127,13 +126,12 @@ export default function ConnectButton() {
                 />
               }
             >
-              <Identity
-                address={address}
-                schemaId="0xf8b05c79f090979bf4a80270aba232dff11a10d9ca55c4f88de95317970f0de9"
-              >
-                <Name />
-                <Address />
-              </Identity>{' '}
+              <div>
+                {onchainName && <Text size="sm">{onchainName}</Text>}
+                <Text size="xs" c="dimmed">
+                  {shortenAddress(address)}
+                </Text>
+              </div>
             </Menu.Item>
             <Menu.Item
               onClick={navToEtherscan}

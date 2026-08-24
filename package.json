@@ -19,7 +19,8 @@
     "storybook:build": "storybook build"
   },
   "dependencies": {
-    "@coinbase/onchainkit": "^0.23.4",
+    "@farcaster/miniapp-sdk": "^0.3.0",
+    "@farcaster/miniapp-wagmi-connector": "^2.0.0",
     "@mantine/core": "^8.3.18",
     "@mantine/hooks": "^8.3.18",
     "@next/bundle-analyzer": "^16.3.2",

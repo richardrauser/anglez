@@ -1,22 +1,23 @@
 import { http, createConfig } from 'wagmi';
-import { sepolia, baseSepolia, base, mainnet } from 'wagmi/chains';
-import { coinbaseWallet, injected, metaMask, walletConnect } from 'wagmi/connectors';
-
-const projectId = 'c9ea9ca2a0aede9f6aca19cb4992b402';
+import { base, baseSepolia } from 'wagmi/chains';
+import { coinbaseWallet } from 'wagmi/connectors';
+import { farcasterMiniApp } from '@farcaster/miniapp-wagmi-connector';
 
 export const config = createConfig({
   chains: [base, baseSepolia],
-  // connectors: [],
   connectors: [
+    // Inside a Farcaster client this connects straight to the user's Farcaster wallet,
+    // which is what lets the Mini App mint without a separate wallet handshake. It is
+    // inert outside Farcaster, so it is safe to register unconditionally - the Coinbase
+    // connector below still drives the normal web flow.
+    farcasterMiniApp(),
     coinbaseWallet({
       appName: 'anglez',
       appLogoUrl: 'https://anglez.xyz/anglez-logo-treatment-2.png',
     }),
   ],
   transports: {
-    // [mainnet.id]: http(),
     [base.id]: http(),
-    // [sepolia.id]: http(),
     [baseSepolia.id]: http(),
   },
 });

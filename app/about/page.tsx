@@ -81,18 +81,18 @@ export default function AboutPage() {
         </Text>
         <h2>what tech is anglez built on?</h2>
         <Text>
-          <a target="_blank" href="https://onchainkit.xyz/">
-            OnchainKit
+          <a target="_blank" href="https://wagmi.sh/">
+            wagmi
+          </a>{' '}
+          and{' '}
+          <a target="_blank" href="https://viem.sh/">
+            viem
           </a>{' '}
           for interacting with the{' '}
           <a target="_blank" href="https://www.base.org/">
             Base
           </a>{' '}
-          layer 2 chain, loading account details, supporting{' '}
-          <a target="_blank" href="https://www.farcaster.xyz/">
-            Farcaster
-          </a>{' '}
-          Frames. <br />
+          layer 2 chain and loading account details. <br />
           <a target="_blank" href="https://www.coinbase.com/en-gb/wallet/smart-wallet">
             Coinbase Smart Wallet
           </a>{' '}
@@ -115,10 +115,10 @@ export default function AboutPage() {
           </a>{' '}
           for the dApp.
           <br />
-          <a target="_blank" href="https://www.farcaster.xyz/">
-            Farcaster
+          <a target="_blank" href="https://miniapps.farcaster.xyz/">
+            Farcaster Mini Apps
           </a>{' '}
-          Frames to make anglez social. <br />
+          to make anglez social. <br />
           <a target="_blank" href="https://www.shield3.com/">
             Shield3
           </a>{' '}

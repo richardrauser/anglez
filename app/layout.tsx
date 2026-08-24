@@ -9,31 +9,15 @@ import { AnglezNavBar } from '@/components/NavBar/NavBar';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import { Providers } from './Providers';
-import { NEXT_PUBLIC_URL } from '@/src/Constants';
-import { getFrameMetadata } from '@coinbase/onchainkit/frame';
 import { Analytics } from '@vercel/analytics/react';
+import { getMiniAppMetadata } from '@/src/farcaster/miniapp';
+import { MiniAppReady } from '@/components/MiniAppReady/MiniAppReady';
 
-const frameMetadata = getFrameMetadata({
-  buttons: [
-    {
-      label: 'generate anglez',
-    },
-    // {
-    //   label: 'customize',
-    // },
-    // {
-    //   action: 'tx',
-    //   label: 'mint!',
-    //   target: `${NEXT_PUBLIC_URL}/api/tx`,
-    //   postUrl: `${NEXT_PUBLIC_URL}/api/tx-success`,
-    // },
-  ],
-  image: {
-    src: `${NEXT_PUBLIC_URL}/anglez-quadrants-square-bgfff.png`,
-    aspectRatio: '1:1',
-  },
-  postUrl: `https://www.anglez.xyz/api/frame`,
-});
+// Advertises the site as a Farcaster Mini App. This replaces the old Frames v1 `vNext`
+// metadata: the two standards share the `fc:frame` tag and cannot both occupy it, so new
+// casts launch the Mini App while the v1 POST routes under /api stay live for clients
+// still driving the older flow.
+const frameMetadata = getMiniAppMetadata({ title: 'generate anglez' });
 
 export const metadata = {
   title: 'anglez generative NFT art',
@@ -75,6 +59,7 @@ export default function RootLayout({ children }: { children: any }) {
         <MantineProvider theme={theme} forceColorScheme="light">
           <Providers>
             {/* <AnglezAppShell>{children}</AnglezAppShell> */}
+            <MiniAppReady />
             <AnglezNavBar />
             <ToastContainer position="top-left" />
             <div className="mainContent">{children}</div>
