@@ -5,7 +5,7 @@ export default function Loading(props: { loadingText?: string }) {
   return (
     <div className={styles.loading}>
       <Loader size={40} />
-      <div>{props.loadingText != '' ? props.loadingText : 'Loading..'}</div>
+      <div>{props.loadingText !== '' ? props.loadingText : 'Loading..'}</div>
     </div>
   );
 }

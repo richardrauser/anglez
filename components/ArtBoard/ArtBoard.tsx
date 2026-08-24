@@ -1,31 +1,43 @@
 'use client';
-import { useEffect, useState } from 'react';
-import styles from './ArtBoard.module.css';
-import { Text, Radio, RadioGroup, SimpleGrid, Tabs, rem, Grid } from '@mantine/core';
-import { RGBAColor, buildArtwork, generateRandomTokenParams } from '../../src/anglez';
-import { Button, ColorPicker } from '@mantine/core';
-import { fetchCustomMintPrice, fetchRandomMintPrice } from '../../src/BlockchainServerAPI';
 
-import { handleError } from '@/src/ErrorHandler';
+import { useEffect, useState } from 'react';
+import {
+  Text,
+  Radio,
+  RadioGroup,
+  SimpleGrid,
+  Tabs,
+  rem,
+  Grid,
+  Button,
+  ColorPicker,
+} from '@mantine/core';
+
 import { toast } from 'react-toastify';
-import { TokenParams } from '../../src/anglez';
 import { IconSparkles, IconTools } from '@tabler/icons-react';
-import Loading from '../Loading/Loading';
-import { useAccount } from 'wagmi';
-import { useBalance } from 'wagmi';
-import { useSwitchChain } from 'wagmi';
+import {
+  useAccount,
+  useBalance,
+  useSwitchChain,
+  useWaitForTransactionReceipt,
+  useWriteContract,
+} from 'wagmi';
+import { baseSepolia } from 'viem/chains';
+import { Address } from 'viem';
+import { parseEther } from 'ethers';
+import { useSearchParams, useRouter } from 'next/navigation';
+import contract from '@/contract/Anglez.json';
 import {
   AnglezContractAddress,
   AnglezCurrentNetworkCurrencySymbol,
   AnglezCurrentNetworkID,
   AnglezCurrentNetworkName,
 } from '@/src/Constants';
-import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
-import contract from '@/contract/Anglez.json';
-import { baseSepolia } from 'viem/chains';
-import { Address } from 'viem';
-import { parseEther } from 'ethers';
-import { useSearchParams, useRouter } from 'next/navigation';
+import Loading from '../Loading/Loading';
+import { TokenParams, RGBAColor, buildArtwork, generateRandomTokenParams } from '../../src/anglez';
+import { fetchCustomMintPrice, fetchRandomMintPrice } from '../../src/BlockchainServerAPI';
+import { handleError } from '@/src/ErrorHandler';
+import styles from './ArtBoard.module.css';
 
 export function ArtBoard() {
   const [loading, setLoading] = useState(true);
@@ -56,26 +68,43 @@ export function ArtBoard() {
   const router = useRouter();
   const { abi } = contract;
 
+  const generateNewSeed = () => Math.trunc(Math.random() * 5_000_000);
+
+  const rgbToObj = (rgbString: string) => {
+    // console.log('RGB: ' + rgbString);
+    const colorArray = rgbString
+      .slice(rgbString.indexOf('(') + 1, rgbString.indexOf(')'))
+      .split(', ');
+
+    const color: RGBAColor = {
+      r: Number(colorArray[0]),
+      g: Number(colorArray[1]),
+      b: Number(colorArray[2]),
+      a: Number(colorArray[3]),
+    };
+
+    // console.log('RGB obj: ' + JSON.stringify(color));
+    return color;
+  };
+
   const generateSvgDataUri = () => {
-    console.log('Generating svg data URI with random seed: ' + randomSeed);
+    console.log(`Generating svg data URI with random seed: ${randomSeed}`);
 
     if (randomSeed == null) {
       console.log('Random seed is null!');
       return null;
     }
 
-    const seed = randomSeed as number;
-
-    var tokenParams: TokenParams;
-    if (activeTab == 'random') {
+    let tokenParams: TokenParams;
+    if (activeTab === 'random') {
       tokenParams = generateRandomTokenParams(randomSeed);
     } else {
       tokenParams = {
         seed: randomSeed,
-        shapeCount: shapeCount,
+        shapeCount,
         tintColour: rgbToObj(tintColour),
-        isCyclic: style == 'cyclic',
-        isChaotic: structure == 'chaotic',
+        isCyclic: style === 'cyclic',
+        isChaotic: structure === 'chaotic',
       };
     }
 
@@ -85,16 +114,14 @@ export function ArtBoard() {
     return `data:image/svg+xml,${encodedSvgString}`;
   };
 
-  const randomize = (newSeed?: number) => {
-    console.log('newSeed in randomize: ' + JSON.stringify(newSeed));
-    if (newSeed === undefined || newSeed == null) {
-      newSeed = generateNewSeed();
-    }
-    console.log('Generating random anglez with seed: ' + newSeed);
+  const randomize = (requestedSeed?: number) => {
+    console.log(`newSeed in randomize: ${JSON.stringify(requestedSeed)}`);
+    const newSeed = requestedSeed ?? generateNewSeed();
+    console.log(`Generating random anglez with seed: ${newSeed}`);
 
     const tokenParams = generateRandomTokenParams(newSeed);
 
-    console.log('Randomized params: ' + JSON.stringify(tokenParams));
+    console.log(`Randomized params: ${JSON.stringify(tokenParams)}`);
     setRandomSeed(newSeed);
     setShapeCount(tokenParams.shapeCount);
 
@@ -143,8 +170,8 @@ export function ArtBoard() {
   // }, [confirmedError]);
 
   useEffect(() => {
-    console.log('Is pending: ' + isPending);
-    console.log('Is confirming: ' + isConfirming);
+    console.log(`Is pending: ${isPending}`);
+    console.log(`Is confirming: ${isConfirming}`);
 
     if (isPending || isConfirming) {
       setIsMinting(true);
@@ -173,12 +200,12 @@ export function ArtBoard() {
   useEffect(() => {
     const tab = searchParams.get('tab');
     const seed = searchParams.get('seed');
-    if (tab != null && tab == 'custom') {
+    if (tab != null && tab === 'custom') {
       setActiveTab('custom');
     }
-    if (seed != undefined && seed != null) {
-      console.log('Got seed from query string: ' + seed);
-      randomize(parseInt(seed));
+    if (seed != null) {
+      console.log(`Got seed from query string: ${seed}`);
+      randomize(parseInt(seed, 10));
     } else {
       randomize();
     }
@@ -192,9 +219,9 @@ export function ArtBoard() {
       return;
     }
 
-    const svg = generateSvgDataUri();
-    if (svg != null) {
-      setSvg(svg);
+    const svgDataUri = generateSvgDataUri();
+    if (svgDataUri != null) {
+      setSvg(svgDataUri);
     }
   }, [activeTab, randomSeed, style, structure, shapeCount, tintColour]);
 
@@ -226,10 +253,6 @@ export function ArtBoard() {
     setRandomSeed(newSeed);
   };
 
-  const generateNewSeed = () => {
-    return Math.trunc(Math.random() * 5_000_000);
-  };
-
   const decrementShapeCount = () => {
     const maxShapeCount = 2;
     const newShapeCount = Math.max(shapeCount - 1, maxShapeCount);
@@ -252,23 +275,23 @@ export function ArtBoard() {
       // isConnected as false/indeterminate while it is still restoring a session, so
       // checking it alone warns the user they're disconnected when they aren't yet.
       if (account.isConnecting || account.isReconnecting) {
-        toast.info(`Still connecting to your crypto wallet. Please try again in a moment.`);
+        toast.info('Still connecting to your crypto wallet. Please try again in a moment.');
         return;
       }
 
       if (!account.isConnected) {
         toast.warn(
-          `anglez is not connected to a crypto wallet. Tap the Connect Wallet button at top right.`
+          'anglez is not connected to a crypto wallet. Tap the Connect Wallet button at top right.'
         );
         return;
       }
 
-      console.log('Minting random for address: ' + account.address);
+      console.log(`Minting random for address: ${account.address}`);
 
       const currentChainId = account?.chainId;
-      console.log('Account Chain ID: ' + currentChainId);
-      console.log('Desired Chain ID: ' + AnglezCurrentNetworkID);
-      if (currentChainId != AnglezCurrentNetworkID) {
+      console.log(`Account Chain ID: ${currentChainId}`);
+      console.log(`Desired Chain ID: ${AnglezCurrentNetworkID}`);
+      if (currentChainId !== AnglezCurrentNetworkID) {
         console.log('On wrong network.  Switching chain..');
         toast.warn(
           `You're on the wrong chain. Switching to ${AnglezCurrentNetworkName}... Try again!`
@@ -316,23 +339,23 @@ export function ArtBoard() {
   const mintCustom = async () => {
     // See mintRandom: a pending reconnect is not a disconnected wallet.
     if (account.isConnecting || account.isReconnecting) {
-      toast.info(`Still connecting to your crypto wallet. Please try again in a moment.`);
+      toast.info('Still connecting to your crypto wallet. Please try again in a moment.');
       return;
     }
 
     if (!account.isConnected) {
       toast.warn(
-        `anglez is not connected to a crypto wallet. Tap the Connect Wallet button at top right.`
+        'anglez is not connected to a crypto wallet. Tap the Connect Wallet button at top right.'
       );
       return;
     }
 
-    console.log('Minting custom for address: ' + account.address);
+    console.log(`Minting custom for address: ${account.address}`);
 
     const currentChainId = account?.chainId;
-    console.log('Account Chain ID: ' + currentChainId);
-    console.log('Desired Chain ID: ' + AnglezCurrentNetworkID);
-    if (currentChainId != AnglezCurrentNetworkID) {
+    console.log(`Account Chain ID: ${currentChainId}`);
+    console.log(`Desired Chain ID: ${AnglezCurrentNetworkID}`);
+    if (currentChainId !== AnglezCurrentNetworkID) {
       console.log('On wrong network.  Switching chain..');
       toast.warn(
         `You're on the wrong chain. Switching to ${AnglezCurrentNetworkName}... Try again!`
@@ -352,8 +375,8 @@ export function ArtBoard() {
     //   seed: randomSeed,
     //   shapeCount: shapeCount,
     //   tintColour: rgbToObj(tintColour),
-    //   isCyclic: style == 'cyclic',
-    //   isChaotic: structure == 'chaotic',
+    //   isCyclic: style === 'cyclic',
+    //   isChaotic: structure === 'chaotic',
     // };
 
     // console.log('Minting with params: ' + JSON.stringify(tokenParams));
@@ -375,8 +398,8 @@ export function ArtBoard() {
           colour.g,
           colour.b,
           alpha,
-          style == 'cyclic',
-          style == 'chaotic',
+          style === 'cyclic',
+          style === 'chaotic',
         ],
         value: parseEther(customMintPrice!),
       });
@@ -398,29 +421,10 @@ export function ArtBoard() {
     }
   };
 
-  const rgbToObj = (rgbString: string) => {
-    // console.log('RGB: ' + rgbString);
-    let colors = ['r', 'g', 'b', 'a'];
-
-    let colorArray = rgbString
-      .slice(rgbString.indexOf('(') + 1, rgbString.indexOf(')'))
-      .split(', ');
-
-    let color: RGBAColor = {
-      r: Number(colorArray[0]),
-      g: Number(colorArray[1]),
-      b: Number(colorArray[2]),
-      a: Number(colorArray[3]),
-    };
-
-    // console.log('RGB obj: ' + JSON.stringify(color));
-    return color;
-  };
-
   return (
     <div>
       <div className="artboard">
-        {loading ? <> </> : <img className="artboardImage" src={svg}></img>}
+        {loading ? <> </> : <img className="artboardImage" alt="anglez preview" src={svg} />}
       </div>
 
       {loading ? (
@@ -455,13 +459,9 @@ export function ArtBoard() {
                   <b>Style:</b> {style} <br />
                   <b>Structure:</b> {structure} <br />
                   <b>Tint color:</b>
-                  {'rgb(' +
-                    rgbToObj(tintColour).r +
-                    ', ' +
-                    rgbToObj(tintColour).g +
-                    ', ' +
-                    rgbToObj(tintColour).b +
-                    ')'}
+                  {`rgb(${rgbToObj(tintColour).r}, ${rgbToObj(tintColour).g}, ${
+                    rgbToObj(tintColour).b
+                  })`}
                   <br />
                   <b>Tint opacity:</b> {Math.round(rgbToObj(tintColour).a * 100)}%
                 </Text>
@@ -561,7 +561,7 @@ export function ArtBoard() {
                     <Button onClick={randomizeTapped}>Randomize</Button>
                     <Button onClick={newSeedPressed}>New Seed</Button>
                     <Button className={styles.mintButton} onClick={mintCustom}>
-                      Mint! ({customMintPrice + ' ETH'})
+                      Mint! ({`${customMintPrice} ETH`})
                     </Button>
                     <Text size="sm">
                       <b>Randomize</b> randomizes everything, while <b>New Seed</b> randomizes the

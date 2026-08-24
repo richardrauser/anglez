@@ -1,4 +1,5 @@
 'use client';
+
 import { AppShell, Burger } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 

@@ -1,10 +1,9 @@
 'use server';
 
-import { ethers } from 'ethers';
+import { ethers, formatEther } from 'ethers';
 import { AnglezContractAddress, AnglezCurrentNetworkID } from './Constants';
 import Anglez from '../contract/Anglez.json';
 import { TokenDetails } from './TokenDetails';
-import { formatEther } from 'ethers';
 
 export async function getAlchemyProvider() {
   console.log('Returning Alchemy provider');
@@ -16,7 +15,7 @@ export async function getReadOnlyContract() {
   console.log('Getting read-only contract..');
   const provider = await getAlchemyProvider();
 
-  console.log('CONTRACT ADDRESS: ' + AnglezContractAddress);
+  console.log(`CONTRACT ADDRESS: ${AnglezContractAddress}`);
 
   return new ethers.Contract(AnglezContractAddress, Anglez.abi, provider);
 }
@@ -39,18 +38,18 @@ export async function fetchRecentTokenIds() {
   const contract = await getReadOnlyContract();
 
   const contractAddress = await contract.getAddress();
-  console.log('fetchRecentTokens: Contract address: ' + contractAddress);
+  console.log(`fetchRecentTokens: Contract address: ${contractAddress}`);
 
   const tokenCount = await contract.totalSupply();
-  console.log('Token count: ' + tokenCount);
+  console.log(`Token count: ${tokenCount}`);
 
   // const maxToDisplay = 10;
 
-  var tokens: number[] = [];
+  const tokens: number[] = [];
 
   // because tokenCount is a BigInt
   const tokenCountInt = Number(tokenCount);
-  for (var i = tokenCountInt - 1; i >= 0; i--) {
+  for (let i = tokenCountInt - 1; i >= 0; i--) {
     // for (var i = tokenCountInt - 1; i >= 0 && i >= tokenCountInt - maxToDisplay; i--) {
     // const tokenId = await contract.tokenByIndex(i);
     tokens.push(i);
@@ -69,13 +68,13 @@ export async function fetchYourTokens(address: string) {
   }
 
   const tokens = await contract.tokensOfOwner(address);
-  console.log('fetchYourTokens- tokens: ' + tokens);
+  console.log(`fetchYourTokens- tokens: ${tokens}`);
 
   return tokens.toArray().reverse();
 }
 
 export async function fetchTokenDetails(tokenId: number) {
-  console.log('Getting metadata for token ID: ' + tokenId);
+  console.log(`Getting metadata for token ID: ${tokenId}`);
 
   if (tokenId === undefined || tokenId === null) {
     console.log('No token ID!');
@@ -84,7 +83,7 @@ export async function fetchTokenDetails(tokenId: number) {
   const contract = await getReadOnlyContract();
   const owner = await contract.ownerOf(tokenId);
   const metadataDataUri = await contract.tokenURI(tokenId);
-  var metadataJson = '';
+  let metadataJson = '';
 
   if (metadataDataUri.startsWith('data:text/plain,')) {
     metadataJson = metadataDataUri.replace('data:text/plain,', '');
@@ -92,12 +91,12 @@ export async function fetchTokenDetails(tokenId: number) {
     metadataJson = metadataDataUri.replace('data:application/json,', '');
   } else if (metadataDataUri.startsWith('data:application/json;base64,')) {
     const metadataJsonBase64Encoded = metadataDataUri.replace('data:application/json;base64,', '');
-    let buffer = new Buffer(metadataJsonBase64Encoded, 'base64');
+    const buffer = Buffer.from(metadataJsonBase64Encoded, 'base64');
 
     metadataJson = buffer.toString('utf-8');
   }
 
-  console.log('METADATA: ' + metadataJson);
+  console.log(`METADATA: ${metadataJson}`);
 
   const metadataObject = JSON.parse(metadataJson);
 
@@ -112,40 +111,40 @@ export async function fetchTokenDetails(tokenId: number) {
     value: string;
   }
 
-  let seed = metadataObject.attributes.filter(
-    (attribute: Attribute) => attribute.trait_type == 'seed'
+  const seed = metadataObject.attributes.filter(
+    (attribute: Attribute) => attribute.trait_type === 'seed'
   )[0].value;
 
-  let shapeCount = metadataObject.attributes.filter(
-    (attribute: Attribute) => attribute.trait_type == 'shapes'
+  const shapeCount = metadataObject.attributes.filter(
+    (attribute: Attribute) => attribute.trait_type === 'shapes'
   )[0].value;
-  let tintColor = metadataObject.attributes.filter(
-    (attribute: Attribute) => attribute.trait_type == 'tint color'
+  const tintColor = metadataObject.attributes.filter(
+    (attribute: Attribute) => attribute.trait_type === 'tint color'
   )[0].value;
   // let tintBlue = metadataObject.attributes.filter(
-  //   (attribute) => attribute.trait_type == 'tintBlue'
+  //   (attribute) => attribute.trait_type === 'tintBlue'
   // )[0].value;
   // let tintGreen = metadataObject.attributes.filter(
-  //   (attribute) => attribute.trait_type == 'tintGreen'
+  //   (attribute) => attribute.trait_type === 'tintGreen'
   // )[0].value;
-  let tintOpacity = metadataObject.attributes.filter(
-    (attribute: Attribute) => attribute.trait_type == 'tint opacity'
+  const tintOpacity = metadataObject.attributes.filter(
+    (attribute: Attribute) => attribute.trait_type === 'tint opacity'
   )[0].value;
   // TODO: words from contract instead of true/false!
-  let style = metadataObject.attributes.filter(
-    (attribute: Attribute) => attribute.trait_type == 'style'
+  const style = metadataObject.attributes.filter(
+    (attribute: Attribute) => attribute.trait_type === 'style'
   )[0].value;
-  let structure = metadataObject.attributes.filter(
-    (attribute: Attribute) => attribute.trait_type == 'structure'
+  const structure = metadataObject.attributes.filter(
+    (attribute: Attribute) => attribute.trait_type === 'structure'
   )[0].value;
-  let isCustom = metadataObject.attributes.filter(
-    (attribute: Attribute) => attribute.trait_type == 'custom'
+  const isCustom = metadataObject.attributes.filter(
+    (attribute: Attribute) => attribute.trait_type === 'custom'
   )[0].value;
   // let waterChoppiness = metadataObject.attributes.filter(
-  //   (attribute) => attribute.trait_type == 'water'
+  //   (attribute) => attribute.trait_type === 'water'
   // )[0].value;
   // let cloudType = metadataObject.attributes.filter(
-  //   (attribute) => attribute.trait_type == 'clouds'
+  //   (attribute) => attribute.trait_type === 'clouds'
   // )[0].value;
 
   const tokenDetails: TokenDetails = {
@@ -171,7 +170,7 @@ export async function fetchTotalSupply() {
   const contract = await getReadOnlyContract();
   console.log('Got contract.');
   const tokenCount = await contract.totalSupply();
-  console.log('Token count: ' + tokenCount);
+  console.log(`Token count: ${tokenCount}`);
 
   return tokenCount;
 }

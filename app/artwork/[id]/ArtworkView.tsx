@@ -1,9 +1,10 @@
 'use client';
+
+import { Button, Text } from '@mantine/core';
+import { useEffect, useState } from 'react';
 import Loading from '@/components/Loading/Loading';
 import { TokenDetails } from '@/src/TokenDetails';
 import { fetchTokenDetailsClient } from '@/src/TokenDetailsFetcher';
-import { Button, Text } from '@mantine/core';
-import { useEffect, useState } from 'react';
 import { AnglezContractAddress, AnglezCurrentNetworkExplorerUrl } from '@/src/Constants';
 import { shortenAddress } from '@/src/BlockchainAPI';
 
@@ -20,11 +21,11 @@ export default function ArtworkView({ id }: { id: string }) {
   useEffect(() => {
     const fetchData = async () => {
       console.log(`[ArtworkView.fetchData] Fetching data for token ID: ${id}`);
-      const tokenDetails = await fetchTokenDetailsClient(Number(id));
+      const details = await fetchTokenDetailsClient(Number(id));
 
-      if (tokenDetails) {
-        setPngFileName(`anglez-#${tokenDetails.tokenId}.png`);
-        setSvgFileName(`anglez-#${tokenDetails.tokenId}.svg`);
+      if (details) {
+        setPngFileName(`anglez-#${details.tokenId}.png`);
+        setSvgFileName(`anglez-#${details.tokenId}.svg`);
       }
 
       console.log(`[ArtworkView.fetchData] Setting token details: ${tokenDetails}`);
@@ -53,23 +54,24 @@ export default function ArtworkView({ id }: { id: string }) {
           <div className="artboard">
             <img
               id="anglezImage"
+              alt="anglez artwork"
               className="artboardImage"
               src={`data:image/svg+xml,${encodeURIComponent(tokenDetails.svg)}`}
               onLoad={() => {
-                var canvas = document.createElement('canvas');
+                const canvas = document.createElement('canvas');
                 canvas.width = 1000;
                 canvas.height = 1000;
-                var ctx = canvas.getContext('2d');
+                const ctx = canvas.getContext('2d');
                 if (!ctx) {
                   return;
                 }
 
-                var anglezImage = document.getElementById('anglezImage') as HTMLImageElement;
+                const anglezImage = document.getElementById('anglezImage') as HTMLImageElement;
                 ctx.drawImage(anglezImage, 0, 0);
 
                 setPngData(canvas.toDataURL('image/png'));
               }}
-            ></img>
+            />
           </div>
           <div className="panel">
             <Text ta="left" size="lg">
@@ -97,7 +99,7 @@ export default function ArtworkView({ id }: { id: string }) {
               </div>
               <div>
                 <b>Owner:</b>{' '}
-                <a href={AnglezCurrentNetworkExplorerUrl + 'address/' + tokenDetails.owner}>
+                <a href={`${AnglezCurrentNetworkExplorerUrl}address/${tokenDetails.owner}`}>
                   {shortenAddress(tokenDetails.owner)}
                 </a>
               </div>

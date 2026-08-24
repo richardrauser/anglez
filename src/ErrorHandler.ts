@@ -25,7 +25,7 @@ function findInCauseChain(error: any, key: 'code' | 'reason'): any {
   while (current != null && typeof current === 'object' && !seen.has(current)) {
     seen.add(current);
     const value = current[key];
-    if (value != undefined) {
+    if (value != null) {
       if (value !== UNKNOWN_ERROR_CODE) {
         return value;
       }
@@ -39,7 +39,7 @@ function findInCauseChain(error: any, key: 'code' | 'reason'): any {
 }
 
 export function handleError(error: any) {
-  console.log('Handling error ' + error.name + ': ' + error.message);
+  console.log(`Handling error ${error.name}: ${error.message}`);
 
   const reason = findInCauseChain(error, 'reason');
   const code = findInCauseChain(error, 'code');
@@ -59,9 +59,9 @@ export function handleError(error: any) {
   } else if (code === -32603) {
     // Internal JSON RPC error
     if (error.data != null && error.data.message != null) {
-      showErrorMessage('Oops, an error ocurred. ' + error.data.message);
+      showErrorMessage(`Oops, an error ocurred. ${error.data.message}`);
     } else if (error.details != null) {
-      var errorMessage = 'Oops, an error occurred: ' + error.details;
+      const errorMessage = `Oops, an error occurred: ${error.details}`;
       showErrorMessage(errorMessage);
     } else {
       showErrorMessage('Oops, an Internal JSON RPC error occurred. ');
@@ -77,17 +77,16 @@ export function handleError(error: any) {
       'You need to connect an account via your crypto wallet before you can do that.'
     );
   } else if (error.message === Errors.NGLZ_WRONG_ETH_NETWORK) {
-    const errorMessage =
-      "You're on the wrong network. Tap here to switch to " + AnglezCurrentNetworkName + '.';
+    const errorMessage = `You're on the wrong network. Tap here to switch to ${AnglezCurrentNetworkName}.`;
     const onClose = switchToCurrentNetwork;
     showErrorMessage(errorMessage, onClose);
     // showErrorMessage(errorMessage);
   } else if (error.message === Errors.NGLZ_SEED_USED) {
     showErrorMessage('This random seed has already been used! Randomize or refresh and try again.');
-  } else if (reason == 'SEED_USED') {
+  } else if (reason === 'SEED_USED') {
     showErrorMessage('This random seed has already been used! Randomize or refresh and try again.');
   } else if (code != null) {
-    showErrorMessage('An error occurred: ' + code + '.');
+    showErrorMessage(`An error occurred: ${code}.`);
   } else {
     showErrorMessage('An error occurred.');
   }

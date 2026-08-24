@@ -27,8 +27,8 @@ const AnglezCurrentNetworkRpcUrl = networkConfig[AnglezCurrentNetworkRpcUrlKey];
 const AnglezCurrentNetworkExplorerUrl = networkConfig[AnglezCurrentNetworkExplorerUrlKey];
 const AnglezContractAddress = networkConfig[AnglezContractAddressKey];
 
-function networkConfigFor(currentNetwork: string) {
-  if (currentNetwork === AnglezLocalhostNetwork) {
+function networkConfigFor(network: string) {
+  if (network === AnglezLocalhostNetwork) {
     return {
       AnglezCurrentNetworkIDKey: 1337,
       AnglezCurrentNetworkNameKey: 'localhost',
@@ -37,7 +37,8 @@ function networkConfigFor(currentNetwork: string) {
       AnglezCurrentNetworkExplorerUrlKey: 'https://www.superbad.com/',
       AnglezContractAddressKey: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
     };
-  } else if (currentNetwork === AnglezBaseSepoliaNetwork) {
+  }
+  if (network === AnglezBaseSepoliaNetwork) {
     return {
       AnglezCurrentNetworkIDKey: 84532,
       AnglezCurrentNetworkNameKey: 'Base Sepolia',
@@ -48,7 +49,8 @@ function networkConfigFor(currentNetwork: string) {
       AnglezCurrentNetworkExplorerUrlKey: 'https://sepolia.basescan.org/',
       AnglezContractAddressKey: '0xa4a554D505EF30e1F9E9c8Df591813CB08374e64',
     };
-  } else if (currentNetwork === AnglezSepoliaNetwork) {
+  }
+  if (network === AnglezSepoliaNetwork) {
     return {
       AnglezCurrentNetworkIDKey: 11155111,
       AnglezCurrentNetworkNameKey: 'Sepolia',
@@ -58,7 +60,8 @@ function networkConfigFor(currentNetwork: string) {
       AnglezCurrentNetworkExplorerUrlKey: 'https://sepolia.etherscan.io/',
       AnglezContractAddressKey: '0x77f91D9B25fbB443F4CA3f07AC217600503566d1',
     };
-  } else if (currentNetwork === AnglezBaseMainnetNetwork) {
+  }
+  if (network === AnglezBaseMainnetNetwork) {
     return {
       AnglezCurrentNetworkIDKey: 8453,
       AnglezCurrentNetworkNameKey: 'Base Mainnet',
@@ -70,6 +73,7 @@ function networkConfigFor(currentNetwork: string) {
       AnglezContractAddressKey: '0x2F8c2A675962ecb07505684EeA496D02d5a9124A',
     };
   }
+  throw new Error(`Invalid network: ${network}`);
 }
 export const NEXT_PUBLIC_URL =
   process.env.NEXT_PUBLIC_URL ??

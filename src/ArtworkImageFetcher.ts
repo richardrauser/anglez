@@ -1,6 +1,5 @@
 import { put, head } from '@vercel/blob';
 import sharp from 'sharp';
-import { fetchTokenDetailsClient } from '@/src/TokenDetailsFetcher';
 import { TokenDetails } from './TokenDetails';
 
 const BUCKET_PREFIX = 'images/';

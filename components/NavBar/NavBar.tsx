@@ -1,4 +1,5 @@
 'use client';
+
 import { useState } from 'react';
 import { Container, Group, Burger, Transition, Paper } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
@@ -18,7 +19,7 @@ const links = [
 
 export function AnglezNavBar() {
   const [opened, { toggle }] = useDisclosure(false);
-  const [active, setActive] = useState(links[0].link);
+  const [, setActive] = useState(links[0].link);
 
   const items = links.map((link) => (
     <a
@@ -26,7 +27,7 @@ export function AnglezNavBar() {
       href={link.link}
       className={classes.link}
       // data-active={active === link.link || undefined}
-      onClick={(event) => {
+      onClick={() => {
         // event.preventDefault();
         setActive(link.link);
       }}
@@ -40,7 +41,7 @@ export function AnglezNavBar() {
       <Container size="md" className={classes.inner}>
         {/* <MantineLogo size={28} /> */}
 
-        <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm"></Burger>
+        <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm" />
         <Group gap={5} visibleFrom="xs">
           {items}
         </Group>

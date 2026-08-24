@@ -1,5 +1,4 @@
 import { ethers, AbiCoder, toBigInt } from 'ethers';
-import { maxHeaderSize } from 'http';
 
 export interface TokenParams {
   seed: number;
@@ -90,17 +89,17 @@ function getColour(randomSeed: number, tintColour: RGBAColor) {
   const green = safeTint(greenRandom, greenTint, alpha255);
   const blue = safeTint(blueRandom, blueTint, alpha255);
 
-  const finalColour = 'rgb(' + red + ', ' + green + ', ' + blue + ')';
+  const finalColour = `rgb(${red}, ${green}, ${blue})`;
 
   return finalColour;
 }
 
 function safeTint(colourComponent: number, tintComponent: number, alpha: number) {
-  if (alpha == 0) {
+  if (alpha === 0) {
     return colourComponent;
   }
 
-  var safelyTinted: number;
+  let safelyTinted: number;
 
   if (colourComponent <= tintComponent) {
     const offset = ((tintComponent - colourComponent) * alpha) / 255;
@@ -145,7 +144,7 @@ export function generateRandomTokenParams(seed: number): TokenParams {
 export function buildArtwork(tokenParams: TokenParams) {
   console.log(`Generating anglez: ${JSON.stringify(tokenParams)}`);
 
-  var maxPolyRepeat;
+  let maxPolyRepeat;
 
   if (tokenParams.isCyclic) {
     maxPolyRepeat = randomIntFromInterval(tokenParams.seed + 300, 2, 8);
@@ -161,14 +160,10 @@ export function buildArtwork(tokenParams: TokenParams) {
     tokenParams.isChaotic
   );
 
-  return (
-    "<svg xmlns='http://www.w3.org/2000/svg' viewBox='" +
-    viewBox +
-    "'>" +
-    shapes +
+  return `<svg xmlns='http://www.w3.org/2000/svg' viewBox='${viewBox}'>${
+    shapes
     // '</g>' +
-    '</svg>'
-  );
+  }</svg>`;
 }
 
 function getShapes(
@@ -178,32 +173,35 @@ function getShapes(
   maxPolyRepeat: number,
   isChaotic: boolean
 ) {
-  var shapes = '';
+  // `seed` advances as chaotic shapes are drawn; kept local so the parameter
+  // itself is never reassigned.
+  let seed = randomSeed;
+  let shapes = '';
   // TODO: consider best max ( 5 15?)
-  // console.log('_------- RANDOM SEED: ' + randomSeed);
-  var minX = 1000;
-  var maxX = 0;
-  var minY = 1000;
-  var maxY = 0;
+  // console.log('_------- RANDOM SEED: ' + seed);
+  let minX = 1000;
+  let maxX = 0;
+  let minY = 1000;
+  let maxY = 0;
 
   // polygon loop
-  for (var i = 0; i < shapeCount; i++) {
-    // console.log('BEGINNING LOOP randomSeed: ');
-    // console.log(randomSeed);
+  for (let i = 0; i < shapeCount; i++) {
+    // console.log('BEGINNING LOOP seed: ');
+    // console.log(seed);
     // TODO: raise point count for chaotic?
-    const pointCount = randomIntFromInterval(randomSeed + i, 3, 4);
+    const pointCount = randomIntFromInterval(seed + i, 3, 4);
 
     // console.log('polygon: ' + i);
     // console.log('pointCount: ' + pointCount);
 
-    var points = '';
+    let points = '';
 
     // TODO: folded shapes by repeating points?
 
     // points loop
-    for (var j = 0; j < pointCount; j++) {
-      const x = randomIntFromInterval(randomSeed + i + j + 40, 0, 1000);
-      const y = randomIntFromInterval(randomSeed + i + j + 50, 0, 1000);
+    for (let j = 0; j < pointCount; j++) {
+      const x = randomIntFromInterval(seed + i + j + 40, 0, 1000);
+      const y = randomIntFromInterval(seed + i + j + 50, 0, 1000);
       points += `${x},${y} `;
       if (x > maxX) {
         maxX = x;
@@ -227,35 +225,35 @@ function getShapes(
     let midStopOpacity;
 
     if (maxPolyRepeat < 4) {
-      polygonOpacity = randomIntFromInterval(randomSeed + i + 16, 80, 100);
-      midStopOpacity = randomIntFromInterval(randomSeed + i + 20, 40, 90);
+      polygonOpacity = randomIntFromInterval(seed + i + 16, 80, 100);
+      midStopOpacity = randomIntFromInterval(seed + i + 20, 40, 90);
     } else {
-      polygonOpacity = randomIntFromInterval(randomSeed + i + 16, 50, 80);
-      midStopOpacity = randomIntFromInterval(randomSeed + i + 20, 30, 90);
+      polygonOpacity = randomIntFromInterval(seed + i + 16, 50, 80);
+      midStopOpacity = randomIntFromInterval(seed + i + 20, 30, 90);
     }
 
     // console.log('gradientRotation: ' + gradientRotation);
 
     const polygonCount =
-      maxPolyRepeat == 1 ? 1 : randomIntFromInterval(randomSeed + 17, 2, maxPolyRepeat);
-    var polygons = '';
-    var polyRotation = 0;
-    var polyRotationDelta = 360 / polygonCount; //randomIntFromInterval(randomSeed + 18, 10, 180);
+      maxPolyRepeat === 1 ? 1 : randomIntFromInterval(seed + 17, 2, maxPolyRepeat);
+    let polygons = '';
+    let polyRotation = 0;
+    const polyRotationDelta = 360 / polygonCount; //randomIntFromInterval(seed + 18, 10, 180);
 
-    for (var k = 0; k < polygonCount; k++) {
+    for (let k = 0; k < polygonCount; k++) {
       polygons += `<polygon points='${points}' transform='rotate(${polyRotation}, 500, 500)' fill='url(#gradient${i})' opacity='0.${polygonOpacity}' />`;
       polyRotation += polyRotationDelta;
     }
 
-    var gradientColour1 = getColour(randomSeed + i + 13, tintColour);
-    var gradientColour2 = getColour(randomSeed + i + 14, tintColour);
-    var gradientColour3 = getColour(randomSeed + i + 15, tintColour);
+    const gradientColour1 = getColour(seed + i + 13, tintColour);
+    const gradientColour2 = getColour(seed + i + 14, tintColour);
+    const gradientColour3 = getColour(seed + i + 15, tintColour);
 
     // console.log(`gradientColour1: ${gradientColour1}`);
     // console.log(`gradientColour2: ${gradientColour2}`);
     // console.log(`gradientColour3: ${gradientColour3}`);
 
-    const gradientRotation = randomIntFromInterval(randomSeed + i + 15, 0, 360);
+    const gradientRotation = randomIntFromInterval(seed + i + 15, 0, 360);
 
     // Emitted as one line with single-quoted attributes to stay byte-identical to the
     // Solidity renderer - see src/anglez.contract-parity.test.ts.
@@ -264,21 +262,20 @@ function getShapes(
       `<stop offset='0%' stop-color='${gradientColour1}'/>` +
       `<stop offset='50%' stop-color='${gradientColour2}' stop-opacity='0.${midStopOpacity}'/>` +
       `<stop offset='100%' stop-color='${gradientColour3}'/>` +
-      `</linearGradient>` +
-      polygons;
+      `</linearGradient>${polygons}`;
 
     // TODO: consider drop shadow
     // shapes += `<rect x='${minX}' y='1100' width='${maxX - minX}' height='10' fill='#fff' opacity='0'/>`;
 
     //    <polygon points="${points}" fill="url(#gradient${i})" opacity="${polygonOpacity}" />    `;
 
-    // console.log('randomSeed before incrementing: ');
-    // console.log(randomSeed);
+    // console.log('seed before incrementing: ');
+    // console.log(seed);
     if (isChaotic) {
-      randomSeed += 100;
+      seed += 100;
     }
-    // console.log('randomSeed before incrementing: ');
-    // console.log(randomSeed);
+    // console.log('seed before incrementing: ');
+    // console.log(seed);
   }
 
   // console.log('minX: ' + minX);
@@ -294,12 +291,12 @@ function getShapes(
 
   // console.log('maxPolyRepeat: ' + maxPolyRepeat);
 
-  var width: number;
-  var height: number;
-  var xOffset: number;
-  var yOffset: number;
+  let width: number;
+  let height: number;
+  let xOffset: number;
+  let yOffset: number;
 
-  if (maxPolyRepeat == 1) {
+  if (maxPolyRepeat === 1) {
     width = structureWidth + 100;
     xOffset = minX - 50; // (1000 - width) / 2;
     height = structureHeight + 100;
@@ -314,7 +311,7 @@ function getShapes(
 
     // console.log('artboardWidthHeight: ' + artboardWidthHeight);
 
-    const temp = 2 * Math.pow(artboardWidthHeight, 2);
+    const temp = 2 * artboardWidthHeight ** 2;
     // console.log('temp: ' + temp);
     // so we get an even number
     const widthHeight = Math.floor((Math.floor(sqrt(temp)) + 1) / 2) * 2;
@@ -333,7 +330,7 @@ function getShapes(
     // `;
   }
 
-  const viewBox = xOffset + ' ' + yOffset + ' ' + width + ' ' + height;
+  const viewBox = `${xOffset} ${yOffset} ${width} ${height}`;
   // const viewBox = '-100 -100 1200 1200';
 
   // console.log('viewBox:' + viewBox);
@@ -342,8 +339,8 @@ function getShapes(
 }
 
 function sqrt(x: number) {
-  var z = (x + 1) / 2;
-  var y = x;
+  let z = (x + 1) / 2;
+  let y = x;
   while (z < y) {
     y = z;
     z = (x / z + z) / 2;

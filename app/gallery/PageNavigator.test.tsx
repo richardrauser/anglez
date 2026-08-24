@@ -1,5 +1,5 @@
-import { render, screen } from '@/test-utils';
 import userEvent from '@testing-library/user-event';
+import { render, screen } from '@/test-utils';
 import { PageNavigator } from './PageNavigator';
 
 // setPage receives an updater, so capture it and apply it to the current page to check

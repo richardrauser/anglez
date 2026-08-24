@@ -1,24 +1,14 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useOnchainName, shortenAddress } from '@/src/useOnchainName';
-import classes from '@/styles/SplitButton.module.css';
 import '@/src/BlockchainAPI';
-import { handleError } from '@/src/ErrorHandler';
-import { AnglezCurrentNetworkExplorerUrl, AnglezCurrentNetworkID } from '@/src/Constants';
+import { ActionIcon, Button, Group, Menu, Text, rem } from '@mantine/core';
+import { IconChevronDown, IconMoneybag, IconReload, IconWallet } from '@tabler/icons-react';
+import { useAccount, useBalance, useDisconnect, useConnect } from 'wagmi';
 import styles from './ConnectButton.module.css';
-import { ActionIcon, ActionIconGroup, Button, Group, Menu, Text, rem } from '@mantine/core';
-import {
-  IconChevronDown,
-  IconMoneybag,
-  IconReload,
-  IconStar,
-  IconWallet,
-} from '@tabler/icons-react';
-import { useAccount, useBalance, useDisconnect } from 'wagmi';
-import { Connector, useConnect } from 'wagmi';
-import { useChainId } from 'wagmi';
-import { useSwitchChain } from 'wagmi';
+import { AnglezCurrentNetworkExplorerUrl } from '@/src/Constants';
+import classes from '@/styles/SplitButton.module.css';
+import { useOnchainName, shortenAddress } from '@/src/useOnchainName';
 
 // declare global {
 //   interface Window {
@@ -28,10 +18,9 @@ import { useSwitchChain } from 'wagmi';
 
 export default function ConnectButton() {
   const { address, status } = useAccount();
-  const balanceResult = useBalance({ address: address });
+  const balanceResult = useBalance({ address });
   const { connectors, connect } = useConnect();
   const { disconnect } = useDisconnect();
-  const { chains, switchChain } = useSwitchChain();
   const { name: onchainName } = useOnchainName(address);
   // const chainId = useChainId();
 
@@ -49,11 +38,7 @@ export default function ConnectButton() {
   // while `status` is 'reconnecting', so treat only 'connected' as connected and show
   // the in-between states as pending rather than as "no wallet".
   const isPending = !mounted || status === 'connecting' || status === 'reconnecting';
-  const etherscanUrl = AnglezCurrentNetworkExplorerUrl + '/address/' + address;
-
-  const visitWalletWebsite = async () => {
-    window.open('https://metamask.io', '_blank');
-  };
+  const etherscanUrl = `${AnglezCurrentNetworkExplorerUrl}/address/${address}`;
 
   const disconnectWallet = () => {
     console.log('Disconnecting wallet..');
@@ -92,74 +77,73 @@ export default function ConnectButton() {
               onClick={() => connect({ connector })}
             >
               {/* <IconStar style={{ width: rem(16), height: rem(16) }} stroke={1.5} /> */}
-              {connector.id != 'coinbaseWalletSDK' ? connector.name : 'Coinbase Smart Wallet ⭐️'}
+              {connector.id !== 'coinbaseWalletSDK' ? connector.name : 'Coinbase Smart Wallet ⭐️'}
             </Menu.Item>
           ))}
         </Menu.Dropdown>
       </Menu>
     );
-  } else {
-    return (
-      <Group wrap="nowrap" gap={1}>
-        <Button className={classes.button} onClick={disconnectWallet}>
-          Disconnect Wallet
-        </Button>
-        <Menu transitionProps={{ transition: 'pop' }} position="bottom-end" withinPortal>
-          <Menu.Target>
-            <ActionIcon
-              variant="filled"
-              // color={theme.primaryColor}
-              size={36}
-              className={classes.menuControl}
-            >
-              <IconChevronDown style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
-            </ActionIcon>
-          </Menu.Target>
-          <Menu.Dropdown>
-            <Menu.Item
-              onClick={navToEtherscan}
-              leftSection={
-                <IconWallet
-                  style={{ width: rem(16), height: rem(16) }}
-                  stroke={1.5}
-                  // color={theme.colors.blue[5]}
-                />
-              }
-            >
-              <div>
-                {onchainName && <Text size="sm">{onchainName}</Text>}
-                <Text size="xs" c="dimmed">
-                  {shortenAddress(address)}
-                </Text>
-              </div>
-            </Menu.Item>
-            <Menu.Item
-              onClick={navToEtherscan}
-              leftSection={
-                <IconMoneybag
-                  style={{ width: rem(16), height: rem(16) }}
-                  stroke={1.5}
-                  // color={theme.colors.blue[5]}
-                />
-              }
-            >
-              {balanceResult.data?.formatted} {balanceResult.data?.symbol}
-            </Menu.Item>
-            <Menu.Item
-              onClick={refreshWallet}
-              leftSection={
-                <IconReload
-                  style={{ width: rem(16), height: rem(16) }}
-                  stroke={1.5}
-                  // color={theme.colors.blue[5]}
-                />
-              }
-            >
-              Refresh
-            </Menu.Item>
-          </Menu.Dropdown>
-        </Menu>
-      </Group>
-    );
   }
+  return (
+    <Group wrap="nowrap" gap={1}>
+      <Button className={classes.button} onClick={disconnectWallet}>
+        Disconnect Wallet
+      </Button>
+      <Menu transitionProps={{ transition: 'pop' }} position="bottom-end" withinPortal>
+        <Menu.Target>
+          <ActionIcon
+            variant="filled"
+            // color={theme.primaryColor}
+            size={36}
+            className={classes.menuControl}
+          >
+            <IconChevronDown style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
+          </ActionIcon>
+        </Menu.Target>
+        <Menu.Dropdown>
+          <Menu.Item
+            onClick={navToEtherscan}
+            leftSection={
+              <IconWallet
+                style={{ width: rem(16), height: rem(16) }}
+                stroke={1.5}
+                // color={theme.colors.blue[5]}
+              />
+            }
+          >
+            <div>
+              {onchainName && <Text size="sm">{onchainName}</Text>}
+              <Text size="xs" c="dimmed">
+                {shortenAddress(address)}
+              </Text>
+            </div>
+          </Menu.Item>
+          <Menu.Item
+            onClick={navToEtherscan}
+            leftSection={
+              <IconMoneybag
+                style={{ width: rem(16), height: rem(16) }}
+                stroke={1.5}
+                // color={theme.colors.blue[5]}
+              />
+            }
+          >
+            {balanceResult.data?.formatted} {balanceResult.data?.symbol}
+          </Menu.Item>
+          <Menu.Item
+            onClick={refreshWallet}
+            leftSection={
+              <IconReload
+                style={{ width: rem(16), height: rem(16) }}
+                stroke={1.5}
+                // color={theme.colors.blue[5]}
+              />
+            }
+          >
+            Refresh
+          </Menu.Item>
+        </Menu.Dropdown>
+      </Menu>
+    </Group>
+  );
 }

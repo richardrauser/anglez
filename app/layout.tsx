@@ -2,16 +2,16 @@ import '@mantine/core/styles.css';
 import '../styles/global.css';
 
 import React from 'react';
-import { MantineProvider, ColorSchemeScript } from '@mantine/core';
-import { theme } from '../theme';
-import { AnglezNavBar } from '@/components/NavBar/NavBar';
-// import { AnglezAppShell } from '../components/AnglezAppShell/AnglezAppShell';
+import { MantineProvider } from '@mantine/core';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
-import { Providers } from './Providers';
 import { Analytics } from '@vercel/analytics/react';
+import { AnglezNavBar } from '@/components/NavBar/NavBar';
+// import { AnglezAppShell } from '../components/AnglezAppShell/AnglezAppShell';
 import { getMiniAppMetadata } from '@/src/farcaster/miniapp';
 import { MiniAppReady } from '@/components/MiniAppReady/MiniAppReady';
+import { theme } from '../theme';
+import { Providers } from './Providers';
 
 // Advertises the site as a Farcaster Mini App. This replaces the old Frames v1 `vNext`
 // metadata: the two standards share the `fc:frame` tag and cannot both occupy it, so new
@@ -27,12 +27,12 @@ export const metadata = {
   'twitter:title': 'anglez - abstract, angular, on-chain art',
   'twitter:description': 'anglez - abract, angular, on-chain, generative NFT art by volstrate.',
   'twitter:creator': '@volstrate',
-  'og:image': `https://anglez.xyz/anglez-quadrants.png`,
+  'og:image': 'https://anglez.xyz/anglez-quadrants.png',
   openGraph: {
     title: 'anglez - abstract, angular, on-chain art',
     url: 'https://anglez.xyz/',
     description: 'anglez - abract, angular, on-chain, generative NFT art by volstrate.  ',
-    images: [{ url: `https://anglez.xyz/anglez-quadrants.png` }],
+    images: [{ url: 'https://anglez.xyz/anglez-quadrants.png' }],
   },
   other: {
     ...frameMetadata,

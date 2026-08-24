@@ -19,7 +19,8 @@ export function PageNavigator({
       }}
     >
       <button
-        onClick={() => setPage((page) => Math.max(0, page - 1))}
+        type="button"
+        onClick={() => setPage((p) => Math.max(0, p - 1))}
         disabled={page === 0}
         style={{ marginRight: '1rem', width: '120px', minWidth: '120px' }}
       >
@@ -29,7 +30,8 @@ export function PageNavigator({
         Page {page + 1} of {totalPages}
       </span>
       <button
-        onClick={() => setPage((page) => Math.min(totalPages - 1, page + 1))}
+        type="button"
+        onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
         disabled={page >= totalPages - 1}
         style={{ marginLeft: '1rem', width: '120px', minWidth: '120px' }}
       >

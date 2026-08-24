@@ -3,6 +3,7 @@
   height: 20px;
   margin-right: 8px;
 }
+
 .item {
   padding: 6px;
   height: 32px;
@@ -33,9 +34,6 @@
   padding: 0 140px 0 0;
   display: inline;
   margin-bottom: 0;
-}
-
-.shimmer {
   text-align: center;
   color: rgba(255, 255, 255, 0.1);
   background: -webkit-gradient(
@@ -75,37 +73,11 @@
   background-color: #222;
 }
 
-@-moz-keyframes shimmer {
-  0% {
-    background-position: top left;
-  }
-  100% {
-    background-position: top right;
-  }
-}
-
-@-webkit-keyframes shimmer {
-  0% {
-    background-position: top left;
-  }
-  100% {
-    background-position: top right;
-  }
-}
-
-@-o-keyframes shimmer {
-  0% {
-    background-position: top left;
-  }
-  100% {
-    background-position: top right;
-  }
-}
-
 @keyframes shimmer {
   0% {
     background-position: top left;
   }
+
   100% {
     background-position: top right;
   }

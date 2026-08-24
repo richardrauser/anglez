@@ -1,11 +1,7 @@
-import { shortenAddress } from '@/src/BlockchainAPI';
-import {
-  AnglezContractAddress,
-  AnglezCurrentNetworkExplorerUrl,
-  AnglezCurrentNetworkName,
-} from '@/src/Constants';
-import { List, Text } from '@mantine/core';
+import { Text } from '@mantine/core';
 import Link from 'next/link';
+import { shortenAddress } from '@/src/BlockchainAPI';
+import { AnglezContractAddress, AnglezCurrentNetworkExplorerUrl } from '@/src/Constants';
 import { version } from '@/package.json';
 
 export default function AboutPage() {
@@ -25,6 +21,7 @@ export default function AboutPage() {
           <a
             target="_blank"
             href="https://base.mirror.xyz/p_A3ZxaBUEcpWwTf9_Yg-jnlOro8m8Ypc8LEDnA_ZRk"
+            rel="noreferrer"
           >
             win
           </a>{' '}
@@ -32,6 +29,7 @@ export default function AboutPage() {
           <a
             target="_blank"
             href="https://base.mirror.xyz/p_A3ZxaBUEcpWwTf9_Yg-jnlOro8m8Ypc8LEDnA_ZRk"
+            rel="noreferrer"
           >
             Onchain Summer Buildathon
           </a>{' '}
@@ -39,6 +37,7 @@ export default function AboutPage() {
           <a
             target="_blank"
             href="https://base.mirror.xyz/p_A3ZxaBUEcpWwTf9_Yg-jnlOro8m8Ypc8LEDnA_ZRk"
+            rel="noreferrer"
           >
             Creator track
           </a>
@@ -47,8 +46,8 @@ export default function AboutPage() {
         <h2>how do I use anglez?</h2>
         <Text>
           From the Connect Wallet button at top right, select the wallet you wish to use. Coinbase
-          Smart Wallet is the easiest option because you won't have to configure anything or buy
-          crypto.. transaction fees are sponsorred!
+          Smart Wallet is the easiest option because you won&apos;t have to configure anything or
+          buy crypto.. transaction fees are sponsorred!
         </Text>
         <br />
         <Text>
@@ -56,7 +55,7 @@ export default function AboutPage() {
           <a href="https://metamask.io">MetaMask</a> or{' '}
           <a href="https://www.coinbase.com/wallet">Coinbase Wallet</a>, however you will need to
           setup and fund the wallet yourself on the{' '}
-          <a target="_blank" href="https://www.base.org/">
+          <a target="_blank" href="https://www.base.org/" rel="noreferrer">
             Base
           </a>{' '}
           layer 2 chain. You can do this from directly within most wallet apps. Look for a Buy
@@ -64,66 +63,70 @@ export default function AboutPage() {
         </Text>
         <br />
         <Text>
-          Once that's done, visit the <Link href="/create">create page</Link> and get started
+          Once that&apos;s done, visit the <Link href="/create">create page</Link> and get started
           minting anglez!
         </Text>
         <h2>anglez smart contract</h2>
         <Text>
           The anglez smart contract address on{' '}
-          <a target="_blank" href="https://www.base.org/">
+          <a target="_blank" href="https://www.base.org/" rel="noreferrer">
             Base
           </a>{' '}
           is:{' '}
-          <a href={AnglezCurrentNetworkExplorerUrl + 'address/' + AnglezContractAddress}>
+          <a href={`${AnglezCurrentNetworkExplorerUrl}address/${AnglezContractAddress}`}>
             {shortenAddress(AnglezContractAddress)}
           </a>
           . <br />
         </Text>
         <h2>what tech is anglez built on?</h2>
         <Text>
-          <a target="_blank" href="https://wagmi.sh/">
+          <a target="_blank" href="https://wagmi.sh/" rel="noreferrer">
             wagmi
           </a>{' '}
           and{' '}
-          <a target="_blank" href="https://viem.sh/">
+          <a target="_blank" href="https://viem.sh/" rel="noreferrer">
             viem
           </a>{' '}
           for interacting with the{' '}
-          <a target="_blank" href="https://www.base.org/">
+          <a target="_blank" href="https://www.base.org/" rel="noreferrer">
             Base
           </a>{' '}
           layer 2 chain and loading account details. <br />
-          <a target="_blank" href="https://www.coinbase.com/en-gb/wallet/smart-wallet">
+          <a
+            target="_blank"
+            href="https://www.coinbase.com/en-gb/wallet/smart-wallet"
+            rel="noreferrer"
+          >
             Coinbase Smart Wallet
           </a>{' '}
           for wallet connectivity, account abstraction, bundler and paymaster support.
           <br />
-          <a target="_blank" href="https://nextjs.org/">
+          <a target="_blank" href="https://nextjs.org/" rel="noreferrer">
             Next.js
           </a>
           ,{' '}
-          <a target="_blank" href="https://mantine.dev/">
+          <a target="_blank" href="https://mantine.dev/" rel="noreferrer">
             Mantine
           </a>
           ,{' '}
-          <a target="_blank" href="https://react.dev/">
+          <a target="_blank" href="https://react.dev/" rel="noreferrer">
             React
           </a>{' '}
           and{' '}
-          <a target="_blank" href="https://vercel.com/">
+          <a target="_blank" href="https://vercel.com/" rel="noreferrer">
             Vercel
           </a>{' '}
           for the dApp.
           <br />
-          <a target="_blank" href="https://miniapps.farcaster.xyz/">
+          <a target="_blank" href="https://miniapps.farcaster.xyz/" rel="noreferrer">
             Farcaster Mini Apps
           </a>{' '}
           to make anglez social. <br />
-          <a target="_blank" href="https://docs.ethers.org/">
+          <a target="_blank" href="https://docs.ethers.org/" rel="noreferrer">
             ethers.js
           </a>{' '}
           and{' '}
-          <a target="_blank" href="https://hardhat.org/">
+          <a target="_blank" href="https://hardhat.org/" rel="noreferrer">
             hardhat
           </a>{' '}
           for development support. <br />
@@ -134,18 +137,18 @@ export default function AboutPage() {
         </ul> */}
         <h2>source code</h2>
         smart contract:{' '}
-        <a target="_blank" href="https://github.com/richardrauser/anglez-contract">
+        <a target="_blank" href="https://github.com/richardrauser/anglez-contract" rel="noreferrer">
           anglez-contract
         </a>
         <br />
         dApp:{' '}
-        <a target="_blank" href="https://github.com/richardrauser/anglez">
+        <a target="_blank" href="https://github.com/richardrauser/anglez" rel="noreferrer">
           anglez
         </a>
         <h2>who made this?</h2>
         <Text>
-          I did! 😝 It's{` `}
-          <a target="_blank" href="https://volstrate.com">
+          I did! 😝 It&apos;s{' '}
+          <a target="_blank" href="https://volstrate.com" rel="noreferrer">
             volstrate
           </a>
           , aka{' '}

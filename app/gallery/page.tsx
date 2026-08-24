@@ -1,15 +1,16 @@
 'use client';
+
 import { useEffect, useState } from 'react';
-import PageNavigator from './PageNavigator';
+import { Grid, SimpleGrid, Tabs, Text, rem } from '@mantine/core';
+import { IconArtboard, IconHeart } from '@tabler/icons-react';
+import Link from 'next/link';
+import { useAccount } from 'wagmi';
+import { PageNavigator } from './PageNavigator';
 import { fetchRecentTokenIds, fetchYourTokens } from '@/src/BlockchainServerAPI';
 import Loading from '@/components/Loading/Loading';
 import Artwork from '@/components/Artwork/Artwork';
-import { Grid, SimpleGrid, Tabs, Text, rem } from '@mantine/core';
 import { handleError } from '@/src/ErrorHandler';
-import { IconArtboard, IconHeart } from '@tabler/icons-react';
 import styles from './GalleryPage.module.css';
-import Link from 'next/link';
-import { useAccount } from 'wagmi';
 
 export default function GalleryPage() {
   const [loading, setLoading] = useState(true);
@@ -89,7 +90,7 @@ export default function GalleryPage() {
               <PageNavigator page={page} totalPages={totalPages} setPage={setPage} />
             </Tabs.Panel>
             <Tabs.Panel value="yours" pt="xs">
-              {yourTokenIds != undefined && yourTokenIds?.length > 0 ? (
+              {yourTokenIds != null && yourTokenIds?.length > 0 ? (
                 <SimpleGrid cols={1} spacing="lg">
                   {yourTokenIds?.map((tokenId) => (
                     <Artwork key={tokenId} tokenId={tokenId} />
@@ -99,8 +100,8 @@ export default function GalleryPage() {
                 <Grid justify="center" align="center">
                   <center>
                     <Text style={{ marginTop: '2rem', marginBottom: '2rem' }}>
-                      You haven't minted any Anglez yet. <br /> Why not{' '}
-                      <Link href={'create'}>get started?</Link>
+                      You haven&apos;t minted any Anglez yet. <br /> Why not{' '}
+                      <Link href="create">get started?</Link>
                     </Text>
                   </center>
                 </Grid>

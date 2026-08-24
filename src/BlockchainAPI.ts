@@ -1,13 +1,10 @@
-import { ethers, formatEther, JsonRpcProvider, JsonRpcSigner } from 'ethers';
+import { ethers, formatEther, JsonRpcSigner } from 'ethers';
 import Anglez from '../contract/Anglez.json';
 import * as Errors from './ErrorMessages';
 import {
   AnglezContractAddress,
   AnglezCurrentNetworkID,
   AnglezCurrentNetworkName,
-  AnglezCurrentNetworkCurrencySymbol,
-  AnglezCurrentNetworkRpcUrl,
-  AnglezCurrentNetworkExplorerUrl,
 } from './Constants';
 import { TokenParams } from './anglez';
 
@@ -46,7 +43,7 @@ const AccountDetailsKey = 'NGLZ_ACCOUNT_DETAILS_KEY';
 async function getProvider() {
   console.log('Returning default provider..');
 
-  console.log('Current network: ' + AnglezCurrentNetworkName);
+  console.log(`Current network: ${AnglezCurrentNetworkName}`);
 
   let provider;
 
@@ -59,7 +56,7 @@ async function getProvider() {
       throw Error(Errors.NGLZ_NO_ETH_WALLET);
     }
 
-    console.log('Window.ethereum exists. Providers: ' + window.ethereum.providers);
+    console.log(`Window.ethereum exists. Providers: ${window.ethereum.providers}`);
 
     // if (window.ethereum.providers) {
     //   console.log("Window.ethereum.providers exists. Let's see what's in there..");
@@ -86,10 +83,10 @@ async function getProvider() {
   // Check we are on expected network
   const network = await provider.getNetwork();
 
-  console.log('Desired chain ID: ' + AnglezCurrentNetworkID);
-  console.log('Current chain ID: ' + network.chainId);
+  console.log(`Desired chain ID: ${AnglezCurrentNetworkID}`);
+  console.log(`Current chain ID: ${network.chainId}`);
 
-  if (network.chainId != BigInt(AnglezCurrentNetworkID)) {
+  if (network.chainId !== BigInt(AnglezCurrentNetworkID)) {
     console.log('Wrong network!');
     throw Error(Errors.NGLZ_WRONG_ETH_NETWORK);
   }
@@ -101,9 +98,8 @@ async function getProvider() {
 
 export async function switchToCurrentNetwork() {
   // will attempt to add current network, behaviour is to switch if already present in MetaMask
-  console.log('Switching to ' + AnglezCurrentNetworkName + '...');
+  console.log(`Switching to ${AnglezCurrentNetworkName}...`);
 
-  const provider = new ethers.BrowserProvider(window.ethereum);
   // const network = await provider.getNetwork();
 
   // if (network.chainId == AnglezCurrentNetworkID) {
@@ -113,7 +109,7 @@ export async function switchToCurrentNetwork() {
 
   const data = [
     {
-      chainId: '0x' + AnglezCurrentNetworkID.toString(16),
+      chainId: `0x${AnglezCurrentNetworkID.toString(16)}`,
       // chainName: AnglezCurrentNetworkName,
       // nativeCurrency: {
       //   name: AnglezCurrentNetworkCurrencySymbol,
@@ -141,7 +137,7 @@ export async function getReadOnlyContract() {
   console.log('Getting read-only contract..');
   const provider = await getProvider();
 
-  console.log('CONTRACT ADDRESS: ' + AnglezContractAddress);
+  console.log(`CONTRACT ADDRESS: ${AnglezContractAddress}`);
 
   return new ethers.Contract(AnglezContractAddress, Anglez.abi, provider);
 }
@@ -163,7 +159,7 @@ export async function isAccountConnected() {
   const provider = await getProvider();
   const [account] = await provider.listAccounts();
 
-  console.log('isAccountConnected, account: ' + account);
+  console.log(`isAccountConnected, account: ${account}`);
   if (account === undefined || account === null) {
     return false;
   }
@@ -177,21 +173,21 @@ export async function hasAccount() {
     return false;
   }
 
-  const provider = await getProvider();
-  const hasAccount = provider.getSigner() !== null;
-  console.log('Has account: ' + hasAccount);
-  return hasAccount;
+  const currentProvider = await getProvider();
+  const signerPresent = currentProvider.getSigner() !== null;
+  console.log(`Has account: ${signerPresent}`);
+  return signerPresent;
 }
 
 export async function fetchCurrentAccount() {
   console.log('Fetching account..');
   const provider = await getProvider();
-  var accounts = await provider.listAccounts();
-  var account = accounts[0];
+  const accounts = await provider.listAccounts();
+  const account = accounts[0];
   // var account = await provider.getSigner(); // TODO: really what you want?
 
   if (account) {
-    console.log('GOT ACCOUNT: ' + account);
+    console.log(`GOT ACCOUNT: ${account}`);
   } else {
     console.log('NO ACCOUNT CURRENTLY CONNECTED.');
   }
@@ -202,7 +198,7 @@ export async function fetchCurrentAccount() {
 export async function connectAccount() {
   const [account] = await window.ethereum.request({ method: 'eth_requestAccounts' });
 
-  console.log('ACCOUNT FROM ETH_REQUESTACCOUNTS: ' + account);
+  console.log(`ACCOUNT FROM ETH_REQUESTACCOUNTS: ${account}`);
 
   if (account === undefined || account === null) {
     throw Error(Errors.NGLZ_NO_ETH_ACCOUNT);
@@ -212,28 +208,28 @@ export async function connectAccount() {
 }
 
 export function shortenAddress(fullAddress: string) {
-  console.log('Shortening address: ' + fullAddress);
-  var shortenedAddress = fullAddress;
+  console.log(`Shortening address: ${fullAddress}`);
+  let shortenedAddress = fullAddress;
   if (shortenedAddress.length > 10) {
-    shortenedAddress = shortenedAddress.substring(0, 6) + '...' + shortenedAddress.slice(-4);
+    shortenedAddress = `${shortenedAddress.substring(0, 6)}...${shortenedAddress.slice(-4)}`;
   }
   return shortenedAddress;
 }
 
 export async function loadAccountDetails(account: JsonRpcSigner) {
   console.log('Fetching account details from blockchain..');
-  console.log('Account: ' + account);
+  console.log(`Account: ${account}`);
 
   const provider = await getProvider();
 
   const fullAddress = account.toString();
-  var shortenedAddress = shortenAddress(fullAddress);
-  console.log('Getting details of account: ' + fullAddress);
+  const shortenedAddress = shortenAddress(fullAddress);
+  console.log(`Getting details of account: ${fullAddress}`);
 
   const weiBalance = await provider.getBalance(account);
   const displayBalance = Number(formatEther(weiBalance)).toFixed(4).toString();
 
-  var accountDetails: AccountDetails = {
+  const accountDetails: AccountDetails = {
     shortenedAddress,
     fullAddress,
     weiBalance: weiBalance.toString(),
@@ -266,16 +262,15 @@ export function fetchCachedAccountDetails() {
     accountDetails.weiBalance === undefined ||
     accountDetails.displayBalance === undefined
   ) {
-    console.log('some element of details is null. ' + accountDetails);
-    console.log('shortened address: ' + accountDetails.shortenedAddress);
-    console.log('full address: ' + accountDetails.fullAddress);
-    console.log('wei balance: ' + accountDetails.weiBalance);
-    console.log('display balance ' + accountDetails.displayBalance);
+    console.log(`some element of details is null. ${accountDetails}`);
+    console.log(`shortened address: ${accountDetails.shortenedAddress}`);
+    console.log(`full address: ${accountDetails.fullAddress}`);
+    console.log(`wei balance: ${accountDetails.weiBalance}`);
+    console.log(`display balance ${accountDetails.displayBalance}`);
     clearCachedAccountDetails();
     return null;
-  } else {
-    return accountDetails;
   }
+  return accountDetails;
 }
 
 export function clearCachedAccountDetails() {
@@ -312,7 +307,7 @@ export async function mintRandomAnglez(randomSeed: number) {
   }
 
   const mintPrice = await contract.getRandomMintPrice();
-  console.log('Mint price: ' + mintPrice.toString());
+  console.log(`Mint price: ${mintPrice.toString()}`);
 
   const overrides = {
     // gasLimit: 200000,
@@ -326,7 +321,7 @@ export async function mintRandomAnglez(randomSeed: number) {
 }
 
 export async function mintCustomAnglez(tokenParams: TokenParams) {
-  console.log('Minting custom Anglez with params  ' + JSON.stringify(tokenParams));
+  console.log(`Minting custom Anglez with params  ${JSON.stringify(tokenParams)}`);
 
   const contract = await getReadWriteContract();
 
@@ -340,7 +335,7 @@ export async function mintCustomAnglez(tokenParams: TokenParams) {
   // console.log('Alpha255 blockchainAPI: ' + alpha);
 
   const mintPrice = await contract.getCustomMintPrice();
-  console.log('Mint price: ' + mintPrice.toString());
+  console.log(`Mint price: ${mintPrice.toString()}`);
 
   const overrides = {
     // gasLimit: 200000,
@@ -359,7 +354,7 @@ export async function mintCustomAnglez(tokenParams: TokenParams) {
     overrides
   );
 
-  console.log('Mint tx: ' + mintTx.hash);
+  console.log(`Mint tx: ${mintTx.hash}`);
   const receipt = await mintTx.wait();
 
   return receipt;

@@ -1,13 +1,13 @@
+import sharp from 'sharp';
 import { buildArtwork, generateRandomTokenParams } from '@/src/anglez';
 // const sharp = require('sharp');
-import sharp from 'sharp';
 
 export async function GET(request: Request, { params }: { params: Promise<{ seed: string }> }) {
   const { seed } = await params;
 
   // console.log('SEED:', seed);
 
-  const tokenParams = generateRandomTokenParams(parseInt(seed));
+  const tokenParams = generateRandomTokenParams(parseInt(seed, 10));
   const anglezSvg = buildArtwork(tokenParams);
 
   console.log('ANGLEZ:', anglezSvg);
