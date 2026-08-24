@@ -1,0 +1,240 @@
+{
+  "chainId": 8453,
+  "contractAddress": "0x2F8c2A675962ecb07505684EeA496D02d5a9124A",
+  "tokens": [
+    {
+      "tokenId": 0,
+      "params": {
+        "seed": 3595083,
+        "custom": false,
+        "tint": {
+          "red": 108,
+          "green": 21,
+          "blue": 242,
+          "alpha": 89
+        },
+        "shapeCount": 7,
+        "cyclic": true,
+        "chaotic": true
+      },
+      "attributes": {
+        "seed": "3595083",
+        "shapes": "7",
+        "tintColor": "rgb(108, 21, 242)",
+        "tintOpacity": "0.34",
+        "style": "cyclic",
+        "structure": "chaotic",
+        "custom": "false"
+      },
+      "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='-177 -177 1354 1354'><linearGradient id='gradient0' gradientTransform='rotate(198)'><stop offset='0%' stop-color='rgb(156, 106, 200)'/><stop offset='50%' stop-color='rgb(154, 107, 182)' stop-opacity='0.50'/><stop offset='100%' stop-color='rgb(136, 20, 184)'/></linearGradient><polygon points='104,139 269,438 580,329 ' transform='rotate(0, 500, 500)' fill='url(#gradient0)' opacity='0.80' /><polygon points='104,139 269,438 580,329 ' transform='rotate(120, 500, 500)' fill='url(#gradient0)' opacity='0.80' /><polygon points='104,139 269,438 580,329 ' transform='rotate(240, 500, 500)' fill='url(#gradient0)' opacity='0.80' /><linearGradient id='gradient1' gradientTransform='rotate(140)'><stop offset='0%' stop-color='rgb(183, 38, 114)'/><stop offset='50%' stop-color='rgb(67, 88, 115)' stop-opacity='0.34'/><stop offset='100%' stop-color='rgb(68, 58, 164)'/></linearGradient><polygon points='948,174 259,99 702,93 ' transform='rotate(0, 500, 500)' fill='url(#gradient1)' opacity='0.61' /><polygon points='948,174 259,99 702,93 ' transform='rotate(120, 500, 500)' fill='url(#gradient1)' opacity='0.61' /><polygon points='948,174 259,99 702,93 ' transform='rotate(240, 500, 500)' fill='url(#gradient1)' opacity='0.61' /><linearGradient id='gradient2' gradientTransform='rotate(273)'><stop offset='0%' stop-color='rgb(189, 53, 181)'/><stop offset='50%' stop-color='rgb(135, 74, 130)' stop-opacity='0.57'/><stop offset='100%' stop-color='rgb(83, 148, 150)'/></linearGradient><polygon points='27,256 268,974 264,716 982,455 ' transform='rotate(0, 500, 500)' fill='url(#gradient2)' opacity='0.59' /><polygon points='27,256 268,974 264,716 982,455 ' transform='rotate(72, 500, 500)' fill='url(#gradient2)' opacity='0.59' /><polygon points='27,256 268,974 264,716 982,455 ' transform='rotate(144, 500, 500)' fill='url(#gradient2)' opacity='0.59' /><polygon points='27,256 268,974 264,716 982,455 ' transform='rotate(216, 500, 500)' fill='url(#gradient2)' opacity='0.59' /><polygon points='27,256 268,974 264,716 982,455 ' transform='rotate(288, 500, 500)' fill='url(#gradient2)' opacity='0.59' /><linearGradient id='gradient3' gradientTransform='rotate(131)'><stop offset='0%' stop-color='rgb(117, 135, 246)'/><stop offset='50%' stop-color='rgb(199, 16, 212)' stop-opacity='0.84'/><stop offset='100%' stop-color='rgb(166, 89, 93)'/></linearGradient><polygon points='974,269 603,688 578,331 831,274 ' transform='rotate(0, 500, 500)' fill='url(#gradient3)' opacity='0.75' /><polygon points='974,269 603,688 578,331 831,274 ' transform='rotate(120, 500, 500)' fill='url(#gradient3)' opacity='0.75' /><polygon points='974,269 603,688 578,331 831,274 ' transform='rotate(240, 500, 500)' fill='url(#gradient3)' opacity='0.75' /><linearGradient id='gradient4' gradientTransform='rotate(308)'><stop offset='0%' stop-color='rgb(80, 135, 236)'/><stop offset='50%' stop-color='rgb(190, 171, 212)' stop-opacity='0.81'/><stop offset='100%' stop-color='rgb(166, 105, 248)'/></linearGradient><polygon points='606,888 673,780 820,539 ' transform='rotate(0, 500, 500)' fill='url(#gradient4)' opacity='0.53' /><polygon points='606,888 673,780 820,539 ' transform='rotate(90, 500, 500)' fill='url(#gradient4)' opacity='0.53' /><polygon points='606,888 673,780 820,539 ' transform='rotate(180, 500, 500)' fill='url(#gradient4)' opacity='0.53' /><polygon points='606,888 673,780 820,539 ' transform='rotate(270, 500, 500)' fill='url(#gradient4)' opacity='0.53' /><linearGradient id='gradient5' gradientTransform='rotate(130)'><stop offset='0%' stop-color='rgb(96, 11, 101)'/><stop offset='50%' stop-color='rgb(54, 89, 89)' stop-opacity='0.47'/><stop offset='100%' stop-color='rgb(42, 62, 165)'/></linearGradient><polygon points='11,131 647,640 66,586 ' transform='rotate(0, 500, 500)' fill='url(#gradient5)' opacity='0.59' /><polygon points='11,131 647,640 66,586 ' transform='rotate(120, 500, 500)' fill='url(#gradient5)' opacity='0.59' /><polygon points='11,131 647,640 66,586 ' transform='rotate(240, 500, 500)' fill='url(#gradient5)' opacity='0.59' /><linearGradient id='gradient6' gradientTransform='rotate(27)'><stop offset='0%' stop-color='rgb(42, 65, 141)'/><stop offset='50%' stop-color='rgb(94, 152, 141)' stop-opacity='0.51'/><stop offset='100%' stop-color='rgb(94, 157, 228)'/></linearGradient><polygon points='765,242 247,284 437,276 789,579 ' transform='rotate(0, 500, 500)' fill='url(#gradient6)' opacity='0.73' /><polygon points='765,242 247,284 437,276 789,579 ' transform='rotate(180, 500, 500)' fill='url(#gradient6)' opacity='0.73' /></svg>"
+    },
+    {
+      "tokenId": 1,
+      "params": {
+        "seed": 3324577,
+        "custom": true,
+        "tint": {
+          "red": 171,
+          "green": 70,
+          "blue": 141,
+          "alpha": 181
+        },
+        "shapeCount": 20,
+        "cyclic": false,
+        "chaotic": false
+      },
+      "attributes": {
+        "seed": "3324577",
+        "shapes": "20",
+        "tintColor": "rgb(171, 70, 141)",
+        "tintOpacity": "0.70",
+        "style": "linear",
+        "structure": "folded",
+        "custom": "true"
+      },
+      "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='134 106 894 937'><linearGradient id='gradient0' gradientTransform='rotate(264)'><stop offset='0%' stop-color='rgb(153, 81, 155)'/><stop offset='50%' stop-color='rgb(176, 92, 130)' stop-opacity='0.90'/><stop offset='100%' stop-color='rgb(151, 117, 143)'/></linearGradient><polygon points='939,546 344,490 649,806 ' transform='rotate(0, 500, 500)' fill='url(#gradient0)' opacity='0.83' /><linearGradient id='gradient1' gradientTransform='rotate(18)'><stop offset='0%' stop-color='rgb(176, 92, 130)'/><stop offset='50%' stop-color='rgb(151, 117, 143)' stop-opacity='0.75'/><stop offset='100%' stop-color='rgb(163, 96, 168)'/></linearGradient><polygon points='344,490 649,806 184,752 656,375 ' transform='rotate(0, 500, 500)' fill='url(#gradient1)' opacity='0.93' /><linearGradient id='gradient2' gradientTransform='rotate(331)'><stop offset='0%' stop-color='rgb(151, 117, 143)'/><stop offset='50%' stop-color='rgb(163, 96, 168)' stop-opacity='0.80'/><stop offset='100%' stop-color='rgb(189, 123, 146)'/></linearGradient><polygon points='649,806 184,752 656,375 805,513 ' transform='rotate(0, 500, 500)' fill='url(#gradient2)' opacity='0.87' /><linearGradient id='gradient3' gradientTransform='rotate(4)'><stop offset='0%' stop-color='rgb(163, 96, 168)'/><stop offset='50%' stop-color='rgb(189, 123, 146)' stop-opacity='0.41'/><stop offset='100%' stop-color='rgb(167, 116, 173)'/></linearGradient><polygon points='184,752 656,375 805,513 583,978 ' transform='rotate(0, 500, 500)' fill='url(#gradient3)' opacity='0.92' /><linearGradient id='gradient4' gradientTransform='rotate(202)'><stop offset='0%' stop-color='rgb(189, 123, 146)'/><stop offset='50%' stop-color='rgb(167, 116, 173)' stop-opacity='0.50'/><stop offset='100%' stop-color='rgb(195, 114, 166)'/></linearGradient><polygon points='656,375 805,513 583,978 ' transform='rotate(0, 500, 500)' fill='url(#gradient4)' opacity='0.97' /><linearGradient id='gradient5' gradientTransform='rotate(172)'><stop offset='0%' stop-color='rgb(167, 116, 173)'/><stop offset='50%' stop-color='rgb(195, 114, 166)' stop-opacity='0.50'/><stop offset='100%' stop-color='rgb(187, 76, 164)'/></linearGradient><polygon points='805,513 583,978 924,811 ' transform='rotate(0, 500, 500)' fill='url(#gradient5)' opacity='0.82' /><linearGradient id='gradient6' gradientTransform='rotate(183)'><stop offset='0%' stop-color='rgb(195, 114, 166)'/><stop offset='50%' stop-color='rgb(187, 76, 164)' stop-opacity='0.60'/><stop offset='100%' stop-color='rgb(186, 122, 125)'/></linearGradient><polygon points='583,978 924,811 260,626 ' transform='rotate(0, 500, 500)' fill='url(#gradient6)' opacity='0.93' /><linearGradient id='gradient7' gradientTransform='rotate(127)'><stop offset='0%' stop-color='rgb(187, 76, 164)'/><stop offset='50%' stop-color='rgb(186, 122, 125)' stop-opacity='0.63'/><stop offset='100%' stop-color='rgb(147, 107, 173)'/></linearGradient><polygon points='924,811 260,626 196,367 546,380 ' transform='rotate(0, 500, 500)' fill='url(#gradient7)' opacity='0.81' /><linearGradient id='gradient8' gradientTransform='rotate(339)'><stop offset='0%' stop-color='rgb(186, 122, 125)'/><stop offset='50%' stop-color='rgb(147, 107, 173)' stop-opacity='0.54'/><stop offset='100%' stop-color='rgb(194, 73, 157)'/></linearGradient><polygon points='260,626 196,367 546,380 490,560 ' transform='rotate(0, 500, 500)' fill='url(#gradient8)' opacity='0.90' /><linearGradient id='gradient9' gradientTransform='rotate(253)'><stop offset='0%' stop-color='rgb(147, 107, 173)'/><stop offset='50%' stop-color='rgb(194, 73, 157)' stop-opacity='0.73'/><stop offset='100%' stop-color='rgb(178, 50, 123)'/></linearGradient><polygon points='196,367 546,380 490,560 806,646 ' transform='rotate(0, 500, 500)' fill='url(#gradient9)' opacity='0.87' /><linearGradient id='gradient10' gradientTransform='rotate(293)'><stop offset='0%' stop-color='rgb(194, 73, 157)'/><stop offset='50%' stop-color='rgb(178, 50, 123)' stop-opacity='0.69'/><stop offset='100%' stop-color='rgb(144, 52, 100)'/></linearGradient><polygon points='546,380 490,560 806,646 ' transform='rotate(0, 500, 500)' fill='url(#gradient10)' opacity='0.94' /><linearGradient id='gradient11' gradientTransform='rotate(234)'><stop offset='0%' stop-color='rgb(178, 50, 123)'/><stop offset='50%' stop-color='rgb(144, 52, 100)' stop-opacity='0.45'/><stop offset='100%' stop-color='rgb(121, 100, 102)'/></linearGradient><polygon points='490,560 806,646 752,377 375,673 ' transform='rotate(0, 500, 500)' fill='url(#gradient11)' opacity='0.100' /><linearGradient id='gradient12' gradientTransform='rotate(129)'><stop offset='0%' stop-color='rgb(144, 52, 100)'/><stop offset='50%' stop-color='rgb(121, 100, 102)' stop-opacity='0.65'/><stop offset='100%' stop-color='rgb(123, 111, 150)'/></linearGradient><polygon points='806,646 752,377 375,673 513,528 ' transform='rotate(0, 500, 500)' fill='url(#gradient12)' opacity='0.82' /><linearGradient id='gradient13' gradientTransform='rotate(145)'><stop offset='0%' stop-color='rgb(121, 100, 102)'/><stop offset='50%' stop-color='rgb(123, 111, 150)' stop-opacity='0.68'/><stop offset='100%' stop-color='rgb(172, 121, 162)'/></linearGradient><polygon points='752,377 375,673 513,528 978,156 ' transform='rotate(0, 500, 500)' fill='url(#gradient13)' opacity='0.80' /><linearGradient id='gradient14' gradientTransform='rotate(193)'><stop offset='0%' stop-color='rgb(123, 111, 150)'/><stop offset='50%' stop-color='rgb(172, 121, 162)' stop-opacity='0.52'/><stop offset='100%' stop-color='rgb(183, 102, 172)'/></linearGradient><polygon points='375,673 513,528 978,156 ' transform='rotate(0, 500, 500)' fill='url(#gradient14)' opacity='0.88' /><linearGradient id='gradient15' gradientTransform='rotate(183)'><stop offset='0%' stop-color='rgb(172, 121, 162)'/><stop offset='50%' stop-color='rgb(183, 102, 172)' stop-opacity='0.61'/><stop offset='100%' stop-color='rgb(193, 50, 153)'/></linearGradient><polygon points='513,528 978,156 811,290 626,558 ' transform='rotate(0, 500, 500)' fill='url(#gradient15)' opacity='0.91' /><linearGradient id='gradient16' gradientTransform='rotate(202)'><stop offset='0%' stop-color='rgb(183, 102, 172)'/><stop offset='50%' stop-color='rgb(193, 50, 153)' stop-opacity='0.59'/><stop offset='100%' stop-color='rgb(174, 107, 101)'/></linearGradient><polygon points='978,156 811,290 626,558 367,993 ' transform='rotate(0, 500, 500)' fill='url(#gradient16)' opacity='0.96' /><linearGradient id='gradient17' gradientTransform='rotate(62)'><stop offset='0%' stop-color='rgb(193, 50, 153)'/><stop offset='50%' stop-color='rgb(174, 107, 101)' stop-opacity='0.49'/><stop offset='100%' stop-color='rgb(122, 97, 157)'/></linearGradient><polygon points='811,290 626,558 367,993 380,932 ' transform='rotate(0, 500, 500)' fill='url(#gradient17)' opacity='0.96' /><linearGradient id='gradient18' gradientTransform='rotate(47)'><stop offset='0%' stop-color='rgb(174, 107, 101)'/><stop offset='50%' stop-color='rgb(122, 97, 157)' stop-opacity='0.80'/><stop offset='100%' stop-color='rgb(179, 68, 147)'/></linearGradient><polygon points='626,558 367,993 380,932 ' transform='rotate(0, 500, 500)' fill='url(#gradient18)' opacity='0.89' /><linearGradient id='gradient19' gradientTransform='rotate(9)'><stop offset='0%' stop-color='rgb(122, 97, 157)'/><stop offset='50%' stop-color='rgb(179, 68, 147)' stop-opacity='0.60'/><stop offset='100%' stop-color='rgb(168, 84, 118)'/></linearGradient><polygon points='367,993 380,932 560,643 646,486 ' transform='rotate(0, 500, 500)' fill='url(#gradient19)' opacity='0.80' /></svg>"
+    },
+    {
+      "tokenId": 2,
+      "params": {
+        "seed": 832497,
+        "custom": true,
+        "tint": {
+          "red": 214,
+          "green": 37,
+          "blue": 48,
+          "alpha": 166
+        },
+        "shapeCount": 6,
+        "cyclic": true,
+        "chaotic": false
+      },
+      "attributes": {
+        "seed": "832497",
+        "shapes": "6",
+        "tintColor": "rgb(214, 37, 48)",
+        "tintOpacity": "0.65",
+        "style": "cyclic",
+        "structure": "folded",
+        "custom": "true"
+      },
+      "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='-158 -158 1316 1316'><linearGradient id='gradient0' gradientTransform='rotate(238)'><stop offset='0%' stop-color='rgb(211, 113, 37)'/><stop offset='50%' stop-color='rgb(145, 107, 120)' stop-opacity='0.50'/><stop offset='100%' stop-color='rgb(228, 59, 114)'/></linearGradient><polygon points='525,206 975,91 42,930 ' transform='rotate(0, 500, 500)' fill='url(#gradient0)' opacity='0.58' /><polygon points='525,206 975,91 42,930 ' transform='rotate(120, 500, 500)' fill='url(#gradient0)' opacity='0.58' /><polygon points='525,206 975,91 42,930 ' transform='rotate(240, 500, 500)' fill='url(#gradient0)' opacity='0.58' /><linearGradient id='gradient1' gradientTransform='rotate(332)'><stop offset='0%' stop-color='rgb(145, 107, 120)'/><stop offset='50%' stop-color='rgb(228, 59, 114)' stop-opacity='0.78'/><stop offset='100%' stop-color='rgb(223, 39, 66)'/></linearGradient><polygon points='975,91 42,930 71,876 ' transform='rotate(0, 500, 500)' fill='url(#gradient1)' opacity='0.52' /><polygon points='975,91 42,930 71,876 ' transform='rotate(120, 500, 500)' fill='url(#gradient1)' opacity='0.52' /><polygon points='975,91 42,930 71,876 ' transform='rotate(240, 500, 500)' fill='url(#gradient1)' opacity='0.52' /><linearGradient id='gradient2' gradientTransform='rotate(7)'><stop offset='0%' stop-color='rgb(228, 59, 114)'/><stop offset='50%' stop-color='rgb(223, 39, 66)' stop-opacity='0.80'/><stop offset='100%' stop-color='rgb(173, 60, 45)'/></linearGradient><polygon points='42,930 71,876 97,266 ' transform='rotate(0, 500, 500)' fill='url(#gradient2)' opacity='0.65' /><polygon points='42,930 71,876 97,266 ' transform='rotate(120, 500, 500)' fill='url(#gradient2)' opacity='0.65' /><polygon points='42,930 71,876 97,266 ' transform='rotate(240, 500, 500)' fill='url(#gradient2)' opacity='0.65' /><linearGradient id='gradient3' gradientTransform='rotate(221)'><stop offset='0%' stop-color='rgb(223, 39, 66)'/><stop offset='50%' stop-color='rgb(173, 60, 45)' stop-opacity='0.75'/><stop offset='100%' stop-color='rgb(153, 43, 67)'/></linearGradient><polygon points='71,876 97,266 47,622 ' transform='rotate(0, 500, 500)' fill='url(#gradient3)' opacity='0.70' /><polygon points='71,876 97,266 47,622 ' transform='rotate(120, 500, 500)' fill='url(#gradient3)' opacity='0.70' /><polygon points='71,876 97,266 47,622 ' transform='rotate(240, 500, 500)' fill='url(#gradient3)' opacity='0.70' /><linearGradient id='gradient4' gradientTransform='rotate(226)'><stop offset='0%' stop-color='rgb(173, 60, 45)'/><stop offset='50%' stop-color='rgb(153, 43, 67)' stop-opacity='0.38'/><stop offset='100%' stop-color='rgb(174, 28, 50)'/></linearGradient><polygon points='97,266 47,622 518,513 359,263 ' transform='rotate(0, 500, 500)' fill='url(#gradient4)' opacity='0.53' /><polygon points='97,266 47,622 518,513 359,263 ' transform='rotate(120, 500, 500)' fill='url(#gradient4)' opacity='0.53' /><polygon points='97,266 47,622 518,513 359,263 ' transform='rotate(240, 500, 500)' fill='url(#gradient4)' opacity='0.53' /><linearGradient id='gradient5' gradientTransform='rotate(130)'><stop offset='0%' stop-color='rgb(153, 43, 67)'/><stop offset='50%' stop-color='rgb(174, 28, 50)' stop-opacity='0.46'/><stop offset='100%' stop-color='rgb(157, 59, 35)'/></linearGradient><polygon points='47,622 518,513 359,263 80,851 ' transform='rotate(0, 500, 500)' fill='url(#gradient5)' opacity='0.50' /><polygon points='47,622 518,513 359,263 80,851 ' transform='rotate(120, 500, 500)' fill='url(#gradient5)' opacity='0.50' /><polygon points='47,622 518,513 359,263 80,851 ' transform='rotate(240, 500, 500)' fill='url(#gradient5)' opacity='0.50' /></svg>"
+    },
+    {
+      "tokenId": 4,
+      "params": {
+        "seed": 3499219,
+        "custom": false,
+        "tint": {
+          "red": 223,
+          "green": 75,
+          "blue": 59,
+          "alpha": 28
+        },
+        "shapeCount": 8,
+        "cyclic": false,
+        "chaotic": true
+      },
+      "attributes": {
+        "seed": "3499219",
+        "shapes": "8",
+        "tintColor": "rgb(223, 75, 59)",
+        "tintOpacity": "0.10",
+        "style": "linear",
+        "structure": "chaotic",
+        "custom": "false"
+      },
+      "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='-19 -10 1056 974'><linearGradient id='gradient0' gradientTransform='rotate(177)'><stop offset='0%' stop-color='rgb(54, 58, 96)'/><stop offset='50%' stop-color='rgb(113, 29, 56)' stop-opacity='0.83'/><stop offset='100%' stop-color='rgb(74, 52, 27)'/></linearGradient><polygon points='736,914 888,314 147,217 ' transform='rotate(0, 500, 500)' fill='url(#gradient0)' opacity='0.92' /><linearGradient id='gradient1' gradientTransform='rotate(96)'><stop offset='0%' stop-color='rgb(118, 31, 77)'/><stop offset='50%' stop-color='rgb(94, 193, 29)' stop-opacity='0.73'/><stop offset='100%' stop-color='rgb(47, 57, 191)'/></linearGradient><polygon points='797,294 68,812 922,563 292,722 ' transform='rotate(0, 500, 500)' fill='url(#gradient1)' opacity='0.84' /><linearGradient id='gradient2' gradientTransform='rotate(219)'><stop offset='0%' stop-color='rgb(169, 131, 127)'/><stop offset='50%' stop-color='rgb(144, 16, 129)' stop-opacity='0.88'/><stop offset='100%' stop-color='rgb(146, 155, 14)'/></linearGradient><polygon points='987,764 828,348 206,297 ' transform='rotate(0, 500, 500)' fill='url(#gradient2)' opacity='0.89' /><linearGradient id='gradient3' gradientTransform='rotate(242)'><stop offset='0%' stop-color='rgb(128, 37, 94)'/><stop offset='50%' stop-color='rgb(111, 228, 35)' stop-opacity='0.55'/><stop offset='100%' stop-color='rgb(53, 166, 226)'/></linearGradient><polygon points='242,620 379,728 183,216 ' transform='rotate(0, 500, 500)' fill='url(#gradient3)' opacity='0.81' /><linearGradient id='gradient4' gradientTransform='rotate(154)'><stop offset='0%' stop-color='rgb(102, 125, 14)'/><stop offset='50%' stop-color='rgb(32, 55, 124)' stop-opacity='0.69'/><stop offset='100%' stop-color='rgb(141, 232, 53)'/></linearGradient><polygon points='971,525 149,724 976,132 ' transform='rotate(0, 500, 500)' fill='url(#gradient4)' opacity='0.96' /><linearGradient id='gradient5' gradientTransform='rotate(300)'><stop offset='0%' stop-color='rgb(198, 134, 108)'/><stop offset='50%' stop-color='rgb(125, 61, 132)' stop-opacity='0.79'/><stop offset='100%' stop-color='rgb(150, 46, 60)'/></linearGradient><polygon points='850,392 815,96 582,40 366,211 ' transform='rotate(0, 500, 500)' fill='url(#gradient5)' opacity='0.100' /><linearGradient id='gradient6' gradientTransform='rotate(79)'><stop offset='0%' stop-color='rgb(228, 206, 111)'/><stop offset='50%' stop-color='rgb(128, 162, 205)' stop-opacity='0.72'/><stop offset='100%' stop-color='rgb(222, 29, 160)'/></linearGradient><polygon points='301,219 31,399 115,644 469,124 ' transform='rotate(0, 500, 500)' fill='url(#gradient6)' opacity='0.85' /><linearGradient id='gradient7' gradientTransform='rotate(211)'><stop offset='0%' stop-color='rgb(147, 28, 55)'/><stop offset='50%' stop-color='rgb(73, 215, 26)' stop-opacity='0.44'/><stop offset='100%' stop-color='rgb(44, 24, 214)'/></linearGradient><polygon points='608,317 719,812 48,747 242,617 ' transform='rotate(0, 500, 500)' fill='url(#gradient7)' opacity='0.96' /></svg>"
+    },
+    {
+      "tokenId": 7,
+      "params": {
+        "seed": 4835047,
+        "custom": false,
+        "tint": {
+          "red": 30,
+          "green": 183,
+          "blue": 146,
+          "alpha": 150
+        },
+        "shapeCount": 8,
+        "cyclic": false,
+        "chaotic": false
+      },
+      "attributes": {
+        "seed": "4835047",
+        "shapes": "8",
+        "tintColor": "rgb(30, 183, 146)",
+        "tintOpacity": "0.58",
+        "style": "linear",
+        "structure": "folded",
+        "custom": "false"
+      },
+      "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='40 -25 848 1069'><linearGradient id='gradient0' gradientTransform='rotate(59)'><stop offset='0%' stop-color='rgb(33, 136, 157)'/><stop offset='50%' stop-color='rgb(89, 152, 114)' stop-opacity='0.52'/><stop offset='100%' stop-color='rgb(47, 185, 130)'/></linearGradient><polygon points='838,829 90,535 403,994 ' transform='rotate(0, 500, 500)' fill='url(#gradient0)' opacity='0.82' /><linearGradient id='gradient1' gradientTransform='rotate(304)'><stop offset='0%' stop-color='rgb(89, 152, 114)'/><stop offset='50%' stop-color='rgb(47, 185, 130)' stop-opacity='0.51'/><stop offset='100%' stop-color='rgb(63, 159, 163)'/></linearGradient><polygon points='90,535 403,994 544,341 190,483 ' transform='rotate(0, 500, 500)' fill='url(#gradient1)' opacity='0.100' /><linearGradient id='gradient2' gradientTransform='rotate(339)'><stop offset='0%' stop-color='rgb(47, 185, 130)'/><stop offset='50%' stop-color='rgb(63, 159, 163)' stop-opacity='0.64'/><stop offset='100%' stop-color='rgb(95, 170, 138)'/></linearGradient><polygon points='403,994 544,341 190,483 825,250 ' transform='rotate(0, 500, 500)' fill='url(#gradient2)' opacity='0.84' /><linearGradient id='gradient3' gradientTransform='rotate(288)'><stop offset='0%' stop-color='rgb(63, 159, 163)'/><stop offset='50%' stop-color='rgb(95, 170, 138)' stop-opacity='0.77'/><stop offset='100%' stop-color='rgb(70, 146, 149)'/></linearGradient><polygon points='544,341 190,483 825,250 289,922 ' transform='rotate(0, 500, 500)' fill='url(#gradient3)' opacity='0.86' /><linearGradient id='gradient4' gradientTransform='rotate(45)'><stop offset='0%' stop-color='rgb(95, 170, 138)'/><stop offset='50%' stop-color='rgb(70, 146, 149)' stop-opacity='0.58'/><stop offset='100%' stop-color='rgb(81, 192, 124)'/></linearGradient><polygon points='190,483 825,250 289,922 ' transform='rotate(0, 500, 500)' fill='url(#gradient4)' opacity='0.89' /><linearGradient id='gradient5' gradientTransform='rotate(303)'><stop offset='0%' stop-color='rgb(70, 146, 149)'/><stop offset='50%' stop-color='rgb(81, 192, 124)' stop-opacity='0.83'/><stop offset='100%' stop-color='rgb(57, 160, 170)'/></linearGradient><polygon points='825,250 289,922 469,712 574,31 ' transform='rotate(0, 500, 500)' fill='url(#gradient5)' opacity='0.97' /><linearGradient id='gradient6' gradientTransform='rotate(50)'><stop offset='0%' stop-color='rgb(81, 192, 124)'/><stop offset='50%' stop-color='rgb(57, 160, 170)' stop-opacity='0.45'/><stop offset='100%' stop-color='rgb(102, 111, 139)'/></linearGradient><polygon points='289,922 469,712 574,31 ' transform='rotate(0, 500, 500)' fill='url(#gradient6)' opacity='0.92' /><linearGradient id='gradient7' gradientTransform='rotate(268)'><stop offset='0%' stop-color='rgb(57, 160, 170)'/><stop offset='50%' stop-color='rgb(102, 111, 139)' stop-opacity='0.51'/><stop offset='100%' stop-color='rgb(71, 195, 89)'/></linearGradient><polygon points='469,712 574,31 314,687 829,25 ' transform='rotate(0, 500, 500)' fill='url(#gradient7)' opacity='0.96' /></svg>"
+    },
+    {
+      "tokenId": 50,
+      "params": {
+        "seed": 1020604,
+        "custom": true,
+        "tint": {
+          "red": 51,
+          "green": 43,
+          "blue": 61,
+          "alpha": 130
+        },
+        "shapeCount": 10,
+        "cyclic": false,
+        "chaotic": false
+      },
+      "attributes": {
+        "seed": "1020604",
+        "shapes": "10",
+        "tintColor": "rgb(51, 43, 61)",
+        "tintOpacity": "0.50",
+        "style": "linear",
+        "structure": "folded",
+        "custom": "true"
+      },
+      "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='-43 50 1091 991'><linearGradient id='gradient0' gradientTransform='rotate(251)'><stop offset='0%' stop-color='rgb(99, 58, 146)'/><stop offset='50%' stop-color='rgb(141, 129, 67)' stop-opacity='0.54'/><stop offset='100%' stop-color='rgb(62, 75, 138)'/></linearGradient><polygon points='498,483 555,657 998,100 187,434 ' transform='rotate(0, 500, 500)' fill='url(#gradient0)' opacity='0.84' /><linearGradient id='gradient1' gradientTransform='rotate(62)'><stop offset='0%' stop-color='rgb(141, 129, 67)'/><stop offset='50%' stop-color='rgb(62, 75, 138)' stop-opacity='0.73'/><stop offset='100%' stop-color='rgb(133, 34, 84)'/></linearGradient><polygon points='555,657 998,100 187,434 164,170 ' transform='rotate(0, 500, 500)' fill='url(#gradient1)' opacity='0.84' /><linearGradient id='gradient2' gradientTransform='rotate(1)'><stop offset='0%' stop-color='rgb(62, 75, 138)'/><stop offset='50%' stop-color='rgb(133, 34, 84)' stop-opacity='0.64'/><stop offset='100%' stop-color='rgb(79, 130, 43)'/></linearGradient><polygon points='998,100 187,434 164,170 612,654 ' transform='rotate(0, 500, 500)' fill='url(#gradient2)' opacity='0.97' /><linearGradient id='gradient3' gradientTransform='rotate(326)'><stop offset='0%' stop-color='rgb(133, 34, 84)'/><stop offset='50%' stop-color='rgb(79, 130, 43)' stop-opacity='0.44'/><stop offset='100%' stop-color='rgb(38, 90, 139)'/></linearGradient><polygon points='187,434 164,170 612,654 ' transform='rotate(0, 500, 500)' fill='url(#gradient3)' opacity='0.97' /><linearGradient id='gradient4' gradientTransform='rotate(295)'><stop offset='0%' stop-color='rgb(79, 130, 43)'/><stop offset='50%' stop-color='rgb(38, 90, 139)' stop-opacity='0.88'/><stop offset='100%' stop-color='rgb(134, 68, 99)'/></linearGradient><polygon points='164,170 612,654 88,972 ' transform='rotate(0, 500, 500)' fill='url(#gradient4)' opacity='0.82' /><linearGradient id='gradient5' gradientTransform='rotate(85)'><stop offset='0%' stop-color='rgb(38, 90, 139)'/><stop offset='50%' stop-color='rgb(134, 68, 99)' stop-opacity='0.50'/><stop offset='100%' stop-color='rgb(94, 54, 78)'/></linearGradient><polygon points='612,654 88,972 334,991 7,345 ' transform='rotate(0, 500, 500)' fill='url(#gradient5)' opacity='0.86' /><linearGradient id='gradient6' gradientTransform='rotate(148)'><stop offset='0%' stop-color='rgb(134, 68, 99)'/><stop offset='50%' stop-color='rgb(94, 54, 78)' stop-opacity='0.46'/><stop offset='100%' stop-color='rgb(73, 97, 63)'/></linearGradient><polygon points='88,972 334,991 7,345 ' transform='rotate(0, 500, 500)' fill='url(#gradient6)' opacity='0.95' /><linearGradient id='gradient7' gradientTransform='rotate(304)'><stop offset='0%' stop-color='rgb(94, 54, 78)'/><stop offset='50%' stop-color='rgb(73, 97, 63)' stop-opacity='0.52'/><stop offset='100%' stop-color='rgb(58, 30, 106)'/></linearGradient><polygon points='334,991 7,345 491,911 ' transform='rotate(0, 500, 500)' fill='url(#gradient7)' opacity='0.99' /><linearGradient id='gradient8' gradientTransform='rotate(5)'><stop offset='0%' stop-color='rgb(73, 97, 63)'/><stop offset='50%' stop-color='rgb(58, 30, 106)' stop-opacity='0.59'/><stop offset='100%' stop-color='rgb(101, 136, 39)'/></linearGradient><polygon points='7,345 491,911 483,825 657,477 ' transform='rotate(0, 500, 500)' fill='url(#gradient8)' opacity='0.83' /><linearGradient id='gradient9' gradientTransform='rotate(226)'><stop offset='0%' stop-color='rgb(58, 30, 106)'/><stop offset='50%' stop-color='rgb(101, 136, 39)' stop-opacity='0.50'/><stop offset='100%' stop-color='rgb(34, 28, 145)'/></linearGradient><polygon points='491,911 483,825 657,477 ' transform='rotate(0, 500, 500)' fill='url(#gradient9)' opacity='0.99' /></svg>"
+    },
+    {
+      "tokenId": 100,
+      "params": {
+        "seed": 3363243,
+        "custom": false,
+        "tint": {
+          "red": 9,
+          "green": 19,
+          "blue": 221,
+          "alpha": 229
+        },
+        "shapeCount": 7,
+        "cyclic": true,
+        "chaotic": true
+      },
+      "attributes": {
+        "seed": "3363243",
+        "shapes": "7",
+        "tintColor": "rgb(9, 19, 221)",
+        "tintOpacity": "0.89",
+        "style": "cyclic",
+        "structure": "chaotic",
+        "custom": "false"
+      },
+      "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='-169 -169 1338 1338'><linearGradient id='gradient0' gradientTransform='rotate(64)'><stop offset='0%' stop-color='rgb(21, 25, 212)'/><stop offset='50%' stop-color='rgb(23, 23, 205)' stop-opacity='0.46'/><stop offset='100%' stop-color='rgb(16, 27, 203)'/></linearGradient><polygon points='136,645 666,762 284,46 ' transform='rotate(0, 500, 500)' fill='url(#gradient0)' opacity='0.51' /><polygon points='136,645 666,762 284,46 ' transform='rotate(72, 500, 500)' fill='url(#gradient0)' opacity='0.51' /><polygon points='136,645 666,762 284,46 ' transform='rotate(144, 500, 500)' fill='url(#gradient0)' opacity='0.51' /><polygon points='136,645 666,762 284,46 ' transform='rotate(216, 500, 500)' fill='url(#gradient0)' opacity='0.51' /><polygon points='136,645 666,762 284,46 ' transform='rotate(288, 500, 500)' fill='url(#gradient0)' opacity='0.51' /><linearGradient id='gradient1' gradientTransform='rotate(36)'><stop offset='0%' stop-color='rgb(22, 33, 218)'/><stop offset='50%' stop-color='rgb(28, 40, 213)' stop-opacity='0.70'/><stop offset='100%' stop-color='rgb(24, 20, 220)'/></linearGradient><polygon points='818,324 851,977 271,397 225,709 ' transform='rotate(0, 500, 500)' fill='url(#gradient1)' opacity='0.70' /><polygon points='818,324 851,977 271,397 225,709 ' transform='rotate(45, 500, 500)' fill='url(#gradient1)' opacity='0.70' /><polygon points='818,324 851,977 271,397 225,709 ' transform='rotate(90, 500, 500)' fill='url(#gradient1)' opacity='0.70' /><polygon points='818,324 851,977 271,397 225,709 ' transform='rotate(135, 500, 500)' fill='url(#gradient1)' opacity='0.70' /><polygon points='818,324 851,977 271,397 225,709 ' transform='rotate(180, 500, 500)' fill='url(#gradient1)' opacity='0.70' /><polygon points='818,324 851,977 271,397 225,709 ' transform='rotate(225, 500, 500)' fill='url(#gradient1)' opacity='0.70' /><polygon points='818,324 851,977 271,397 225,709 ' transform='rotate(270, 500, 500)' fill='url(#gradient1)' opacity='0.70' /><polygon points='818,324 851,977 271,397 225,709 ' transform='rotate(315, 500, 500)' fill='url(#gradient1)' opacity='0.70' /><linearGradient id='gradient2' gradientTransform='rotate(240)'><stop offset='0%' stop-color='rgb(13, 36, 207)'/><stop offset='50%' stop-color='rgb(18, 30, 217)' stop-opacity='0.50'/><stop offset='100%' stop-color='rgb(27, 20, 210)'/></linearGradient><polygon points='476,97 89,723 940,356 ' transform='rotate(0, 500, 500)' fill='url(#gradient2)' opacity='0.61' /><polygon points='476,97 89,723 940,356 ' transform='rotate(120, 500, 500)' fill='url(#gradient2)' opacity='0.61' /><polygon points='476,97 89,723 940,356 ' transform='rotate(240, 500, 500)' fill='url(#gradient2)' opacity='0.61' /><linearGradient id='gradient3' gradientTransform='rotate(300)'><stop offset='0%' stop-color='rgb(21, 24, 209)'/><stop offset='50%' stop-color='rgb(19, 32, 205)' stop-opacity='0.82'/><stop offset='100%' stop-color='rgb(16, 37, 212)'/></linearGradient><polygon points='906,355 334,443 851,875 ' transform='rotate(0, 500, 500)' fill='url(#gradient3)' opacity='0.71' /><polygon points='906,355 334,443 851,875 ' transform='rotate(180, 500, 500)' fill='url(#gradient3)' opacity='0.71' /><linearGradient id='gradient4' gradientTransform='rotate(281)'><stop offset='0%' stop-color='rgb(19, 28, 225)'/><stop offset='50%' stop-color='rgb(34, 42, 209)' stop-opacity='0.38'/><stop offset='100%' stop-color='rgb(19, 28, 224)'/></linearGradient><polygon points='413,175 673,271 670,466 700,161 ' transform='rotate(0, 500, 500)' fill='url(#gradient4)' opacity='0.76' /><polygon points='413,175 673,271 670,466 700,161 ' transform='rotate(45, 500, 500)' fill='url(#gradient4)' opacity='0.76' /><polygon points='413,175 673,271 670,466 700,161 ' transform='rotate(90, 500, 500)' fill='url(#gradient4)' opacity='0.76' /><polygon points='413,175 673,271 670,466 700,161 ' transform='rotate(135, 500, 500)' fill='url(#gradient4)' opacity='0.76' /><polygon points='413,175 673,271 670,466 700,161 ' transform='rotate(180, 500, 500)' fill='url(#gradient4)' opacity='0.76' /><polygon points='413,175 673,271 670,466 700,161 ' transform='rotate(225, 500, 500)' fill='url(#gradient4)' opacity='0.76' /><polygon points='413,175 673,271 670,466 700,161 ' transform='rotate(270, 500, 500)' fill='url(#gradient4)' opacity='0.76' /><polygon points='413,175 673,271 670,466 700,161 ' transform='rotate(315, 500, 500)' fill='url(#gradient4)' opacity='0.76' /><linearGradient id='gradient5' gradientTransform='rotate(70)'><stop offset='0%' stop-color='rgb(28, 39, 217)'/><stop offset='50%' stop-color='rgb(27, 20, 219)' stop-opacity='0.85'/><stop offset='100%' stop-color='rgb(30, 30, 200)'/></linearGradient><polygon points='297,967 741,17 393,973 ' transform='rotate(0, 500, 500)' fill='url(#gradient5)' opacity='0.65' /><polygon points='297,967 741,17 393,973 ' transform='rotate(72, 500, 500)' fill='url(#gradient5)' opacity='0.65' /><polygon points='297,967 741,17 393,973 ' transform='rotate(144, 500, 500)' fill='url(#gradient5)' opacity='0.65' /><polygon points='297,967 741,17 393,973 ' transform='rotate(216, 500, 500)' fill='url(#gradient5)' opacity='0.65' /><polygon points='297,967 741,17 393,973 ' transform='rotate(288, 500, 500)' fill='url(#gradient5)' opacity='0.65' /><linearGradient id='gradient6' gradientTransform='rotate(70)'><stop offset='0%' stop-color='rgb(12, 23, 200)'/><stop offset='50%' stop-color='rgb(10, 20, 204)' stop-opacity='0.53'/><stop offset='100%' stop-color='rgb(14, 24, 200)'/></linearGradient><polygon points='257,570 858,357 382,388 841,532 ' transform='rotate(0, 500, 500)' fill='url(#gradient6)' opacity='0.57' /><polygon points='257,570 858,357 382,388 841,532 ' transform='rotate(180, 500, 500)' fill='url(#gradient6)' opacity='0.57' /></svg>"
+    },
+    {
+      "tokenId": 200,
+      "params": {
+        "seed": 2863440,
+        "custom": false,
+        "tint": {
+          "red": 24,
+          "green": 53,
+          "blue": 220,
+          "alpha": 96
+        },
+        "shapeCount": 6,
+        "cyclic": true,
+        "chaotic": false
+      },
+      "attributes": {
+        "seed": "2863440",
+        "shapes": "6",
+        "tintColor": "rgb(24, 53, 220)",
+        "tintOpacity": "0.37",
+        "style": "cyclic",
+        "structure": "folded",
+        "custom": "false"
+      },
+      "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='-156 -156 1312 1312'><linearGradient id='gradient0' gradientTransform='rotate(73)'><stop offset='0%' stop-color='rgb(114, 63, 180)'/><stop offset='50%' stop-color='rgb(107, 136, 125)' stop-opacity='0.70'/><stop offset='100%' stop-color='rgb(53, 107, 198)'/></linearGradient><polygon points='383,485 663,710 527,722 ' transform='rotate(0, 500, 500)' fill='url(#gradient0)' opacity='0.56' /><polygon points='383,485 663,710 527,722 ' transform='rotate(120, 500, 500)' fill='url(#gradient0)' opacity='0.56' /><polygon points='383,485 663,710 527,722 ' transform='rotate(240, 500, 500)' fill='url(#gradient0)' opacity='0.56' /><linearGradient id='gradient1' gradientTransform='rotate(239)'><stop offset='0%' stop-color='rgb(107, 136, 125)'/><stop offset='50%' stop-color='rgb(53, 107, 198)' stop-opacity='0.62'/><stop offset='100%' stop-color='rgb(125, 51, 169)'/></linearGradient><polygon points='663,710 527,722 26,827 ' transform='rotate(0, 500, 500)' fill='url(#gradient1)' opacity='0.72' /><polygon points='663,710 527,722 26,827 ' transform='rotate(120, 500, 500)' fill='url(#gradient1)' opacity='0.72' /><polygon points='663,710 527,722 26,827 ' transform='rotate(240, 500, 500)' fill='url(#gradient1)' opacity='0.72' /><linearGradient id='gradient2' gradientTransform='rotate(68)'><stop offset='0%' stop-color='rgb(53, 107, 198)'/><stop offset='50%' stop-color='rgb(125, 51, 169)' stop-opacity='0.50'/><stop offset='100%' stop-color='rgb(96, 82, 114)'/></linearGradient><polygon points='527,722 26,827 278,227 ' transform='rotate(0, 500, 500)' fill='url(#gradient2)' opacity='0.69' /><polygon points='527,722 26,827 278,227 ' transform='rotate(120, 500, 500)' fill='url(#gradient2)' opacity='0.69' /><polygon points='527,722 26,827 278,227 ' transform='rotate(240, 500, 500)' fill='url(#gradient2)' opacity='0.69' /><linearGradient id='gradient3' gradientTransform='rotate(244)'><stop offset='0%' stop-color='rgb(125, 51, 169)'/><stop offset='50%' stop-color='rgb(96, 82, 114)' stop-opacity='0.39'/><stop offset='100%' stop-color='rgb(41, 131, 143)'/></linearGradient><polygon points='26,827 278,227 829,110 ' transform='rotate(0, 500, 500)' fill='url(#gradient3)' opacity='0.52' /><polygon points='26,827 278,227 829,110 ' transform='rotate(120, 500, 500)' fill='url(#gradient3)' opacity='0.52' /><polygon points='26,827 278,227 829,110 ' transform='rotate(240, 500, 500)' fill='url(#gradient3)' opacity='0.52' /><linearGradient id='gradient4' gradientTransform='rotate(293)'><stop offset='0%' stop-color='rgb(96, 82, 114)'/><stop offset='50%' stop-color='rgb(41, 131, 143)' stop-opacity='0.89'/><stop offset='100%' stop-color='rgb(71, 166, 193)'/></linearGradient><polygon points='278,227 829,110 636,56 95,582 ' transform='rotate(0, 500, 500)' fill='url(#gradient4)' opacity='0.78' /><polygon points='278,227 829,110 636,56 95,582 ' transform='rotate(120, 500, 500)' fill='url(#gradient4)' opacity='0.78' /><polygon points='278,227 829,110 636,56 95,582 ' transform='rotate(240, 500, 500)' fill='url(#gradient4)' opacity='0.78' /><linearGradient id='gradient5' gradientTransform='rotate(244)'><stop offset='0%' stop-color='rgb(41, 131, 143)'/><stop offset='50%' stop-color='rgb(71, 166, 193)' stop-opacity='0.45'/><stop offset='100%' stop-color='rgb(121, 150, 229)'/></linearGradient><polygon points='829,110 636,56 95,582 482,396 ' transform='rotate(0, 500, 500)' fill='url(#gradient5)' opacity='0.61' /><polygon points='829,110 636,56 95,582 482,396 ' transform='rotate(120, 500, 500)' fill='url(#gradient5)' opacity='0.61' /><polygon points='829,110 636,56 95,582 482,396 ' transform='rotate(240, 500, 500)' fill='url(#gradient5)' opacity='0.61' /></svg>"
+    },
+    {
+      "tokenId": 209,
+      "params": {
+        "seed": 4184658,
+        "custom": false,
+        "tint": {
+          "red": 189,
+          "green": 81,
+          "blue": 13,
+          "alpha": 226
+        },
+        "shapeCount": 8,
+        "cyclic": false,
+        "chaotic": false
+      },
+      "attributes": {
+        "seed": "4184658",
+        "shapes": "8",
+        "tintColor": "rgb(189, 81, 13)",
+        "tintOpacity": "0.88",
+        "style": "linear",
+        "structure": "folded",
+        "custom": "false"
+      },
+      "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='-3 4 1011 746'><linearGradient id='gradient0' gradientTransform='rotate(157)'><stop offset='0%' stop-color='rgb(185, 75, 38)'/><stop offset='50%' stop-color='rgb(194, 82, 16)' stop-opacity='0.89'/><stop offset='100%' stop-color='rgb(171, 75, 22)'/></linearGradient><polygon points='230,570 958,273 796,700 906,689 ' transform='rotate(0, 500, 500)' fill='url(#gradient0)' opacity='0.97' /><linearGradient id='gradient1' gradientTransform='rotate(91)'><stop offset='0%' stop-color='rgb(194, 82, 16)'/><stop offset='50%' stop-color='rgb(171, 75, 22)' stop-opacity='0.79'/><stop offset='100%' stop-color='rgb(177, 86, 16)'/></linearGradient><polygon points='958,273 796,700 906,689 ' transform='rotate(0, 500, 500)' fill='url(#gradient1)' opacity='0.89' /><linearGradient id='gradient2' gradientTransform='rotate(151)'><stop offset='0%' stop-color='rgb(171, 75, 22)'/><stop offset='50%' stop-color='rgb(177, 86, 16)' stop-opacity='0.58'/><stop offset='100%' stop-color='rgb(171, 99, 26)'/></linearGradient><polygon points='796,700 906,689 47,400 700,505 ' transform='rotate(0, 500, 500)' fill='url(#gradient2)' opacity='0.82' /><linearGradient id='gradient3' gradientTransform='rotate(350)'><stop offset='0%' stop-color='rgb(177, 86, 16)'/><stop offset='50%' stop-color='rgb(171, 99, 26)' stop-opacity='0.88'/><stop offset='100%' stop-color='rgb(181, 74, 38)'/></linearGradient><polygon points='906,689 47,400 700,505 350,54 ' transform='rotate(0, 500, 500)' fill='url(#gradient3)' opacity='0.80' /><linearGradient id='gradient4' gradientTransform='rotate(86)'><stop offset='0%' stop-color='rgb(171, 99, 26)'/><stop offset='50%' stop-color='rgb(181, 74, 38)' stop-opacity='0.61'/><stop offset='100%' stop-color='rgb(194, 93, 15)'/></linearGradient><polygon points='47,400 700,505 350,54 ' transform='rotate(0, 500, 500)' fill='url(#gradient4)' opacity='0.81' /><linearGradient id='gradient5' gradientTransform='rotate(100)'><stop offset='0%' stop-color='rgb(181, 74, 38)'/><stop offset='50%' stop-color='rgb(194, 93, 15)' stop-opacity='0.62'/><stop offset='100%' stop-color='rgb(170, 97, 33)'/></linearGradient><polygon points='700,505 350,54 612,449 228,425 ' transform='rotate(0, 500, 500)' fill='url(#gradient5)' opacity='0.92' /><linearGradient id='gradient6' gradientTransform='rotate(25)'><stop offset='0%' stop-color='rgb(194, 93, 15)'/><stop offset='50%' stop-color='rgb(170, 97, 33)' stop-opacity='0.75'/><stop offset='100%' stop-color='rgb(188, 73, 37)'/></linearGradient><polygon points='350,54 612,449 228,425 266,232 ' transform='rotate(0, 500, 500)' fill='url(#gradient6)' opacity='0.83' /><linearGradient id='gradient7' gradientTransform='rotate(128)'><stop offset='0%' stop-color='rgb(170, 97, 33)'/><stop offset='50%' stop-color='rgb(188, 73, 37)' stop-opacity='0.80'/><stop offset='100%' stop-color='rgb(193, 72, 12)'/></linearGradient><polygon points='612,449 228,425 266,232 570,385 ' transform='rotate(0, 500, 500)' fill='url(#gradient7)' opacity='0.89' /></svg>"
+    }
+  ]
+}

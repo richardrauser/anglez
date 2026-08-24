@@ -120,7 +120,14 @@ export function generateRandomTokenParams(seed: number): TokenParams {
   const red = randomIntFromInterval(seed + 6, 0, 255);
   const green = randomIntFromInterval(seed + 7, 0, 255);
   const blue = randomIntFromInterval(seed + 8, 0, 255);
-  const alpha = randomIntFromInterval(seed + 9, 10, 90) / 100;
+  // Anglez.sol draws a whole-percent alpha and scales it to the raw 0-255 byte the
+  // renderer blends with, truncating on the way:
+  //     uint alpha = Random.randomInt(seed + 9, 10, 90) * 255 / 100;
+  // Storing the percent as a fraction here instead let getColour's Math.round(a * 255)
+  // round up to a different byte (P=34 -> 87 rather than 86), shifting every tinted
+  // channel by one against the on-chain artwork. Keep the contract's exact byte.
+  const alphaPercent = randomIntFromInterval(seed + 9, 10, 90);
+  const alpha = Math.floor((alphaPercent * 255) / 100) / 255;
   const isCyclic = randomIntFromInterval(seed + 4, 0, 1) === 1;
   const isChaotic = randomIntFromInterval(seed + 11, 0, 1) === 1;
 
@@ -236,7 +243,7 @@ function getShapes(
     var polyRotationDelta = 360 / polygonCount; //randomIntFromInterval(randomSeed + 18, 10, 180);
 
     for (var k = 0; k < polygonCount; k++) {
-      polygons += `<polygon points="${points}" transform="rotate(${polyRotation}, 500, 500)" fill="url(#gradient${i})" opacity="0.${polygonOpacity}" />`;
+      polygons += `<polygon points='${points}' transform='rotate(${polyRotation}, 500, 500)' fill='url(#gradient${i})' opacity='0.${polygonOpacity}' />`;
       polyRotation += polyRotationDelta;
     }
 
@@ -250,19 +257,18 @@ function getShapes(
 
     const gradientRotation = randomIntFromInterval(randomSeed + i + 15, 0, 360);
 
-    shapes += `
-    <linearGradient id="gradient${i}" gradientTransform="rotate(${gradientRotation})">
-      <stop offset="0%" stop-color="${gradientColour1}" />
-      <stop offset="50%" stop-color="${gradientColour2}" stop-opacity="0.${midStopOpacity}" />
-      <stop offset="100%" stop-color="${gradientColour3}" />
-    </linearGradient>
-    ${polygons}
+    // Emitted as one line with single-quoted attributes to stay byte-identical to the
+    // Solidity renderer - see src/anglez.contract-parity.test.ts.
+    shapes +=
+      `<linearGradient id='gradient${i}' gradientTransform='rotate(${gradientRotation})'>` +
+      `<stop offset='0%' stop-color='${gradientColour1}'/>` +
+      `<stop offset='50%' stop-color='${gradientColour2}' stop-opacity='0.${midStopOpacity}'/>` +
+      `<stop offset='100%' stop-color='${gradientColour3}'/>` +
+      `</linearGradient>` +
+      polygons;
+
     // TODO: consider drop shadow
-    // shapes += `;
-    // <rect x="{$minX}" y="1100" width="${
-    //   maxX - minX
-    // }" height="10" fill="#fff" opacity="0"/>
-    // `;
+    // shapes += `<rect x='${minX}' y='1100' width='${maxX - minX}' height='10' fill='#fff' opacity='0'/>`;
 
     //    <polygon points="${points}" fill="url(#gradient${i})" opacity="${polygonOpacity}" />    `;
 
