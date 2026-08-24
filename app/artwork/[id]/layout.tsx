@@ -1,21 +1,26 @@
 import type { Metadata } from 'next';
 import React from 'react';
 import { NEXT_PUBLIC_URL } from '@/src/Constants';
-import { fetchTokenDetailsClient } from '@/src/TokenDetailsFetcher';
+import { fetchTokenDetailsServer } from '@/src/TokenDetailsFetcher';
 import { fetchArtworkImageUrl } from '@/src/ArtworkImageFetcher';
 import { TokenDetails } from '@/src/TokenDetails';
 
-type Props = { params: { id: string } };
+type Props = { params: Promise<{ id: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  console.log(`[generateMetadata] Generating metadata for anglez #${params.id}`);
-  const id = parseInt(params.id, 10);
-  const url = `${NEXT_PUBLIC_URL}/artwork/${params.id}`;
+  const { id: idParam } = await params;
+  console.log(`[generateMetadata] Generating metadata for anglez #${idParam}`);
+  const id = parseInt(idParam, 10);
+  const url = `${NEXT_PUBLIC_URL}/artwork/${idParam}`;
   // Build title/description first
-  let tokenTitle = `anglez #${params.id}`;
+  let tokenTitle = `anglez #${idParam}`;
   let tokenDetails: TokenDetails | null;
   try {
-    tokenDetails = await fetchTokenDetailsClient(id);
+    // Must be the *server* fetcher: generateMetadata runs on the server, and the
+    // client one fetches a relative URL ('/api/token-details/N') which Node cannot
+    // parse - it threw every time, so the enriched title and the OpenGraph image
+    // below were never reached.
+    tokenDetails = await fetchTokenDetailsServer(id);
     if (tokenDetails) {
       tokenTitle += ` · ${tokenDetails.attributes.shapeCount} shapes · ${tokenDetails.attributes.style} · ${tokenDetails.attributes.structure}`;
     }
@@ -47,12 +52,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   // Only attempt Blob image generation when a token is configured locally
-  console.log(`[generateMetadata] Checking for Blob image generation for anglez #${params.id}`);
+  console.log(`[generateMetadata] Checking for Blob image generation for anglez #${idParam}`);
   const artworkImageUrl = await fetchArtworkImageUrl(tokenDetails);
 
   if (artworkImageUrl) {
     (pageMetadata.openGraph as any).images = [
-      { url: artworkImageUrl, width: 1200, height: 1200, alt: `anglez #${params.id}` },
+      { url: artworkImageUrl, width: 1200, height: 1200, alt: `anglez #${idParam}` },
     ];
     (pageMetadata.twitter as any).images = [artworkImageUrl];
   }

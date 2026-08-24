@@ -3,18 +3,48 @@ import * as Errors from './ErrorMessages';
 import { AnglezCurrentNetworkName } from './Constants';
 import { switchToCurrentNetwork } from './BlockchainAPI';
 
+// viem's "unknown error" sentinel. It means "no useful code here", so a wrapper
+// carrying it should not stop the search for the real one further down the chain.
+const UNKNOWN_ERROR_CODE = -1;
+
+/**
+ * Collect a property from anywhere in an error's `cause` chain.
+ *
+ * viem/wagmi errors arrive wrapped several layers deep - a rejected mint is a
+ * ContractFunctionExecutionError wrapping a TransactionExecutionError wrapping the
+ * UserRejectedRequestError - and only the innermost layer carries the provider code
+ * (4001). Looking just one level down finds `undefined` and every code test below
+ * then falls through to the generic "An error occurred." message. ethers nests its
+ * own errors similarly, so walk the whole chain rather than guessing a depth.
+ */
+function findInCauseChain(error: any, key: 'code' | 'reason'): any {
+  const seen = new Set<any>();
+  let sentinel: any;
+  let current = error;
+
+  while (current != null && typeof current === 'object' && !seen.has(current)) {
+    seen.add(current);
+    const value = current[key];
+    if (value != undefined) {
+      if (value !== UNKNOWN_ERROR_CODE) {
+        return value;
+      }
+      // Remember it, but keep looking for something more specific.
+      sentinel = value;
+    }
+    current = current.cause;
+  }
+
+  return sentinel;
+}
+
 export function handleError(error: any) {
   console.log('Handling error ' + error.name + ': ' + error.message);
 
-  const reason = error.cause?.reason;
+  const reason = findInCauseChain(error, 'reason');
+  const code = findInCauseChain(error, 'code');
 
-  console.log('Error code: ', error.code);
   console.log('Error reason: ', reason);
-
-  console.log('Error object: ', JSON.stringify(error));
-
-  const code = error.code != undefined ? error.code : error.cause?.code;
-
   console.log('Error code: ', code);
 
   if (code === 4001) {
@@ -58,8 +88,8 @@ export function handleError(error: any) {
     showErrorMessage('This random seed has already been used! Randomize or refresh and try again.');
   } else if (reason == 'SEED_USED') {
     showErrorMessage('This random seed has already been used! Randomize or refresh and try again.');
-  } else if (error.code != null) {
-    showErrorMessage('An error occurred: ' + error.code + '.');
+  } else if (code != null) {
+    showErrorMessage('An error occurred: ' + code + '.');
   } else {
     showErrorMessage('An error occurred.');
   }
