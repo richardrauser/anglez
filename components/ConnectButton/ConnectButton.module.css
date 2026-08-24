@@ -35,7 +35,7 @@
   display: inline;
   margin-bottom: 0;
   text-align: center;
-  color: rgba(255, 255, 255, 0.1);
+  color: rgb(255, 255, 255, 0.1);
   background: -webkit-gradient(
     linear,
     left top,

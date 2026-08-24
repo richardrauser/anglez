@@ -29,6 +29,8 @@ export default withBundleAnalyzer({
   //    wagmi -> @wagmi/connectors -> @base-org/account. We don't use x402 payments.
   //  - @react-native-async-storage/async-storage: React Native storage for
   //    @metamask/sdk. Irrelevant in a web app.
+  //  - accounts: an optional peer dep of @wagmi/core 3, reached through its "tempo"
+  //    connectors, which this app does not use.
   ...(analyze && {
     webpack: (config) => {
       config.resolve.alias = {
@@ -38,6 +40,7 @@ export default withBundleAnalyzer({
         '@x402/svm': false,
         '@x402/extensions': false,
         '@react-native-async-storage/async-storage': false,
+        accounts: false,
       };
       return config;
     },
