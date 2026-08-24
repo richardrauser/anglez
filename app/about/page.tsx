@@ -119,11 +119,6 @@ export default function AboutPage() {
             Farcaster Mini Apps
           </a>{' '}
           to make anglez social. <br />
-          <a target="_blank" href="https://www.shield3.com/">
-            Shield3
-          </a>{' '}
-          for verifying transaction safety and preventing abuse.
-          <br />
           <a target="_blank" href="https://docs.ethers.org/">
             ethers.js
           </a>{' '}

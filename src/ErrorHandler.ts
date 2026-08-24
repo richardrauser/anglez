@@ -72,8 +72,6 @@ export function handleError(error: any) {
     showErrorMessage('No crypto wallet detected. Please install MetaMask or Coinbase Wallet.');
   } else if (code === 'UNSUPPORTED_OPERATION' && error.message.startsWith('unknown account')) {
     showErrorMessage('You need to connect an Ethereum wallet like MetaMask or Coinbase Wallet.');
-  } else if (code === 'NO_POLICY_RESULTS' || code === 'POLICY_BLOCKED') {
-    showErrorMessage('This transaction is not allowed by anglez security policy.');
   } else if (error.message === Errors.NGLZ_NO_ETH_ACCOUNT) {
     showErrorMessage(
       'You need to connect an account via your crypto wallet before you can do that.'

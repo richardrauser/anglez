@@ -25,7 +25,6 @@ import contract from '@/contract/Anglez.json';
 import { baseSepolia } from 'viem/chains';
 import { Address } from 'viem';
 import { parseEther } from 'ethers';
-import { useShield3Context } from '@shield3/react-sdk';
 import { useSearchParams, useRouter } from 'next/navigation';
 
 export function ArtBoard() {
@@ -41,12 +40,10 @@ export function ArtBoard() {
   const [tintColour, setTintColour] = useState('');
   const [svg, setSvg] = useState('');
   const [isMinting, setIsMinting] = useState(false);
-  const [isValidating, setIsValidating] = useState(false);
   const { switchChain } = useSwitchChain();
   const { data: hash, error: mintError, isPending, writeContract } = useWriteContract();
   const account = useAccount();
   const accountBalance = useBalance({ address: account.address as Address });
-  const { shield3Client } = useShield3Context();
   const {
     isLoading: isConfirming,
     error: confirmedError,
@@ -149,7 +146,7 @@ export function ArtBoard() {
     console.log('Is pending: ' + isPending);
     console.log('Is confirming: ' + isConfirming);
 
-    if (isValidating || isPending || isConfirming) {
+    if (isPending || isConfirming) {
       setIsMinting(true);
     } else if (isMinting) {
       if (!isPending && !isConfirming) {
@@ -167,7 +164,7 @@ export function ArtBoard() {
       }
       setIsMinting(false);
     }
-  }, [isValidating, isPending, isConfirming]);
+  }, [isPending, isConfirming]);
 
   // useEffect(() => {
   //   showInfoMessage('Transaction confirmed: ' + isConfirmed);
@@ -247,40 +244,6 @@ export function ArtBoard() {
     setShapeCount(newShapeCount);
   };
 
-  const validateTransaction = async () => {
-    setIsValidating(true);
-    const transaction = {
-      // from: account.address,
-      to: AnglezContractAddress,
-      chainId: baseSepolia.id,
-      // value: '0.0',
-      // data: '0x...',
-      // Other transaction fields
-    };
-
-    var policyResults = await shield3Client.getPolicyResults(
-      transaction,
-      account.address as Address
-    );
-
-    console.log('Policy results: ', policyResults);
-
-    if (!policyResults) {
-      console.log('No policy results found.');
-      setIsValidating(false);
-      var err = Error('No policy results found.');
-      err.cause = { code: 'NO_POLICY_RESULTS' };
-      throw err;
-    } else if (policyResults.decision != 'Allow') {
-      console.log('Policy results found. Transaction blocked.');
-      setIsValidating(false);
-      var err = Error('Transaction blocked by policy.');
-      err.cause = { code: 'POLICY_BLOCKED' };
-      throw err;
-    }
-    setIsValidating(false);
-  };
-
   const mintRandom = async () => {
     console.log('Minting random...');
 
@@ -316,9 +279,6 @@ export function ArtBoard() {
 
       // setIsMinting(true);
       // const mintReceipt = await mintRandomAnglez(randomSeed);
-
-      // check if the transaction violates policy
-      // await validateTransaction();
 
       if (accountBalance.data && accountBalance.data.value < parseEther(randomMintPrice!)) {
         toast.warn(
@@ -400,8 +360,6 @@ export function ArtBoard() {
     // setIsMinting(true);
 
     try {
-      // await validateTransaction();
-
       const colour = rgbToObj(tintColour);
       const alpha = Math.round(colour.a * 255);
 
@@ -516,7 +474,6 @@ export function ArtBoard() {
                 {isMinting ? (
                   <>
                     <Loading loadingText="Minting in progress!" />
-                    {isValidating && <div>Validating transaction...</div>}
                     {isPending && <div>Transaction pending...</div>}
                     {isConfirming && <div>Waiting for confirmation...</div>}
                   </>
@@ -596,7 +553,6 @@ export function ArtBoard() {
                 {isMinting ? (
                   <>
                     <Loading loadingText="Minting in progress!" />
-                    {isValidating && <div>Validating transaction...</div>}
                     {isPending && <div>Transaction pending...</div>}
                     {isConfirming && <div>Waiting for confirmation...</div>}
                   </>

@@ -6,10 +6,11 @@
  * webview. The mint then happens through the app's own UI over wagmi, using the Mini App
  * connector wired up in `app/config.ts`.
  *
- * The v1 helpers still live in `./framesV1` and the v1 POST routes are still served, but
- * note the two standards share the `fc:frame` meta tag and cannot both occupy it: per the
- * Mini App spec `fc:frame` now carries the same JSON as `fc:miniapp` for backwards
- * compatibility, rather than the v1 `"vNext"` marker.
+ * Frames v1 has been removed entirely: Neynar dropped the endpoint its message
+ * validation depended on, so those routes could no longer verify anything and always
+ * failed closed. Note that both standards use the `fc:frame` meta tag - here it carries
+ * the same JSON as `fc:miniapp` for backwards compatibility, rather than the v1 `"vNext"`
+ * marker it held before.
  */
 
 import { NEXT_PUBLIC_URL } from '@/src/Constants';
