@@ -99,7 +99,7 @@ export default function AboutPage() {
           for wallet connectivity, account abstraction, bundler and paymaster support.
           <br />
           <a target="_blank" href="https://nextjs.org/">
-            Next.js 14
+            Next.js
           </a>
           ,{' '}
           <a target="_blank" href="https://mantine.dev/">
