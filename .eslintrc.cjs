@@ -28,5 +28,8 @@ module.exports = {
     // `i++` as a for-loop afterthought is idiomatic; the rule is aimed at its use as an
     // expression, where the pre/post distinction is easy to misread.
     'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],
+    // A symmetrical if/else-if chain reads better than a run of bare ifs, even when
+    // every branch returns and the `else` is technically redundant.
+    'no-else-return': 'off',
   },
 };

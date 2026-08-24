@@ -83,67 +83,68 @@ export default function ConnectButton() {
         </Menu.Dropdown>
       </Menu>
     );
+  } else {
+    return (
+      <Group wrap="nowrap" gap={1}>
+        <Button className={classes.button} onClick={disconnectWallet}>
+          Disconnect Wallet
+        </Button>
+        <Menu transitionProps={{ transition: 'pop' }} position="bottom-end" withinPortal>
+          <Menu.Target>
+            <ActionIcon
+              variant="filled"
+              // color={theme.primaryColor}
+              size={36}
+              className={classes.menuControl}
+            >
+              <IconChevronDown style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
+            </ActionIcon>
+          </Menu.Target>
+          <Menu.Dropdown>
+            <Menu.Item
+              onClick={navToEtherscan}
+              leftSection={
+                <IconWallet
+                  style={{ width: rem(16), height: rem(16) }}
+                  stroke={1.5}
+                  // color={theme.colors.blue[5]}
+                />
+              }
+            >
+              <div>
+                {onchainName && <Text size="sm">{onchainName}</Text>}
+                <Text size="xs" c="dimmed">
+                  {shortenAddress(address)}
+                </Text>
+              </div>
+            </Menu.Item>
+            <Menu.Item
+              onClick={navToEtherscan}
+              leftSection={
+                <IconMoneybag
+                  style={{ width: rem(16), height: rem(16) }}
+                  stroke={1.5}
+                  // color={theme.colors.blue[5]}
+                />
+              }
+            >
+              {balanceResult.data?.formatted} {balanceResult.data?.symbol}
+            </Menu.Item>
+            <Menu.Item
+              onClick={refreshWallet}
+              leftSection={
+                <IconReload
+                  style={{ width: rem(16), height: rem(16) }}
+                  stroke={1.5}
+                  // color={theme.colors.blue[5]}
+                />
+              }
+            >
+              Refresh
+            </Menu.Item>
+          </Menu.Dropdown>
+        </Menu>
+      </Group>
+    );
   }
-  return (
-    <Group wrap="nowrap" gap={1}>
-      <Button className={classes.button} onClick={disconnectWallet}>
-        Disconnect Wallet
-      </Button>
-      <Menu transitionProps={{ transition: 'pop' }} position="bottom-end" withinPortal>
-        <Menu.Target>
-          <ActionIcon
-            variant="filled"
-            // color={theme.primaryColor}
-            size={36}
-            className={classes.menuControl}
-          >
-            <IconChevronDown style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
-          </ActionIcon>
-        </Menu.Target>
-        <Menu.Dropdown>
-          <Menu.Item
-            onClick={navToEtherscan}
-            leftSection={
-              <IconWallet
-                style={{ width: rem(16), height: rem(16) }}
-                stroke={1.5}
-                // color={theme.colors.blue[5]}
-              />
-            }
-          >
-            <div>
-              {onchainName && <Text size="sm">{onchainName}</Text>}
-              <Text size="xs" c="dimmed">
-                {shortenAddress(address)}
-              </Text>
-            </div>
-          </Menu.Item>
-          <Menu.Item
-            onClick={navToEtherscan}
-            leftSection={
-              <IconMoneybag
-                style={{ width: rem(16), height: rem(16) }}
-                stroke={1.5}
-                // color={theme.colors.blue[5]}
-              />
-            }
-          >
-            {balanceResult.data?.formatted} {balanceResult.data?.symbol}
-          </Menu.Item>
-          <Menu.Item
-            onClick={refreshWallet}
-            leftSection={
-              <IconReload
-                style={{ width: rem(16), height: rem(16) }}
-                stroke={1.5}
-                // color={theme.colors.blue[5]}
-              />
-            }
-          >
-            Refresh
-          </Menu.Item>
-        </Menu.Dropdown>
-      </Menu>
-    </Group>
-  );
 }

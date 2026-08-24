@@ -37,8 +37,7 @@ function networkConfigFor(network: string) {
       AnglezCurrentNetworkExplorerUrlKey: 'https://www.superbad.com/',
       AnglezContractAddressKey: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
     };
-  }
-  if (network === AnglezBaseSepoliaNetwork) {
+  } else if (network === AnglezBaseSepoliaNetwork) {
     return {
       AnglezCurrentNetworkIDKey: 84532,
       AnglezCurrentNetworkNameKey: 'Base Sepolia',
@@ -49,8 +48,7 @@ function networkConfigFor(network: string) {
       AnglezCurrentNetworkExplorerUrlKey: 'https://sepolia.basescan.org/',
       AnglezContractAddressKey: '0xa4a554D505EF30e1F9E9c8Df591813CB08374e64',
     };
-  }
-  if (network === AnglezSepoliaNetwork) {
+  } else if (network === AnglezSepoliaNetwork) {
     return {
       AnglezCurrentNetworkIDKey: 11155111,
       AnglezCurrentNetworkNameKey: 'Sepolia',
@@ -60,8 +58,7 @@ function networkConfigFor(network: string) {
       AnglezCurrentNetworkExplorerUrlKey: 'https://sepolia.etherscan.io/',
       AnglezContractAddressKey: '0x77f91D9B25fbB443F4CA3f07AC217600503566d1',
     };
-  }
-  if (network === AnglezBaseMainnetNetwork) {
+  } else if (network === AnglezBaseMainnetNetwork) {
     return {
       AnglezCurrentNetworkIDKey: 8453,
       AnglezCurrentNetworkNameKey: 'Base Mainnet',

@@ -269,8 +269,9 @@ export function fetchCachedAccountDetails() {
     console.log(`display balance ${accountDetails.displayBalance}`);
     clearCachedAccountDetails();
     return null;
+  } else {
+    return accountDetails;
   }
-  return accountDetails;
 }
 
 export function clearCachedAccountDetails() {
