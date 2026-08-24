@@ -1,6 +1,6 @@
 'use client';
 
-import React, { use, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Identity } from '@coinbase/onchainkit/identity';
 import { Address } from '@coinbase/onchainkit/identity';
 import { Name } from '@coinbase/onchainkit/identity';
@@ -29,15 +29,28 @@ import { useSwitchChain } from 'wagmi';
 // }
 
 export default function ConnectButton() {
-  const [etherscanUrl, setEtherscanUrl] = useState('');
-
-  const { address, isConnected } = useAccount();
+  const { address, status } = useAccount();
   const balanceResult = useBalance({ address: address });
   const { connectors, connect } = useConnect();
   const { disconnect } = useDisconnect();
   const { chains, switchChain } = useSwitchChain();
   // const chainId = useChainId();
-  const [showConnectWallet, setShowConnectWallet] = useState(true);
+
+  // This only tracks whether we've hydrated - it is deliberately NOT a copy of the
+  // wallet state. The connection state itself is derived from `status` during render,
+  // because mirroring it into state via an effect lags a render behind and drifts out
+  // of sync with what the rest of the app reads from `useAccount()` - which is how this
+  // button could claim to be connected while ArtBoard simultaneously warned that it
+  // wasn't. wagmi restores its persisted connection during the first client render, so
+  // rendering the real state before mount would disagree with the server's markup.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
+  // `isConnected` alone is not safe to branch on: wagmi reports it as indeterminate
+  // while `status` is 'reconnecting', so treat only 'connected' as connected and show
+  // the in-between states as pending rather than as "no wallet".
+  const isPending = !mounted || status === 'connecting' || status === 'reconnecting';
+  const etherscanUrl = AnglezCurrentNetworkExplorerUrl + '/address/' + address;
 
   const visitWalletWebsite = async () => {
     window.open('https://metamask.io', '_blank');
@@ -57,34 +70,16 @@ export default function ConnectButton() {
     // fetchDetails();
   };
 
-  useEffect(() => {
-    console.log('Running ConnectButton useEffect..');
-    console.log('isConnected: ' + isConnected);
+  // Wallet discovery/reconnect is still in flight - don't claim either state yet.
+  if (isPending) {
+    return (
+      <Button loading disabled>
+        Connecting…
+      </Button>
+    );
+  }
 
-    connectors.forEach((connector) => {
-      console.log('Connector: ' + connector.name);
-      console.log('Connector ID: ' + connector.id);
-      // console.log(JSON.stringify(connector));
-    });
-
-    setShowConnectWallet(!isConnected);
-
-    // const hasWallet = window.ethereum !== undefined && window.ethereum !== null;
-    console.log('Address: ' + address);
-
-    setEtherscanUrl(AnglezCurrentNetworkExplorerUrl + '/address/' + address);
-
-    // console.log('Current chain ID: ' + chainId);
-
-    // if (chainId != undefined && chainId != AnglezCurrentNetworkID) {
-    //   console.log('On wrong network.  Switching chain..');
-    //   switchChain({ chainId: AnglezCurrentNetworkID });
-    // } else {
-    //   console.log('On correct network.');
-    // }
-  }, [isConnected]);
-
-  if (showConnectWallet) {
+  if (status !== 'connected') {
     return (
       <Menu transitionProps={{ transition: 'pop' }} position="bottom-end" withinPortal>
         <Menu.Target>

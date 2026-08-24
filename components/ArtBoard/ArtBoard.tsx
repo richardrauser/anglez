@@ -285,6 +285,14 @@ export function ArtBoard() {
     console.log('Minting random...');
 
     try {
+      // 'connecting'/'reconnecting' are not the same as "no wallet" - wagmi reports
+      // isConnected as false/indeterminate while it is still restoring a session, so
+      // checking it alone warns the user they're disconnected when they aren't yet.
+      if (account.isConnecting || account.isReconnecting) {
+        toast.info(`Still connecting to your crypto wallet. Please try again in a moment.`);
+        return;
+      }
+
       if (!account.isConnected) {
         toast.warn(
           `anglez is not connected to a crypto wallet. Tap the Connect Wallet button at top right.`
@@ -346,6 +354,12 @@ export function ArtBoard() {
   };
 
   const mintCustom = async () => {
+    // See mintRandom: a pending reconnect is not a disconnected wallet.
+    if (account.isConnecting || account.isReconnecting) {
+      toast.info(`Still connecting to your crypto wallet. Please try again in a moment.`);
+      return;
+    }
+
     if (!account.isConnected) {
       toast.warn(
         `anglez is not connected to a crypto wallet. Tap the Connect Wallet button at top right.`

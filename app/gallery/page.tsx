@@ -91,7 +91,9 @@ export default function GalleryPage() {
             <Tabs.Panel value="yours" pt="xs">
               {yourTokenIds != undefined && yourTokenIds?.length > 0 ? (
                 <SimpleGrid cols={1} spacing="lg">
-                  {yourTokenIds?.map((tokenId) => <Artwork key={tokenId} tokenId={tokenId} />)}
+                  {yourTokenIds?.map((tokenId) => (
+                    <Artwork key={tokenId} tokenId={tokenId} />
+                  ))}
                 </SimpleGrid>
               ) : (
                 <Grid justify="center" align="center">

@@ -2,11 +2,16 @@ import { render, screen } from '@/test-utils';
 import { Welcome } from './Welcome';
 
 describe('Welcome component', () => {
-  it('has correct Next.js theming section link', () => {
+  it('links the call to action at the create page', () => {
     render(<Welcome />);
-    expect(screen.getByText('this guide')).toHaveAttribute(
+    expect(screen.getByRole('link', { name: /Get started creating anglez/ })).toHaveAttribute(
       'href',
-      'https://mantine.dev/guides/next/'
+      '/create'
     );
+  });
+
+  it('links out to Base', () => {
+    render(<Welcome />);
+    expect(screen.getByText('Base')).toHaveAttribute('href', 'https://www.base.org/');
   });
 });

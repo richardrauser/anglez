@@ -27,7 +27,7 @@ export async function GET(request: Request, { params }: { params: { seed: string
   //     'Content-Type': 'image/svg+xml',
   //   },
   // });
-  return new Response(anglezPng, {
+  return new Response(new Uint8Array(anglezPng), {
     status: 200,
     headers: {
       'Content-Type': 'image/png',
