@@ -5,6 +5,7 @@ import '@/src/BlockchainAPI';
 import { ActionIcon, Button, Group, Menu, Text, rem } from '@mantine/core';
 import { IconChevronDown, IconMoneybag, IconReload, IconWallet } from '@tabler/icons-react';
 import { useAccount, useBalance, useDisconnect, useConnect } from 'wagmi';
+import { formatUnits } from 'viem';
 import styles from './ConnectButton.module.css';
 import { AnglezCurrentNetworkExplorerUrl } from '@/src/Constants';
 import classes from '@/styles/SplitButton.module.css';
@@ -19,6 +20,11 @@ import { useOnchainName, shortenAddress } from '@/src/useOnchainName';
 export default function ConnectButton() {
   const { address, status } = useAccount();
   const balanceResult = useBalance({ address });
+  // wagmi 3 dropped `formatted` from useBalance().data, which now carries only
+  // { decimals, symbol, value }.
+  const formattedBalance = balanceResult.data
+    ? formatUnits(balanceResult.data.value, balanceResult.data.decimals)
+    : undefined;
   const { connectors, connect } = useConnect();
   const { disconnect } = useDisconnect();
   const { name: onchainName } = useOnchainName(address);
@@ -128,7 +134,7 @@ export default function ConnectButton() {
                 />
               }
             >
-              {balanceResult.data?.formatted} {balanceResult.data?.symbol}
+              {formattedBalance} {balanceResult.data?.symbol}
             </Menu.Item>
             <Menu.Item
               onClick={refreshWallet}
