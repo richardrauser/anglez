@@ -27,14 +27,10 @@
 }
 
 .shimmer {
-  /* font-family: "Lato";
-		font-weight: 300;
-		font-size: 3em; */
-  margin: 0 auto;
-  padding: 0 140px 0 0;
-  display: inline;
-  margin-bottom: 0;
-  text-align: center;
+  /* Visual effect only. This class sits on a Mantine Menu.Item, so it must not set
+     layout - it previously carried margin/padding/display/text-align from the standalone
+     text snippet it was copied from, which forced the dropdown to ~140px wider than its
+     content and centred the items. */
   color: rgb(255, 255, 255, 0.1);
   background: -webkit-gradient(
     linear,

@@ -6,6 +6,7 @@ import { ActionIcon, Button, Group, Menu, Text, rem } from '@mantine/core';
 import { IconChevronDown, IconMoneybag, IconReload, IconWallet } from '@tabler/icons-react';
 import { useAccount, useBalance, useDisconnect, useConnect } from 'wagmi';
 import { formatUnits } from 'viem';
+import { handleError } from '@/src/ErrorHandler';
 import styles from './ConnectButton.module.css';
 import { AnglezCurrentNetworkExplorerUrl } from '@/src/Constants';
 import classes from '@/styles/SplitButton.module.css';
@@ -76,16 +77,28 @@ export default function ConnectButton() {
           <Button>Connect Wallet</Button>
         </Menu.Target>
         <Menu.Dropdown>
-          {connectors.map((connector) => (
-            <Menu.Item
-              className={styles.shimmer}
-              key={connector.id}
-              onClick={() => connect({ connector })}
-            >
-              {/* <IconStar style={{ width: rem(16), height: rem(16) }} stroke={1.5} /> */}
-              {connector.id !== 'coinbaseWalletSDK' ? connector.name : 'Coinbase Smart Wallet ⭐️'}
-            </Menu.Item>
-          ))}
+          {connectors.map((connector) => {
+            const isCoinbaseSmartWallet = connector.id === 'coinbaseWalletSDK';
+            return (
+              <Menu.Item
+                // The shimmer highlights the recommended wallet only.
+                className={isCoinbaseSmartWallet ? styles.shimmer : undefined}
+                key={connector.id}
+                onClick={() =>
+                  connect(
+                    { connector },
+                    {
+                      // Without this a failed or rejected connection is silent: the menu
+                      // just closes and nothing happens.
+                      onError: (error) => handleError(error),
+                    }
+                  )
+                }
+              >
+                {isCoinbaseSmartWallet ? 'Coinbase Smart Wallet ⭐️' : connector.name}
+              </Menu.Item>
+            );
+          })}
         </Menu.Dropdown>
       </Menu>
     );
