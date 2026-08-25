@@ -8,8 +8,11 @@ export const config = createConfig({
   connectors: [
     // Inside a Farcaster client this connects straight to the user's Farcaster wallet,
     // which is what lets the Mini App mint without a separate wallet handshake. It is
-    // inert outside Farcaster, so it is safe to register unconditionally - the wallet
-    // connectors below still drive the normal web flow.
+    // registered unconditionally because whether we're inside a Farcaster client can
+    // only be answered after mount, well after this config is built - but it is NOT
+    // harmless to offer outside one: its requests go to a host that isn't there and come
+    // back as an opaque internal JSON-RPC error. ConnectButton is what keeps it out of
+    // the menu on the open web, where the connectors below drive the normal flow.
     farcasterMiniApp(),
     // Base Account - the passkey-based smart account formerly called Coinbase Smart
     // Wallet, on its current SDK (@base-org/account). It reports itself as "Base

@@ -6,10 +6,12 @@ import { ActionIcon, Button, Group, Menu, Text, rem } from '@mantine/core';
 import { IconChevronDown, IconMoneybag, IconReload, IconWallet } from '@tabler/icons-react';
 import { useAccount, useBalance, useDisconnect, useConnect, type Connector } from 'wagmi';
 import { formatUnits } from 'viem';
+import { farcasterMiniApp } from '@farcaster/miniapp-wagmi-connector';
 import { handleError } from '@/src/ErrorHandler';
 import { AnglezCurrentNetworkExplorerUrl } from '@/src/Constants';
 import classes from '@/styles/SplitButton.module.css';
 import { useOnchainName, shortenAddress } from '@/src/useOnchainName';
+import { useIsInMiniApp } from '@/src/farcaster/useIsInMiniApp';
 
 // declare global {
 //   interface Window {
@@ -28,7 +30,18 @@ export default function ConnectButton() {
   const { connectors, connect } = useConnect();
   const { disconnect } = useDisconnect();
   const { name: onchainName } = useOnchainName(address);
+  const isInMiniApp = useIsInMiniApp();
   // const chainId = useChainId();
+
+  // The Farcaster connector reaches the wallet by talking to the surrounding Farcaster
+  // client over postMessage. On the open web there is no host to answer, and the request
+  // resolves to nothing rather than failing cleanly - the connector then reports an
+  // opaque "Internal JSON RPC error" that a visitor can do nothing about. So offer the
+  // entry only where it can actually connect; the config still registers it
+  // unconditionally, because that detection is only available after mount.
+  const availableConnectors = connectors.filter(
+    (connector) => isInMiniApp || connector.type !== farcasterMiniApp.type
+  );
 
   // This only tracks whether we've hydrated - it is deliberately NOT a copy of the
   // wallet state. The connection state itself is derived from `status` during render,
@@ -90,7 +103,7 @@ export default function ConnectButton() {
           <Button>Connect Wallet</Button>
         </Menu.Target>
         <Menu.Dropdown>
-          {connectors.map((connector) => (
+          {availableConnectors.map((connector) => (
             <Menu.Item key={connector.id} onClick={() => connectWallet(connector)}>
               {connector.name}
             </Menu.Item>
