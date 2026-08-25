@@ -18,6 +18,11 @@ export default withBundleAnalyzer({
   experimental: {
     optimizePackageImports: ['@mantine/core', '@mantine/hooks'],
   },
+  // @base-org/account pulls in @coinbase/cdp-sdk, which statically imports the optional
+  // @x402/* payment packages. This app does not use x402 payments and they are not
+  // installed, so bundling that dependency cannot succeed. Keeping it external leaves it
+  // to be required at runtime, where the unused code path is never reached.
+  serverExternalPackages: ['@coinbase/cdp-sdk'],
   // Turbopack (the default builder since Next 16) resolves the optional peer deps of
   // our transitive wallet packages on its own, so no aliasing is needed for it - and
   // Next fails the build outright if a webpack config is present on a Turbopack run.

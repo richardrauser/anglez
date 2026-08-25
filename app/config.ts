@@ -1,6 +1,6 @@
 import { http, createConfig } from 'wagmi';
 import { base, baseSepolia } from 'wagmi/chains';
-import { coinbaseWallet } from 'wagmi/connectors';
+import { baseAccount } from 'wagmi/connectors';
 import { farcasterMiniApp } from '@farcaster/miniapp-wagmi-connector';
 
 export const config = createConfig({
@@ -8,20 +8,22 @@ export const config = createConfig({
   connectors: [
     // Inside a Farcaster client this connects straight to the user's Farcaster wallet,
     // which is what lets the Mini App mint without a separate wallet handshake. It is
-    // inert outside Farcaster, so it is safe to register unconditionally - the Coinbase
-    // connector below still drives the normal web flow.
+    // inert outside Farcaster, so it is safe to register unconditionally - the wallet
+    // connectors below still drive the normal web flow.
     farcasterMiniApp(),
-    // Coinbase Smart Wallet specifically - the passkey-based smart account, which the
-    // SDK calls the `scw` signer. This connector can also reach the Coinbase Wallet
-    // browser extension (the `walletlink` signer, a conventional EOA), and wagmi's
-    // default preference of `all` lets it pick. That is why a menu entry labelled
-    // "Coinbase Smart Wallet" could hand the request to a locked extension and fail.
-    // The extension is a separate product and still appears in the list on its own via
-    // EIP-6963 discovery when it is installed.
-    coinbaseWallet({
+    // Base Account - the passkey-based smart account formerly called Coinbase Smart
+    // Wallet, on its current SDK (@base-org/account). It reports itself as "Base
+    // Account", so the menu needs no relabelling.
+    //
+    // This also restores the Coinbase Wallet extension to the list. wagmi drops any
+    // EIP-6963 provider whose rdns a declared connector already claims, and
+    // coinbaseWallet claims com.coinbase.wallet - so once that connector was narrowed to
+    // the smart wallet, it was still suppressing the extension it no longer served.
+    // baseAccount claims app.base.account instead, leaving the extension to be
+    // discovered and listed in its own right.
+    baseAccount({
       appName: 'anglez',
       appLogoUrl: 'https://anglez.xyz/anglez-logo-treatment-2.png',
-      preference: { options: 'smartWalletOnly' },
     }),
   ],
   transports: {
