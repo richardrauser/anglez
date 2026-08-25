@@ -31,6 +31,11 @@ a:hover {
      border-box via Mantine's reset, so this sits inside the max-width rather than making
      the page wider. */
   padding-inline: 1rem;
+  /* Leave room under the last element. Without it the final line sits flush against the
+     end of the document, where mobile browser chrome - the address bar that slides in and
+     out, and the home indicator - covers it, so the page reads as unscrollable at the
+     bottom. env() resolves to 0 where there is no inset. */
+  padding-bottom: calc(2rem + env(safe-area-inset-bottom));
 }
 
 .panel {
