@@ -38,6 +38,13 @@ function findInCauseChain(error: any, key: 'code' | 'reason'): any {
   return sentinel;
 }
 
+/**
+ * The provider error code from anywhere in an error's `cause` chain, or undefined.
+ */
+export function findErrorCode(error: any): any {
+  return findInCauseChain(error, 'code');
+}
+
 export function handleError(error: any) {
   console.log(`Handling error ${error.name}: ${error.message}`);
 
@@ -47,7 +54,9 @@ export function handleError(error: any) {
   console.log('Error reason: ', reason);
   console.log('Error code: ', code);
 
-  if (code === 4001) {
+  if (code === 4100) {
+    showErrorMessage('Your wallet session has expired. Please try connecting again.');
+  } else if (code === 4001) {
     showErrorMessage('You rejected the request. 😢');
   } else if (code === 'INSUFFICIENT_FUNDS') {
     showErrorMessage(

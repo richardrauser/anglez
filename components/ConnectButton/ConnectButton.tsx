@@ -4,10 +4,9 @@ import React, { useEffect, useState } from 'react';
 import '@/src/BlockchainAPI';
 import { ActionIcon, Button, Group, Menu, Text, rem } from '@mantine/core';
 import { IconChevronDown, IconMoneybag, IconReload, IconWallet } from '@tabler/icons-react';
-import { useAccount, useBalance, useDisconnect, useConnect } from 'wagmi';
+import { useAccount, useBalance, useDisconnect, useConnect, type Connector } from 'wagmi';
 import { formatUnits } from 'viem';
-import { handleError } from '@/src/ErrorHandler';
-import styles from './ConnectButton.module.css';
+import { handleError, findErrorCode } from '@/src/ErrorHandler';
 import { AnglezCurrentNetworkExplorerUrl } from '@/src/Constants';
 import classes from '@/styles/SplitButton.module.css';
 import { useOnchainName, shortenAddress } from '@/src/useOnchainName';
@@ -47,6 +46,31 @@ export default function ConnectButton() {
   const isPending = !mounted || status === 'connecting' || status === 'reconnecting';
   const etherscanUrl = `${AnglezCurrentNetworkExplorerUrl}/address/${address}`;
 
+  /**
+   * Connect, retrying once on a stale-session 4100.
+   *
+   * The Coinbase SDK restores a signer from localStorage on construction without
+   * performing a handshake, so a session left over from an earlier version has no
+   * accounts. The first eth_requestAccounts then skips the provider's "not connected
+   * yet" path, reaches that empty signer and throws 4100 (unauthorized) - which is what
+   * made the wallet appear to do nothing. The SDK clears the stale state as it fails, so
+   * a single retry connects cleanly. Retry once only: a genuine 4100 must still surface.
+   */
+  const connectWallet = (connector: Connector, isRetry = false) => {
+    connect(
+      { connector },
+      {
+        onError: (error) => {
+          if (!isRetry && findErrorCode(error) === 4100) {
+            connectWallet(connector, true);
+            return;
+          }
+          handleError(error);
+        },
+      }
+    );
+  };
+
   const disconnectWallet = () => {
     console.log('Disconnecting wallet..');
     disconnect();
@@ -77,28 +101,11 @@ export default function ConnectButton() {
           <Button>Connect Wallet</Button>
         </Menu.Target>
         <Menu.Dropdown>
-          {connectors.map((connector) => {
-            const isCoinbaseSmartWallet = connector.id === 'coinbaseWalletSDK';
-            return (
-              <Menu.Item
-                // The shimmer highlights the recommended wallet only.
-                className={isCoinbaseSmartWallet ? styles.shimmer : undefined}
-                key={connector.id}
-                onClick={() =>
-                  connect(
-                    { connector },
-                    {
-                      // Without this a failed or rejected connection is silent: the menu
-                      // just closes and nothing happens.
-                      onError: (error) => handleError(error),
-                    }
-                  )
-                }
-              >
-                {isCoinbaseSmartWallet ? 'Coinbase Smart Wallet ⭐️' : connector.name}
-              </Menu.Item>
-            );
-          })}
+          {connectors.map((connector) => (
+            <Menu.Item key={connector.id} onClick={() => connectWallet(connector)}>
+              {connector.id === 'coinbaseWalletSDK' ? 'Coinbase Smart Wallet' : connector.name}
+            </Menu.Item>
+          ))}
         </Menu.Dropdown>
       </Menu>
     );
