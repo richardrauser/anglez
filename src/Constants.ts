@@ -42,7 +42,7 @@ function networkConfigFor(network: string) {
       AnglezCurrentNetworkIDKey: 84532,
       AnglezCurrentNetworkNameKey: 'Base Sepolia',
       AnglezCurrentNetworkCurrencySymbolKey: 'ETH',
-      // TODO: Remove API key from RPC URL!
+      // TODO: Remove API key from RPC URL?
       AnglezCurrentNetworkRpcUrlKey:
         'https://api.developer.coinbase.com/rpc/v1/base-sepolia/ikCoAA-DxC0DMH4Y0xAT6tqPNjjMhftE',
       AnglezCurrentNetworkExplorerUrlKey: 'https://sepolia.basescan.org/',
