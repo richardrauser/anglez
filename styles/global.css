@@ -26,6 +26,11 @@ a:hover {
 .mainContent {
   max-width: 600px;
   margin: auto;
+  /* Below 600px the max-width no longer constrains anything and `margin: auto` resolves
+     to zero, so without a gutter the page runs edge to edge on phones. box-sizing is
+     border-box via Mantine's reset, so this sits inside the max-width rather than making
+     the page wider. */
+  padding-inline: 1rem;
 }
 
 .panel {
