@@ -18,7 +18,6 @@ import { IconSparkles, IconTools } from '@tabler/icons-react';
 import {
   useAccount,
   useBalance,
-  useConfig,
   useSwitchChain,
   useWaitForTransactionReceipt,
   useWriteContract,
@@ -27,7 +26,6 @@ import { baseSepolia } from 'viem/chains';
 import { Address } from 'viem';
 import { parseEther } from 'ethers';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { waitForWalletToSettle } from '@/src/waitForWallet';
 import contract from '@/contract/Anglez.json';
 import {
   AnglezContractAddress,
@@ -57,7 +55,12 @@ export function ArtBoard() {
   const { switchChain } = useSwitchChain();
   const { data: hash, error: mintError, isPending, writeContract } = useWriteContract();
   const account = useAccount();
-  const wagmiConfig = useConfig();
+  // wagmi reports `reconnecting` on every fresh load while it looks for a stored session,
+  // whether or not one exists, so for that moment there is no truthful answer to "are you
+  // connected?". Rather than guess in the click handler, the mint buttons below stay in a
+  // loading state until it resolves. These controls only render after the client-side
+  // load completes, so branching on this cannot cause a hydration mismatch.
+  const walletPending = account.status === 'connecting' || account.status === 'reconnecting';
   const accountBalance = useBalance({ address: account.address as Address });
   const {
     isLoading: isConfirming,
@@ -274,11 +277,9 @@ export function ArtBoard() {
     console.log('Minting random...');
 
     try {
-      // Wait for wagmi to finish deciding before answering the click, rather than
-      // reporting whatever half-state it happens to be in. See waitForWalletToSettle.
-      const wallet = await waitForWalletToSettle(wagmiConfig);
-
-      if (!wallet.isConnected || !wallet.address) {
+      // `walletPending` keeps this button loading until wagmi has settled, so by the time
+      // it can be clicked the only remaining question is whether a wallet is connected.
+      if (!account.isConnected || !account.address) {
         toast.warn(
           'anglez is not connected to a crypto wallet. Tap the Connect Wallet button at top right.'
         );
@@ -336,10 +337,8 @@ export function ArtBoard() {
   };
 
   const mintCustom = async () => {
-    // See mintRandom: wait for the connection state to settle before answering.
-    const wallet = await waitForWalletToSettle(wagmiConfig);
-
-    if (!wallet.isConnected || !wallet.address) {
+    // See mintRandom: the button is not clickable until wagmi has settled.
+    if (!account.isConnected || !account.address) {
       toast.warn(
         'anglez is not connected to a crypto wallet. Tap the Connect Wallet button at top right.'
       );
@@ -490,7 +489,11 @@ export function ArtBoard() {
                       Customize
                     </Button>
                     {/* {randomMintCost != null && ( */}
-                    <Button className={styles.mintButton} onClick={mintRandom}>
+                    <Button
+                      className={styles.mintButton}
+                      loading={walletPending}
+                      onClick={mintRandom}
+                    >
                       Mint! ({randomMintPrice} ETH)
                     </Button>
                     {/* )} */}
@@ -556,7 +559,11 @@ export function ArtBoard() {
                   <>
                     <Button onClick={randomizeTapped}>Randomize</Button>
                     <Button onClick={newSeedPressed}>New Seed</Button>
-                    <Button className={styles.mintButton} onClick={mintCustom}>
+                    <Button
+                      className={styles.mintButton}
+                      loading={walletPending}
+                      onClick={mintCustom}
+                    >
                       Mint! ({`${customMintPrice} ETH`})
                     </Button>
                     <Text size="sm">
