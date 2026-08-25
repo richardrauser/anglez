@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { isInMiniApp } from '@/src/farcaster/isInMiniApp';
 
 /**
  * Dismisses the Farcaster Mini App splash screen once the app has mounted.
@@ -16,10 +17,10 @@ export function MiniAppReady() {
 
     (async () => {
       try {
-        const { sdk } = await import('@farcaster/miniapp-sdk');
-        if (!(await sdk.isInMiniApp())) {
+        if (!(await isInMiniApp())) {
           return;
         }
+        const { sdk } = await import('@farcaster/miniapp-sdk');
         if (!cancelled) {
           await sdk.actions.ready();
         }
