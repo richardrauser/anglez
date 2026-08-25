@@ -51,20 +51,31 @@ export default function ConnectButton() {
    *
    * The Coinbase SDK restores a signer from localStorage on construction without
    * performing a handshake, so a session left over from an earlier version has no
-   * accounts. The first eth_requestAccounts then skips the provider's "not connected
-   * yet" path, reaches that empty signer and throws 4100 (unauthorized) - which is what
-   * made the wallet appear to do nothing. The SDK clears the stale state as it fails, so
-   * a single retry connects cleanly. Retry once only: a genuine 4100 must still surface.
+   * accounts and the first eth_requestAccounts throws 4100 (unauthorized).
+   *
+   * Clearing that state is what makes a retry work, but it cannot simply be retried
+   * immediately: the provider nulls its signer only after an awaited cleanup, and the
+   * wagmi connector fires provider.disconnect() without awaiting it. An immediate retry
+   * therefore races the cleanup and hits the same stale signer. Await the provider's own
+   * disconnect first, then retry once - a genuine 4100 must still reach the user.
    */
   const connectWallet = (connector: Connector, isRetry = false) => {
     connect(
       { connector },
       {
-        onError: (error) => {
+        onError: async (error) => {
           if (!isRetry && findErrorCode(error) === 4100) {
+            try {
+              const provider: any = await connector.getProvider();
+              await provider?.disconnect?.();
+            } catch {
+              // Best effort: if the provider cannot be cleared, the retry below still
+              // gets a chance, and a second failure surfaces to the user.
+            }
             connectWallet(connector, true);
             return;
           }
+          console.error('Wallet connection failed', connector.id, error);
           handleError(error);
         },
       }

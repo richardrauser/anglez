@@ -271,18 +271,20 @@ export function ArtBoard() {
     console.log('Minting random...');
 
     try {
-      // 'connecting'/'reconnecting' are not the same as "no wallet" - wagmi reports
-      // isConnected as false/indeterminate while it is still restoring a session, so
-      // checking it alone warns the user they're disconnected when they aren't yet.
-      if (account.isConnecting || account.isReconnecting) {
-        toast.info('Still connecting to your crypto wallet. Please try again in a moment.');
-        return;
-      }
-
-      if (!account.isConnected) {
-        toast.warn(
-          'anglez is not connected to a crypto wallet. Tap the Connect Wallet button at top right.'
-        );
+      // Order matters. wagmi reports `reconnecting` with isConnected: !!address and
+      // isReconnecting: true at the same time, because a restored session is already
+      // usable while it revalidates in the background. Testing isReconnecting first
+      // therefore refused to mint for an account that was connected - the wallet button
+      // said "Disconnect" while this said "still connecting". Ask whether there is a
+      // usable account first, and only explain the in-between states if there isn't.
+      if (!account.isConnected || !account.address) {
+        if (account.isConnecting || account.isReconnecting) {
+          toast.info('Still connecting to your crypto wallet. Please try again in a moment.');
+        } else {
+          toast.warn(
+            'anglez is not connected to a crypto wallet. Tap the Connect Wallet button at top right.'
+          );
+        }
         return;
       }
 
@@ -337,16 +339,15 @@ export function ArtBoard() {
   };
 
   const mintCustom = async () => {
-    // See mintRandom: a pending reconnect is not a disconnected wallet.
-    if (account.isConnecting || account.isReconnecting) {
-      toast.info('Still connecting to your crypto wallet. Please try again in a moment.');
-      return;
-    }
-
-    if (!account.isConnected) {
-      toast.warn(
-        'anglez is not connected to a crypto wallet. Tap the Connect Wallet button at top right.'
-      );
+    // See mintRandom: a reconnecting session with an address is connected, not pending.
+    if (!account.isConnected || !account.address) {
+      if (account.isConnecting || account.isReconnecting) {
+        toast.info('Still connecting to your crypto wallet. Please try again in a moment.');
+      } else {
+        toast.warn(
+          'anglez is not connected to a crypto wallet. Tap the Connect Wallet button at top right.'
+        );
+      }
       return;
     }
 
