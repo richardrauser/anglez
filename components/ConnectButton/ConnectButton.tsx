@@ -33,14 +33,21 @@ export default function ConnectButton() {
   const isInMiniApp = useIsInMiniApp();
   // const chainId = useChainId();
 
-  // The Farcaster connector reaches the wallet by talking to the surrounding Farcaster
-  // client over postMessage. On the open web there is no host to answer, and the request
-  // resolves to nothing rather than failing cleanly - the connector then reports an
-  // opaque "Internal JSON RPC error" that a visitor can do nothing about. So offer the
-  // entry only where it can actually connect; the config still registers it
-  // unconditionally, because that detection is only available after mount.
+  // Which wallets can work depends entirely on where the page is running, and the two
+  // environments have no overlap:
+  //
+  // Inside a Farcaster client, the Farcaster wallet is the wallet. The others are worse
+  // than useless there - Base Account drives its handshake through a popup that posts
+  // back via `window.opener`, and Farcaster's in-app browser opens that popup as just
+  // another tab with no opener attached, so it dead-ends on "This app doesn't support
+  // smart wallets". That is a property of the WebView, not of anything this app serves,
+  // so the entry cannot be made to work - only withheld.
+  //
+  // Out on the open web the reverse holds: there is no Farcaster host to answer, so that
+  // connector is the one that cannot work. See `farcasterMiniAppWhenHosted`.
+  const isFarcasterConnector = (connector: Connector) => connector.type === farcasterMiniApp.type;
   const availableConnectors = connectors.filter(
-    (connector) => isInMiniApp || connector.type !== farcasterMiniApp.type
+    (connector) => isFarcasterConnector(connector) === isInMiniApp
   );
 
   // This only tracks whether we've hydrated - it is deliberately NOT a copy of the
