@@ -277,8 +277,13 @@ export function ArtBoard() {
     console.log('Minting random...');
 
     try {
-      // `walletPending` keeps this button loading until wagmi has settled, so by the time
-      // it can be clicked the only remaining question is whether a wallet is connected.
+      // The button stays in a loading state until wagmi has settled and the mint price
+      // has been fetched, so by the time it can be clicked the only remaining question is
+      // whether a wallet is connected.
+      if (randomMintPrice === null) {
+        return;
+      }
+
       if (!account.isConnected || !account.address) {
         toast.warn(
           'anglez is not connected to a crypto wallet. Tap the Connect Wallet button at top right.'
@@ -303,7 +308,7 @@ export function ArtBoard() {
       // setIsMinting(true);
       // const mintReceipt = await mintRandomAnglez(randomSeed);
 
-      if (accountBalance.data && accountBalance.data.value < parseEther(randomMintPrice!)) {
+      if (accountBalance.data && accountBalance.data.value < parseEther(randomMintPrice)) {
         toast.warn(
           `You don't have enough ${AnglezCurrentNetworkCurrencySymbol} to mint on ${AnglezCurrentNetworkName}. Please top up your balance.`
         );
@@ -316,7 +321,7 @@ export function ArtBoard() {
         chain: baseSepolia,
         functionName: 'mintRandom',
         args: [randomSeed],
-        value: parseEther(randomMintPrice!),
+        value: parseEther(randomMintPrice),
       });
 
       // console.log('Mint tx: ' + mintReceipt.hash);
@@ -337,7 +342,12 @@ export function ArtBoard() {
   };
 
   const mintCustom = async () => {
-    // See mintRandom: the button is not clickable until wagmi has settled.
+    // See mintRandom: the button is not clickable until wagmi has settled and the price
+    // is known.
+    if (customMintPrice === null) {
+      return;
+    }
+
     if (!account.isConnected || !account.address) {
       toast.warn(
         'anglez is not connected to a crypto wallet. Tap the Connect Wallet button at top right.'
@@ -359,7 +369,7 @@ export function ArtBoard() {
       return;
     }
 
-    if (accountBalance.data && accountBalance.data.value < parseEther(customMintPrice!)) {
+    if (accountBalance.data && accountBalance.data.value < parseEther(customMintPrice)) {
       toast.warn(
         `You don't have enough ${AnglezCurrentNetworkCurrencySymbol} to mint on ${AnglezCurrentNetworkName}. Please top up your balance.`
       );
@@ -396,7 +406,7 @@ export function ArtBoard() {
           style === 'cyclic',
           style === 'chaotic',
         ],
-        value: parseEther(customMintPrice!),
+        value: parseEther(customMintPrice),
       });
       //     function mintCustom(uint24 seed, uint8 shapeCount, uint8 zoom, uint8 tintRed, uint8 tintGreen, uint8 tintBlue, uint8 tintAlpha, bool isCyclic) public payable {
       // const mintReceipt = await mintCustomAnglez(tokenParams);
@@ -491,10 +501,10 @@ export function ArtBoard() {
                     {/* {randomMintCost != null && ( */}
                     <Button
                       className={styles.mintButton}
-                      loading={walletPending}
+                      loading={walletPending || randomMintPrice === null}
                       onClick={mintRandom}
                     >
-                      Mint! ({randomMintPrice} ETH)
+                      Mint!{randomMintPrice === null ? '' : ` (${randomMintPrice} ETH)`}
                     </Button>
                     {/* )} */}
                   </>
@@ -561,10 +571,10 @@ export function ArtBoard() {
                     <Button onClick={newSeedPressed}>New Seed</Button>
                     <Button
                       className={styles.mintButton}
-                      loading={walletPending}
+                      loading={walletPending || customMintPrice === null}
                       onClick={mintCustom}
                     >
-                      Mint! ({`${customMintPrice} ETH`})
+                      Mint!{customMintPrice === null ? '' : ` (${customMintPrice} ETH)`}
                     </Button>
                     <Text size="sm">
                       <b>Randomize</b> randomizes everything, while <b>New Seed</b> randomizes the

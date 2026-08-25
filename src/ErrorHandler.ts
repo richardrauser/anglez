@@ -17,7 +17,7 @@ const UNKNOWN_ERROR_CODE = -1;
  * then falls through to the generic "An error occurred." message. ethers nests its
  * own errors similarly, so walk the whole chain rather than guessing a depth.
  */
-function findInCauseChain(error: any, key: 'code' | 'reason'): any {
+function findInCauseChain(error: any, key: 'code' | 'reason' | 'message'): any {
   const seen = new Set<any>();
   let sentinel: any;
   let current = error;
@@ -39,10 +39,15 @@ function findInCauseChain(error: any, key: 'code' | 'reason'): any {
 }
 
 /**
- * The provider error code from anywhere in an error's `cause` chain, or undefined.
+ * Whether an error is a provider reporting a locked wallet.
+ *
+ * EIP-1193 gives one code, 4100 (unauthorized), for both "you never authorised this" and
+ * "the wallet is locked". Only the message separates them, and they need opposite advice:
+ * one is fixed by connecting, the other by unlocking the extension.
  */
-export function findErrorCode(error: any): any {
-  return findInCauseChain(error, 'code');
+function isWalletLocked(error: any): boolean {
+  const message = findInCauseChain(error, 'message');
+  return typeof message === 'string' && /locked/i.test(message);
 }
 
 export function handleError(error: any) {
@@ -55,7 +60,11 @@ export function handleError(error: any) {
   console.log('Error code: ', code);
 
   if (code === 4100) {
-    showErrorMessage('Your wallet session has expired. Please try connecting again.');
+    showErrorMessage(
+      isWalletLocked(error)
+        ? 'Your wallet is locked. Please unlock it, then try connecting again.'
+        : 'Your wallet did not authorise the connection. Please try connecting again.'
+    );
   } else if (code === 4001) {
     showErrorMessage('You rejected the request. 😢');
   } else if (code === 'INSUFFICIENT_FUNDS') {

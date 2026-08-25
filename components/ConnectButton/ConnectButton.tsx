@@ -6,7 +6,7 @@ import { ActionIcon, Button, Group, Menu, Text, rem } from '@mantine/core';
 import { IconChevronDown, IconMoneybag, IconReload, IconWallet } from '@tabler/icons-react';
 import { useAccount, useBalance, useDisconnect, useConnect, type Connector } from 'wagmi';
 import { formatUnits } from 'viem';
-import { handleError, findErrorCode } from '@/src/ErrorHandler';
+import { handleError } from '@/src/ErrorHandler';
 import { AnglezCurrentNetworkExplorerUrl } from '@/src/Constants';
 import classes from '@/styles/SplitButton.module.css';
 import { useOnchainName, shortenAddress } from '@/src/useOnchainName';
@@ -46,35 +46,13 @@ export default function ConnectButton() {
   const isPending = !mounted || status === 'connecting' || status === 'reconnecting';
   const etherscanUrl = `${AnglezCurrentNetworkExplorerUrl}/address/${address}`;
 
-  /**
-   * Connect, retrying once on a stale-session 4100.
-   *
-   * The Coinbase SDK restores a signer from localStorage on construction without
-   * performing a handshake, so a session left over from an earlier version has no
-   * accounts and the first eth_requestAccounts throws 4100 (unauthorized).
-   *
-   * Clearing that state is what makes a retry work, but it cannot simply be retried
-   * immediately: the provider nulls its signer only after an awaited cleanup, and the
-   * wagmi connector fires provider.disconnect() without awaiting it. An immediate retry
-   * therefore races the cleanup and hits the same stale signer. Await the provider's own
-   * disconnect first, then retry once - a genuine 4100 must still reach the user.
-   */
-  const connectWallet = (connector: Connector, isRetry = false) => {
+  const connectWallet = (connector: Connector) => {
     connect(
       { connector },
       {
-        onError: async (error) => {
-          if (!isRetry && findErrorCode(error) === 4100) {
-            try {
-              const provider: any = await connector.getProvider();
-              await provider?.disconnect?.();
-            } catch {
-              // Best effort: if the provider cannot be cleared, the retry below still
-              // gets a chance, and a second failure surfaces to the user.
-            }
-            connectWallet(connector, true);
-            return;
-          }
+        onError: (error) => {
+          // Logged with the connector id: provider errors reuse a small set of EIP-1193
+          // codes, so the message and cause chain are what actually identify a failure.
           console.error('Wallet connection failed', connector.id, error);
           handleError(error);
         },
