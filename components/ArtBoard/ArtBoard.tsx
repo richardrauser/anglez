@@ -18,6 +18,7 @@ import { IconSparkles, IconTools } from '@tabler/icons-react';
 import {
   useAccount,
   useBalance,
+  useConfig,
   useSwitchChain,
   useWaitForTransactionReceipt,
   useWriteContract,
@@ -26,6 +27,7 @@ import { baseSepolia } from 'viem/chains';
 import { Address } from 'viem';
 import { parseEther } from 'ethers';
 import { useSearchParams, useRouter } from 'next/navigation';
+import { waitForWalletToSettle } from '@/src/waitForWallet';
 import contract from '@/contract/Anglez.json';
 import {
   AnglezContractAddress,
@@ -55,6 +57,7 @@ export function ArtBoard() {
   const { switchChain } = useSwitchChain();
   const { data: hash, error: mintError, isPending, writeContract } = useWriteContract();
   const account = useAccount();
+  const wagmiConfig = useConfig();
   const accountBalance = useBalance({ address: account.address as Address });
   const {
     isLoading: isConfirming,
@@ -271,20 +274,14 @@ export function ArtBoard() {
     console.log('Minting random...');
 
     try {
-      // Order matters. wagmi reports `reconnecting` with isConnected: !!address and
-      // isReconnecting: true at the same time, because a restored session is already
-      // usable while it revalidates in the background. Testing isReconnecting first
-      // therefore refused to mint for an account that was connected - the wallet button
-      // said "Disconnect" while this said "still connecting". Ask whether there is a
-      // usable account first, and only explain the in-between states if there isn't.
-      if (!account.isConnected || !account.address) {
-        if (account.isConnecting || account.isReconnecting) {
-          toast.info('Still connecting to your crypto wallet. Please try again in a moment.');
-        } else {
-          toast.warn(
-            'anglez is not connected to a crypto wallet. Tap the Connect Wallet button at top right.'
-          );
-        }
+      // Wait for wagmi to finish deciding before answering the click, rather than
+      // reporting whatever half-state it happens to be in. See waitForWalletToSettle.
+      const wallet = await waitForWalletToSettle(wagmiConfig);
+
+      if (!wallet.isConnected || !wallet.address) {
+        toast.warn(
+          'anglez is not connected to a crypto wallet. Tap the Connect Wallet button at top right.'
+        );
         return;
       }
 
@@ -339,15 +336,13 @@ export function ArtBoard() {
   };
 
   const mintCustom = async () => {
-    // See mintRandom: a reconnecting session with an address is connected, not pending.
-    if (!account.isConnected || !account.address) {
-      if (account.isConnecting || account.isReconnecting) {
-        toast.info('Still connecting to your crypto wallet. Please try again in a moment.');
-      } else {
-        toast.warn(
-          'anglez is not connected to a crypto wallet. Tap the Connect Wallet button at top right.'
-        );
-      }
+    // See mintRandom: wait for the connection state to settle before answering.
+    const wallet = await waitForWalletToSettle(wagmiConfig);
+
+    if (!wallet.isConnected || !wallet.address) {
+      toast.warn(
+        'anglez is not connected to a crypto wallet. Tap the Connect Wallet button at top right.'
+      );
       return;
     }
 
