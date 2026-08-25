@@ -79,6 +79,13 @@ a:hover {
 }
 
 img.artwork {
+  /* The artwork is an SVG data URI with no intrinsic size cap. Without a width it
+     renders wider than its grid column and overflows, leaving its right edge flush
+     against the card border while every other side keeps the card's padding. Filling
+     the column instead lets the Card's own padding provide even spacing all round. */
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
   background-color: white;
-  margin-bottom: 0.5rem;
 }

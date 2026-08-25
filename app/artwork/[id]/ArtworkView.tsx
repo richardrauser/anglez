@@ -28,8 +28,8 @@ export default function ArtworkView({ id }: { id: string }) {
         setSvgFileName(`anglez-#${details.tokenId}.svg`);
       }
 
-      console.log(`[ArtworkView.fetchData] Setting token details: ${tokenDetails}`);
-      setTokenDetails(tokenDetails);
+      console.log(`[ArtworkView.fetchData] Setting token details: ${details}`);
+      setTokenDetails(details);
     };
     fetchData();
   }, []);
