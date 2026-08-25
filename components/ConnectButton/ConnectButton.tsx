@@ -12,6 +12,7 @@ import { AnglezCurrentNetworkExplorerUrl } from '@/src/Constants';
 import classes from '@/styles/SplitButton.module.css';
 import { useOnchainName, shortenAddress } from '@/src/useOnchainName';
 import { useIsInMiniApp } from '@/src/farcaster/useIsInMiniApp';
+import { canOpenWalletPopup } from '@/src/canOpenWalletPopup';
 
 // declare global {
 //   interface Window {
@@ -33,22 +34,30 @@ export default function ConnectButton() {
   const isInMiniApp = useIsInMiniApp();
   // const chainId = useChainId();
 
-  // Which wallets can work depends entirely on where the page is running, and the two
-  // environments have no overlap:
+  // Each of the two declared connectors needs something from its surroundings that it
+  // cannot check for itself, and offering one where that thing is missing produces a
+  // dead end the person who clicked can do nothing about. So each is asked for
+  // separately, rather than partitioned by environment - the environments overlap.
   //
-  // Inside a Farcaster client, the Farcaster wallet is the wallet. The others are worse
-  // than useless there - Base Account drives its handshake through a popup that posts
-  // back via `window.opener`, and Farcaster's in-app browser opens that popup as just
-  // another tab with no opener attached, so it dead-ends on "This app doesn't support
-  // smart wallets". That is a property of the WebView, not of anything this app serves,
-  // so the entry cannot be made to work - only withheld.
-  //
-  // Out on the open web the reverse holds: there is no Farcaster host to answer, so that
-  // connector is the one that cannot work. See `farcasterMiniAppWhenHosted`.
-  const isFarcasterConnector = (connector: Connector) => connector.type === farcasterMiniApp.type;
-  const availableConnectors = connectors.filter(
-    (connector) => isFarcasterConnector(connector) === isInMiniApp
-  );
+  // Farcaster's in-app browser is the case that makes the difference: it is NOT a Mini
+  // App host, so the Mini App connector has nobody to talk to, but it does inject its own
+  // wallet for the page to discover. The injected entry is the one that works there, and
+  // it is Base Account that has to go.
+  const availableConnectors = connectors.filter((connector) => {
+    // Needs a Farcaster host on the other end of the bridge. See
+    // `farcasterMiniAppWhenHosted` for what happens when there isn't one.
+    if (connector.type === farcasterMiniApp.type) {
+      return isInMiniApp;
+    }
+    // Needs a popup that keeps its opener. `baseAccount` is the connector's own declared
+    // type; the wagmi factory does not expose it as a constant the way Farcaster's does.
+    if (connector.type === 'baseAccount') {
+      return canOpenWalletPopup();
+    }
+    // Anything else here was announced to the page over EIP-6963 - by an extension, or by
+    // the app whose browser we are running in. Whoever announced it can serve it.
+    return true;
+  });
 
   // This only tracks whether we've hydrated - it is deliberately NOT a copy of the
   // wallet state. The connection state itself is derived from `status` during render,
@@ -110,11 +119,18 @@ export default function ConnectButton() {
           <Button>Connect Wallet</Button>
         </Menu.Target>
         <Menu.Dropdown>
-          {availableConnectors.map((connector) => (
-            <Menu.Item key={connector.id} onClick={() => connectWallet(connector)}>
-              {connector.name}
-            </Menu.Item>
-          ))}
+          {/* Filtering can legitimately leave nothing - an app's in-app browser that
+              injects no wallet of its own has none of the three on offer. Say so, rather
+              than opening an empty dropdown. */}
+          {availableConnectors.length === 0 ? (
+            <Menu.Item disabled>No wallet available in this browser</Menu.Item>
+          ) : (
+            availableConnectors.map((connector) => (
+              <Menu.Item key={connector.id} onClick={() => connectWallet(connector)}>
+                {connector.name}
+              </Menu.Item>
+            ))
+          )}
         </Menu.Dropdown>
       </Menu>
     );
